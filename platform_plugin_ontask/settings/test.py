@@ -30,9 +30,6 @@ DATABASES = {
     },
 }
 
-
-INSTALLED_APPS = ("openedx_events",)
-
 SECRET_KEY = "not-so-secret-key"
 
 # Internationalization

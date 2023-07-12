@@ -4,7 +4,6 @@ Open edX Filters needed for OnTask integration.
 import pkg_resources
 from django.conf import settings
 from django.template import Context, Template
-# from crum import get_current_request
 from openedx_filters import PipelineStep
 from web_fragments.fragment import Fragment
 
@@ -25,11 +24,7 @@ class AddInstructorLimesurveyTab(PipelineStep):
             _ (str): instructor dashboard template name.
         """
         course = context["course"]
-        data = pkg_resources.resource_string(
-            "platform_plugin_ontask", "static/ontask.html"
-        )
-        template_str = data.decode("utf-8")
-        template = Template(template_str)
+        template = Template(self.resource_string("static/html/ontask.html"))
         context.update(
             {
                 "ONTASK_URL": getattr(settings, "ONTASK_URL"),
@@ -37,6 +32,8 @@ class AddInstructorLimesurveyTab(PipelineStep):
         )
         html = template.render(Context(context))
         frag = Fragment(html)
+
+        frag.add_css(self.resource_string("static/css/ontask.css"))
 
         section_data = {
             "fragment": frag,
@@ -47,3 +44,8 @@ class AddInstructorLimesurveyTab(PipelineStep):
         }
         context["sections"].append(section_data)
         return context
+
+    def resource_string(self, path):
+        """Handy helper for getting resources from our kit."""
+        data = pkg_resources.resource_string("platform_plugin_ontask", path)
+        return data.decode("utf8")
