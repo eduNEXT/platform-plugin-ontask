@@ -57,3 +57,5 @@ TEMPLATES = [{
         ],
     },
 }]
+
+ONTASK_URL = "http://localhost:8000"
