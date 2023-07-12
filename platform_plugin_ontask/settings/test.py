@@ -31,9 +31,7 @@ DATABASES = {
 }
 
 
-INSTALLED_APPS = (
-    "openedx_events",
-)
+INSTALLED_APPS = ("openedx_events",)
 
 SECRET_KEY = "not-so-secret-key"
 

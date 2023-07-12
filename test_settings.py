@@ -39,8 +39,6 @@ LOCALE_PATHS = [
     root('platform_plugin_ontask', 'conf', 'locale'),
 ]
 
-ROOT_URLCONF = 'platform_plugin_ontask.urls'
-
 SECRET_KEY = 'insecure-secret-key'
 
 MIDDLEWARE = (

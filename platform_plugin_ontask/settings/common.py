@@ -28,6 +28,7 @@ TIME_ZONE = "UTC"
 
 USE_TZ = True
 
+
 def plugin_settings(settings):
     """
     Set of plugin settings used by the Open Edx platform.

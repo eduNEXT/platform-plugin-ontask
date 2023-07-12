@@ -9,6 +9,5 @@ def plugin_settings(settings):
     More info: https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/plugins/README.rst
     """
     settings.ONTASK_URL = getattr(settings, "ENV_TOKENS", {}).get(
-        "ONTASK_URL",
-        settings.ONTASK_URL
+        "ONTASK_URL", settings.ONTASK_URL
     )

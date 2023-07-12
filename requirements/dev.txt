@@ -17,6 +17,8 @@ astroid==2.15.6
     #   -r requirements/quality.txt
     #   pylint
     #   pylint-celery
+black==23.7.0
+    # via -r requirements/dev.in
 build==0.10.0
     # via
     #   -r requirements/pip-tools.txt
@@ -27,6 +29,7 @@ click==8.1.4
     # via
     #   -r requirements/pip-tools.txt
     #   -r requirements/quality.txt
+    #   black
     #   click-log
     #   code-annotations
     #   edx-lint
@@ -111,6 +114,8 @@ mccabe==0.7.0
     # via
     #   -r requirements/quality.txt
     #   pylint
+mypy-extensions==1.0.0
+    # via black
 openedx-filters @ git+https://github.com/openedx/openedx-filters.git@MJG/instructor-tab-filters
     # via -r requirements/quality.txt
 packaging==23.1
@@ -118,11 +123,14 @@ packaging==23.1
     #   -r requirements/ci.txt
     #   -r requirements/pip-tools.txt
     #   -r requirements/quality.txt
+    #   black
     #   build
     #   pytest
     #   tox
 path==16.7.1
     # via edx-i18n-tools
+pathspec==0.11.1
+    # via black
 pbr==5.11.1
     # via
     #   -r requirements/quality.txt
@@ -133,6 +141,7 @@ platformdirs==3.8.1
     # via
     #   -r requirements/ci.txt
     #   -r requirements/quality.txt
+    #   black
     #   pylint
     #   virtualenv
 pluggy==1.2.0
@@ -239,6 +248,7 @@ tomli==2.0.1
     #   -r requirements/ci.txt
     #   -r requirements/pip-tools.txt
     #   -r requirements/quality.txt
+    #   black
     #   build
     #   coverage
     #   pip-tools
@@ -256,12 +266,15 @@ tox==3.28.0
     #   -r requirements/ci.txt
     #   tox-battery
 tox-battery==0.6.1
-    # via -r requirements/ci.txt
+    # via
+    #   -r requirements/ci.txt
+    #   -r requirements/dev.in
 typing-extensions==4.7.1
     # via
     #   -r requirements/quality.txt
     #   asgiref
     #   astroid
+    #   black
     #   pylint
 virtualenv==20.23.1
     # via
