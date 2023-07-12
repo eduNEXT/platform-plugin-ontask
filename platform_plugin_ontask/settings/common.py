@@ -5,7 +5,7 @@ https://docs.djangoproject.com/en/2.22/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.22/ref/settings/
 """
-
+from platform_plugin_ontask import ROOT_DIRECTORY
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.22/howto/deployment/checklist/
@@ -28,11 +28,11 @@ TIME_ZONE = "UTC"
 
 USE_TZ = True
 
-
 def plugin_settings(settings):
     """
     Set of plugin settings used by the Open Edx platform.
     More info: https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/plugins/README.rst
     """
+    settings.MAKO_TEMPLATE_DIRS_BASE.append(ROOT_DIRECTORY / "templates")
     settings.ONTASK_TRACKING_BACKEND_BATCH_SIZE = 100
     settings.ONTASK_SERVICE_URL = "http://ontask-learning:8000"
