@@ -34,5 +34,4 @@ def plugin_settings(settings):
     More info: https://github.com/edx/edx-platform/blob/master/openedx/core/djangoapps/plugins/README.rst
     """
     settings.MAKO_TEMPLATE_DIRS_BASE.append(ROOT_DIRECTORY / "templates")
-    settings.ONTASK_TRACKING_BACKEND_BATCH_SIZE = 100
-    settings.ONTASK_SERVICE_URL = "http://ontask-learning:8000"
+    settings.ONTASK_URL = "http://ontask.local.overhang.io:8080/"
