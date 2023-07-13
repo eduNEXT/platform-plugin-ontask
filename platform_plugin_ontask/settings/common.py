@@ -36,3 +36,92 @@ def plugin_settings(settings):
     """
     settings.MAKO_TEMPLATE_DIRS_BASE.append(ROOT_DIRECTORY / "templates")
     settings.ONTASK_URL = "http://ontask.local.overhang.io:8080/"
+    settings.ONTASK_TRACKING_BACKEND_BATCH_SIZE = 1
+    settings.ONTASK_SERVICE_URL = "http://ontask:8080"
+    settings.ONTASK_XAPI_EVENTS = {
+        "edx.grades.problem.submitted": {
+            "context": [
+                "course_id",
+                "user_id",
+                "weight",
+                "weight_earned",
+                "weight_possible",
+            ],
+            "event": [
+                "problem_id",
+            ],
+        },
+        "problem_check": {
+            "context": [
+                "course_id",
+                "user_id",
+            ],
+            "event": [
+                "problem_id",
+            ],
+        },
+        "showanswer": {
+            "context": [],
+            "event": [],
+        },
+        "edx.problem.hint.demandhint_displayed": {
+            "context": [],
+            "event": [],
+        },
+        "edx.problem.completed": {
+            "context": [],
+            "event": [],
+        },
+        "edx.course.enrollment.activated": {
+            "context": [],
+            "event": [],
+        },
+        "edx.course.enrollment.deactivated": {
+            "context": [],
+            "event": [],
+        },
+        "edx.video.loaded": {
+            "context": [],
+            "event": [],
+        },
+        "edx.video.played": {
+            "context": [],
+            "event": [],
+        },
+        "edx.video.stopped": {
+            "context": [],
+            "event": [],
+        },
+        "edx.video.paused": {
+            "context": [],
+            "event": [],
+        },
+        "edx.video.completed": {
+            "context": [],
+            "event": [],
+        },
+        "edx.video.position.changed": {
+            "context": [],
+            "event": [],
+        },
+        "edx.ui.lms.sequence.outline.selected": {
+            "context": [],
+            "event": [],
+        },
+        "edx.ui.lms.sequence.next_selected": {
+            "context": [],
+            "event": [],
+        },
+        "edx.ui.lms.sequence.previous_selected": {
+            "context": [],
+            "event": [],
+        },
+        "edx.ui.lms.sequence.tab_selected": {
+            "context": [],
+            "event": [],
+        },
+        "edx.ui.lms.link_clicked": {
+            "context": [],
+            "event": [],
+        },
+    }
