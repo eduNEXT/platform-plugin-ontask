@@ -10,7 +10,7 @@ class PlatformPluginOntaskConfig(AppConfig):
     Configuration for the platform_plugin_ontask Django application.
     """
 
-    name = 'platform_plugin_ontask'
+    name = "platform_plugin_ontask"
 
     plugin_app = {
         "settings_config": {
