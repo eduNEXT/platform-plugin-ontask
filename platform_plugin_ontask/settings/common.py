@@ -47,7 +47,7 @@ def plugin_settings(settings):
                 "weight_earned",
                 "weight_possible",
             ],
-            "event": [
+            "data": [
                 "problem_id",
             ],
         },
@@ -56,72 +56,8 @@ def plugin_settings(settings):
                 "course_id",
                 "user_id",
             ],
-            "event": [
+            "data": [
                 "problem_id",
             ],
-        },
-        "showanswer": {
-            "context": [],
-            "event": [],
-        },
-        "edx.problem.hint.demandhint_displayed": {
-            "context": [],
-            "event": [],
-        },
-        "edx.problem.completed": {
-            "context": [],
-            "event": [],
-        },
-        "edx.course.enrollment.activated": {
-            "context": [],
-            "event": [],
-        },
-        "edx.course.enrollment.deactivated": {
-            "context": [],
-            "event": [],
-        },
-        "edx.video.loaded": {
-            "context": [],
-            "event": [],
-        },
-        "edx.video.played": {
-            "context": [],
-            "event": [],
-        },
-        "edx.video.stopped": {
-            "context": [],
-            "event": [],
-        },
-        "edx.video.paused": {
-            "context": [],
-            "event": [],
-        },
-        "edx.video.completed": {
-            "context": [],
-            "event": [],
-        },
-        "edx.video.position.changed": {
-            "context": [],
-            "event": [],
-        },
-        "edx.ui.lms.sequence.outline.selected": {
-            "context": [],
-            "event": [],
-        },
-        "edx.ui.lms.sequence.next_selected": {
-            "context": [],
-            "event": [],
-        },
-        "edx.ui.lms.sequence.previous_selected": {
-            "context": [],
-            "event": [],
-        },
-        "edx.ui.lms.sequence.tab_selected": {
-            "context": [],
-            "event": [],
-        },
-        "edx.ui.lms.link_clicked": {
-            "context": [],
-            "event": [],
         },
     }
