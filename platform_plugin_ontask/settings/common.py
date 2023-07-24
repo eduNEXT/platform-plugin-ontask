@@ -36,3 +36,28 @@ def plugin_settings(settings):
     """
     settings.MAKO_TEMPLATE_DIRS_BASE.append(ROOT_DIRECTORY / "templates")
     settings.ONTASK_URL = "http://ontask.local.overhang.io:8080/"
+    settings.ONTASK_TRACKING_BACKEND_BATCH_SIZE = 1
+    settings.ONTASK_SERVICE_URL = "http://ontask:8080"
+    settings.ONTASK_XAPI_EVENTS = {
+        "edx.grades.problem.submitted": {
+            "context": [
+                "course_id",
+                "user_id",
+                "weight",
+                "weight_earned",
+                "weight_possible",
+            ],
+            "data": [
+                "problem_id",
+            ],
+        },
+        "problem_check": {
+            "context": [
+                "course_id",
+                "user_id",
+            ],
+            "data": [
+                "problem_id",
+            ],
+        },
+    }
