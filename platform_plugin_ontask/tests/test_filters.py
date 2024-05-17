@@ -36,19 +36,19 @@ class TestAddInstructorOnTaskTab(TestCase):
             running_pipeline=mock_pipeline,
         )
         mock_course = Mock()
-        context = instructor_tab.run_filter(
+        result = instructor_tab.run_filter(
             context={
                 "course": mock_course,
                 "sections": [],
             },
             template_name="instructor_dashboard.html",
         )
-        self.assertEqual(len(context["sections"]), 1)
-        self.assertEqual(context["sections"][0]["section_key"], "ontask")
-        self.assertEqual(context["sections"][0]["section_display_name"], "On Task")
+        self.assertEqual(len(result["context"]["sections"]), 1)
+        self.assertEqual(result["context"]["sections"][0]["section_key"], "ontask")
+        self.assertEqual(result["context"]["sections"][0]["section_display_name"], "On Task")
         self.assertEqual(
-            context["sections"][0]["template_path_prefix"], "/instructor_dashboard/"
+            result["context"]["sections"][0]["template_path_prefix"], "/instructor_dashboard/"
         )
-        self.assertEqual(context["sections"][0]["course_id"], str(mock_course.id))
-        self.assertIn("ONTASK_URL", context)
-        self.assertEqual(context["ONTASK_URL"], settings.ONTASK_URL)
+        self.assertEqual(result["context"]["sections"][0]["course_id"], str(mock_course.id))
+        self.assertIn("ONTASK_URL", result["context"])
+        self.assertEqual(result["context"]["ONTASK_URL"], settings.ONTASK_URL)
