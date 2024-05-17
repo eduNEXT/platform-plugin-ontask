@@ -8,11 +8,11 @@ from unittest.mock import Mock
 from django.conf import settings
 from django.test import TestCase
 
-from platform_plugin_ontask.extensions.filters import AddInstructorLimesurveyTab
+from platform_plugin_ontask.extensions.filters import AddInstructorOnTaskTab
 
 
-class TestAddInstructorLimesurveyTab(TestCase):
-    """Test cases for the AddInstructorLimesurveyTab filter."""
+class TestAddInstructorOnTaskTab(TestCase):
+    """Test cases for the AddInstructorOnTaskTab filter."""
 
     def test_run_filter(self):
         """Test the run_filter method.
@@ -31,7 +31,7 @@ class TestAddInstructorLimesurveyTab(TestCase):
             - ONTASK_URL: the ONTASK_URL setting
         """
         mock_pipeline = Mock()
-        instructor_tab = AddInstructorLimesurveyTab(
+        instructor_tab = AddInstructorOnTaskTab(
             filter_type="instructor_dashboard",
             running_pipeline=mock_pipeline,
         )

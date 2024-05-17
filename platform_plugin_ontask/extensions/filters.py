@@ -11,7 +11,7 @@ TEMPLATE_ABSOLUTE_PATH = "/instructor_dashboard/"
 BLOCK_CATEGORY = "ontask"
 
 
-class AddInstructorLimesurveyTab(PipelineStep):
+class AddInstructorOnTaskTab(PipelineStep):
     """Add Ontask tab to instructor dashboard."""
 
     def run_filter(
@@ -43,7 +43,10 @@ class AddInstructorLimesurveyTab(PipelineStep):
             "template_path_prefix": TEMPLATE_ABSOLUTE_PATH,
         }
         context["sections"].append(section_data)
-        return context
+        return {
+            "context": context,
+            "template_name": template_name,
+        }
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
