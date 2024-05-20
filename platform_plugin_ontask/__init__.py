@@ -1,6 +1,7 @@
 """
 Open edX Django plugin for OnTask Learning.
 """
+
 import os
 from pathlib import Path
 

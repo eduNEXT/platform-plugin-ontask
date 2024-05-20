@@ -3,6 +3,7 @@
 Classes:
     TestInstructorFilters: test cases for the filters defined in extensions/filters.py
 """
+
 from unittest.mock import Mock
 
 from django.conf import settings
@@ -45,10 +46,15 @@ class TestAddInstructorOnTaskTab(TestCase):
         )
         self.assertEqual(len(result["context"]["sections"]), 1)
         self.assertEqual(result["context"]["sections"][0]["section_key"], "ontask")
-        self.assertEqual(result["context"]["sections"][0]["section_display_name"], "On Task")
         self.assertEqual(
-            result["context"]["sections"][0]["template_path_prefix"], "/instructor_dashboard/"
+            result["context"]["sections"][0]["section_display_name"], "On Task"
         )
-        self.assertEqual(result["context"]["sections"][0]["course_id"], str(mock_course.id))
+        self.assertEqual(
+            result["context"]["sections"][0]["template_path_prefix"],
+            "/instructor_dashboard/",
+        )
+        self.assertEqual(
+            result["context"]["sections"][0]["course_id"], str(mock_course.id)
+        )
         self.assertIn("ONTASK_URL", result["context"])
         self.assertEqual(result["context"]["ONTASK_URL"], settings.ONTASK_URL)
