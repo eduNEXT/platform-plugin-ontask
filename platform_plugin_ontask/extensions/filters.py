@@ -1,6 +1,7 @@
 """
 Open edX Filters needed for OnTask integration.
 """
+
 import pkg_resources
 from django.conf import settings
 from django.template import Context, Template
@@ -14,9 +15,7 @@ BLOCK_CATEGORY = "ontask"
 class AddInstructorOnTaskTab(PipelineStep):
     """Add Ontask tab to instructor dashboard."""
 
-    def run_filter(
-        self, context, template_name
-    ):  # pylint: disable=unused-argument, arguments-differ
+    def run_filter(self, context, template_name):  # pylint: disable=arguments-differ
         """Execute filter that modifies the instructor dashboard context.
 
         Args:
@@ -27,7 +26,7 @@ class AddInstructorOnTaskTab(PipelineStep):
         template = Template(self.resource_string("static/html/ontask.html"))
         context.update(
             {
-                "ONTASK_URL": getattr(settings, "ONTASK_URL"),
+                "ONTASK_URL": settings.ONTASK_URL,
             }
         )
         html = template.render(Context(context))
