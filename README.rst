@@ -1,26 +1,19 @@
-platform-plugin-ontask
-#############################
+Platform Plugin On Task
+########################
 
-.. note::
+|ci-badge| |license-badge| |status-badge|
 
-  This README was auto-generated. Maintainer: please review its contents and
-  update all relevant sections. Instructions to you are marked with
-  "PLACEHOLDER" or "TODO". Update or remove those sections, and remove this
-  note when you are done.
-
-|pypi-badge| |ci-badge| |codecov-badge| |doc-badge| |pyversions-badge|
-|license-badge| |status-badge|
 
 Purpose
 *******
 
-Open edX Django plugin for OnTask Learning.
+Open edX plugin that includes adds a new tab to the instructor dashboard for easy access 
+to the On Task service. For serving On Task along with the Open edX ecosystem we recommended using
+`tutor-contrib-ontask <https://github.com/eduNEXT/tutor-contrib-ontask/>`_.
 
-TODO: The ``README.rst`` file should start with a brief description of the repository and its purpose.
-It should be described in the context of other repositories under the ``openedx``
-organization. It should make clear where this fits in to the overall Open edX
-codebase and should be oriented towards people who are new to the Open edX
-project.
+This plugin has been created as an open source contribution to the Open edX
+platform and has been funded by the Unidigital project from the Spanish
+Government - 2024.
 
 Getting Started
 ***************
@@ -30,95 +23,140 @@ Developing
 
 One Time Setup
 --------------
-.. code-block::
 
-  # Clone the repository
-  git clone git@github.com:eduNEXT/platform-plugin-ontask.git
-  cd platform-plugin-ontask
+Clone the repository:
 
-  # Set up a virtualenv with the same name as the repo and activate it
-  # Here's how you might do that if you have virtualenvwrapper setup.
-  mkvirtualenv -p python3.8 platform-plugin-ontask
+.. code-block:: bash
 
+  git clone git@github.com:eduNEXT/platform_plugin_ontask.git
+  cd platform_plugin_ontask
+
+Set up a virtualenv with the same name as the repo and activate it. Here's how
+you might do that if you have ``virtualenv`` set up:
+
+.. code-block:: bash
+
+  virtualenv -p python3.8 platform_plugin_ontask
 
 Every time you develop something in this repo
 ---------------------------------------------
-.. code-block::
 
-  # Activate the virtualenv
-  # Here's how you might do that if you're using virtualenvwrapper.
-  workon platform-plugin-ontask
+Activate the virtualenv. Here's how you might do that if you're using
+``virtualenv``:
 
-  # Grab the latest code
+.. code-block:: bash
+
+  source platform_plugin_ontask/bin/activate
+
+Grab the latest code:
+
+.. code-block:: bash
+
   git checkout main
   git pull
 
-  # Install/update the dev requirements
+Install/update the dev requirements:
+
+.. code-block:: bash
+
   make requirements
 
-  # Run the tests and quality checks (to verify the status before you make any changes)
+Run the tests and quality checks (to verify the status before you make any
+changes):
+
+.. code-block:: bash
+
   make validate
 
-  # Make a new branch for your changes
+Make a new branch for your changes:
+
+.. code-block:: bash
+
   git checkout -b <your_github_username>/<short_description>
 
-  # Using your favorite editor, edit the code to make your change.
+Using your favorite editor, edit the code to make your change:
+
+.. code-block:: bash
+
   vim ...
 
-  # Run your new tests
+Run your new tests:
+
+.. code-block:: bash
+
   pytest ./path/to/new/tests
 
-  # Run all the tests and quality checks
+Run all the tests and quality checks:
+
+.. code-block:: bash
+
   make validate
 
-  # Commit all your changes
+Commit all your changes, push your branch to github, and open a PR:
+
+.. code-block:: bash
+
   git commit ...
   git push
 
-  # Open a PR and ask for review.
-
 Deploying
-=========
+==========
 
-TODO: How can a new user go about deploying this component? Is it just a few
-commands? Is there a larger how-to that should be linked here?
+Tutor environments
+------------------
 
-PLACEHOLDER: For details on how to deploy this component, see the `deployment how-to`_
+To use this plugin in a Tutor environment, you must install it as a requirement of the ``openedx`` image. To achieve this, follow these steps:
 
-.. _deployment how-to: https://docs.openedx.org/projects/platform-plugin-ontask/how-tos/how-to-deploy-this-component.html
+.. code-block:: bash
+
+    tutor config save --append OPENEDX_EXTRA_PIP_REQUIREMENTS=git+https://github.com/edunext/platform-plugin-ontask@vX.Y.Z
+    tutor images build openedx
+
+Then, deploy the resultant image in your environment.
+
+Configuring required in the Open edX platform
+*********************************************
+
+You must include the following setting in the LMS to enable the filter that will
+display add the new tab for On Task:
+
+.. code-block:: python
+
+    OPEN_EDX_FILTERS_CONFIG = {
+        "org.openedx.learning.instructor.dashboard.render.started.v1": {
+            "fail_silently": False,
+            "pipeline": [
+                "platform_plugin_ontask.extensions.filters.AddInstructorOnTaskTab",
+            ]
+        },
+    }
+
+You can add it using your favorite configuration method. Then, you'll see:
+
+.. image:: https://github.com/eduNEXT/platform-plugin-ontask/assets/64440265/f4d5adbf-8900-49fc-b7ce-dffaf179b3d8
+.. image:: https://github.com/eduNEXT/platform-plugin-ontask/assets/64440265/7ed01c38-6651-43eb-a6c5-cb3f774835b1
 
 Getting Help
 ************
 
-Documentation
-=============
+If you're having trouble, we have discussion forums at `discussions`_ where you
+can connect with others in the community.
 
-PLACEHOLDER: Start by going through `the documentation`_.  If you need more help see below.
+Our real-time conversations are on Slack. You can request a
+`Slack invitation`_, then join our `community Slack workspace`_.
 
-.. _the documentation: https://docs.openedx.org/projects/platform-plugin-ontask
-
-(TODO: `Set up documentation <https://openedx.atlassian.net/wiki/spaces/DOC/pages/21627535/Publish+Documentation+on+Read+the+Docs>`_)
-
-More Help
-=========
-
-If you're having trouble, we have discussion forums at
-https://discuss.openedx.org where you can connect with others in the
-community.
-
-Our real-time conversations are on Slack. You can request a `Slack
-invitation`_, then join our `community Slack workspace`_.
-
-For anything non-trivial, the best path is to open an issue in this
+For anything non-trivial, the best path is to open an `issue`_ in this
 repository with as many details about the issue you are facing as you
 can provide.
 
-https://github.com/eduNEXT/platform-plugin-ontask/issues
+For more information about these options, see the `Getting Help`_ page.
 
-For more information about these options, see the `Getting Help <https://openedx.org/getting-help>`__ page.
-
+.. _discussions: https://discuss.openedx.org
 .. _Slack invitation: https://openedx.org/slack
 .. _community Slack workspace: https://openedx.slack.com/
+.. _issue: https://github.com/eduNEXT/platform-plugin-ontask/issues
+.. _Getting Help: https://openedx.org/getting-help
+
 
 License
 *******
@@ -128,11 +166,11 @@ otherwise noted.
 
 Please see `LICENSE.txt <LICENSE.txt>`_ for details.
 
+
 Contributing
 ************
 
-Contributions are very welcome.
-Please read `How To Contribute <https://openedx.org/r/how-to-contribute>`_ for details.
+Contributions are very welcome. Please read `How To Contribute`_ for details.
 
 This project is currently accepting all types of contributions, bug fixes,
 security fixes, maintenance work, or new features.  However, please make sure
@@ -141,53 +179,27 @@ beginning development to maximize the chances of your change being accepted.
 You can start a conversation by creating a new issue on this repo summarizing
 your idea.
 
-The Open edX Code of Conduct
-****************************
-
-All community members are expected to follow the `Open edX Code of Conduct`_.
-
-.. _Open edX Code of Conduct: https://openedx.org/code-of-conduct/
-
-People
-******
-
-The assigned maintainers for this component and other project details may be
-found in `Backstage`_. Backstage pulls this data from the ``catalog-info.yaml``
-file in this repo.
-
-.. _Backstage: https://backstage.openedx.org/catalog/default/component/platform-plugin-ontask
+.. _How To Contribute: https://openedx.org/r/how-to-contribute
 
 Reporting Security Issues
 *************************
 
-Please do not report security issues in public. Please email security@openedx.org.
+Please do not report security issues in public. Please email security@edunext.co.
 
-.. |pypi-badge| image:: https://img.shields.io/pypi/v/platform-plugin-ontask.svg
+.. It's not required by our contractor at the moment but can be published later
+.. .. |pypi-badge| image:: https://img.shields.io/pypi/v/platform-plugin-ontask.svg
     :target: https://pypi.python.org/pypi/platform-plugin-ontask/
     :alt: PyPI
 
-.. |ci-badge| image:: https://github.com/eduNEXT/platform-plugin-ontask/workflows/Python%20CI/badge.svg?branch=main
+.. |ci-badge| image:: https://github.com/eduNEXT/platform-plugin-ontask/actions/workflows/ci.yml/badge.svg?branch=main
     :target: https://github.com/eduNEXT/platform-plugin-ontask/actions
     :alt: CI
-
-.. |codecov-badge| image:: https://codecov.io/github/eduNEXT/platform-plugin-ontask/coverage.svg?branch=main
-    :target: https://codecov.io/github/eduNEXT/platform-plugin-ontask?branch=main
-    :alt: Codecov
-
-.. |doc-badge| image:: https://readthedocs.org/projects/platform-plugin-ontask/badge/?version=latest
-    :target: https://docs.openedx.org/projects/platform-plugin-ontask
-    :alt: Documentation
-
-.. |pyversions-badge| image:: https://img.shields.io/pypi/pyversions/platform-plugin-ontask.svg
-    :target: https://pypi.python.org/pypi/platform-plugin-ontask/
-    :alt: Supported Python versions
 
 .. |license-badge| image:: https://img.shields.io/github/license/eduNEXT/platform-plugin-ontask.svg
     :target: https://github.com/eduNEXT/platform-plugin-ontask/blob/main/LICENSE.txt
     :alt: License
 
-.. TODO: Choose one of the statuses below and remove the other status-badge lines.
-.. |status-badge| image:: https://img.shields.io/badge/Status-Experimental-yellow
-.. .. |status-badge| image:: https://img.shields.io/badge/Status-Maintained-brightgreen
+..  |status-badge| image:: https://img.shields.io/badge/Status-Maintained-brightgreen
+.. .. |status-badge| image:: https://img.shields.io/badge/Status-Experimental-yellow
 .. .. |status-badge| image:: https://img.shields.io/badge/Status-Deprecated-orange
 .. .. |status-badge| image:: https://img.shields.io/badge/Status-Unsupported-red
