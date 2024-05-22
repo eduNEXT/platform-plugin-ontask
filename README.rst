@@ -7,13 +7,33 @@ Platform Plugin On Task
 Purpose
 *******
 
-Open edX plugin that includes adds a new tab to the instructor dashboard for easy access 
+Open edX plugin that includes adds a new tab to the instructor dashboard for easy access
 to the On Task service. For serving On Task along with the Open edX ecosystem we recommended using
 `tutor-contrib-ontask <https://github.com/eduNEXT/tutor-contrib-ontask/>`_.
 
 This plugin has been created as an open source contribution to the Open edX
 platform and has been funded by the Unidigital project from the Spanish
 Government - 2024.
+
+Compatibility Notes
+===================
+
++------------------+--------------+
+| Open edX Release | Version      |
++==================+==============+
+| Palm             | >= 0.2.0     |
++------------------+--------------+
+| Quince           | >= 0.2.0     |
++------------------+--------------+
+| Redwood          | >= 0.2.0     |
++------------------+--------------+
+
+The settings can be changed in ``platform_plugin_ontask/settings/common.py``
+or, for example, in tutor configurations.
+
+**NOTE**: the current ``common.py`` works with Open edX Palm, Quince and
+Redwood version.
+
 
 Getting Started
 ***************
