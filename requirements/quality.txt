@@ -30,11 +30,25 @@ botocore==1.34.131
     #   -r requirements/test.txt
     #   boto3
     #   s3transfer
+certifi==2024.6.2
+    # via
+    #   -r requirements/test.txt
+    #   requests
+cffi==1.16.0
+    # via
+    #   -r requirements/test.txt
+    #   cryptography
+    #   pynacl
+charset-normalizer==3.3.2
+    # via
+    #   -r requirements/test.txt
+    #   requests
 click==8.1.7
     # via
     #   -r requirements/test.txt
     #   click-log
     #   code-annotations
+    #   edx-django-utils
     #   edx-lint
 click-log==0.4.0
     # via edx-lint
@@ -46,19 +60,58 @@ coverage[toml]==7.5.4
     # via
     #   -r requirements/test.txt
     #   pytest-cov
+cryptography==42.0.8
+    # via
+    #   -r requirements/test.txt
+    #   pyjwt
 dill==0.3.8
     # via pylint
 django==4.2.13
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/test.txt
+    #   django-crum
+    #   django-waffle
     #   djangorestframework
+    #   drf-jwt
+    #   edx-django-utils
+    #   edx-drf-extensions
     #   openedx-django-pyfs
     #   openedx-filters
+django-crum==0.7.9
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
+django-waffle==4.1.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
+    #   edx-drf-extensions
 djangorestframework==3.15.2
+    # via
+    #   -r requirements/test.txt
+    #   drf-jwt
+    #   edx-drf-extensions
+dnspython==2.6.1
+    # via
+    #   -r requirements/test.txt
+    #   pymongo
+drf-jwt==1.19.2
+    # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
+edx-django-utils==5.14.2
+    # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
+edx-drf-extensions==10.3.0
     # via -r requirements/test.txt
 edx-lint==5.3.6
     # via -r requirements/quality.in
+edx-opaque-keys==2.10.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
 exceptiongroup==1.2.1
     # via
     #   -r requirements/test.txt
@@ -73,6 +126,10 @@ fs-s3fs==1.1.1
     # via
     #   -r requirements/test.txt
     #   openedx-django-pyfs
+idna==3.7
+    # via
+    #   -r requirements/test.txt
+    #   requests
 iniconfig==2.0.0
     # via
     #   -r requirements/test.txt
@@ -111,6 +168,10 @@ markupsafe==2.1.5
     #   xblock
 mccabe==0.7.0
     # via pylint
+newrelic==9.11.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
 openedx-django-pyfs==3.6.0
     # via
     #   -r requirements/test.txt
@@ -131,10 +192,23 @@ pluggy==1.5.0
     # via
     #   -r requirements/test.txt
     #   pytest
+psutil==6.0.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
 pycodestyle==2.12.0
     # via -r requirements/quality.in
+pycparser==2.22
+    # via
+    #   -r requirements/test.txt
+    #   cffi
 pydocstyle==6.3.0
     # via -r requirements/quality.in
+pyjwt[crypto]==2.8.0
+    # via
+    #   -r requirements/test.txt
+    #   drf-jwt
+    #   edx-drf-extensions
 pylint==3.2.3
     # via
     #   edx-lint
@@ -149,6 +223,14 @@ pylint-plugin-utils==0.8.2
     # via
     #   pylint-celery
     #   pylint-django
+pymongo==4.7.3
+    # via
+    #   -r requirements/test.txt
+    #   edx-opaque-keys
+pynacl==1.5.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
 pytest==8.2.2
     # via
     #   -r requirements/test.txt
@@ -176,10 +258,18 @@ pyyaml==6.0.1
     #   -r requirements/test.txt
     #   code-annotations
     #   xblock
+requests==2.32.3
+    # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
 s3transfer==0.10.1
     # via
     #   -r requirements/test.txt
     #   boto3
+semantic-version==2.10.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
 simplejson==3.19.2
     # via
     #   -r requirements/test.txt
@@ -202,6 +292,8 @@ stevedore==5.2.0
     # via
     #   -r requirements/test.txt
     #   code-annotations
+    #   edx-django-utils
+    #   edx-opaque-keys
 text-unidecode==1.3
     # via
     #   -r requirements/test.txt
@@ -219,11 +311,13 @@ typing-extensions==4.12.2
     #   -r requirements/test.txt
     #   asgiref
     #   astroid
+    #   edx-opaque-keys
     #   pylint
 urllib3==1.26.19
     # via
     #   -r requirements/test.txt
     #   botocore
+    #   requests
 web-fragments==2.2.0
     # via
     #   -r requirements/test.txt

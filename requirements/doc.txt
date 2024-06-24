@@ -41,15 +41,23 @@ botocore==1.34.131
 build==1.2.1
     # via -r requirements/doc.in
 certifi==2024.6.2
-    # via requests
+    # via
+    #   -r requirements/test.txt
+    #   requests
 cffi==1.16.0
-    # via cryptography
+    # via
+    #   -r requirements/test.txt
+    #   cryptography
+    #   pynacl
 charset-normalizer==3.3.2
-    # via requests
+    # via
+    #   -r requirements/test.txt
+    #   requests
 click==8.1.7
     # via
     #   -r requirements/test.txt
     #   code-annotations
+    #   edx-django-utils
 code-annotations==1.8.0
     # via -r requirements/test.txt
 coverage[toml]==7.5.4
@@ -57,16 +65,40 @@ coverage[toml]==7.5.4
     #   -r requirements/test.txt
     #   pytest-cov
 cryptography==42.0.8
-    # via secretstorage
+    # via
+    #   -r requirements/test.txt
+    #   pyjwt
+    #   secretstorage
 django==4.2.13
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/test.txt
+    #   django-crum
+    #   django-waffle
     #   djangorestframework
+    #   drf-jwt
+    #   edx-django-utils
+    #   edx-drf-extensions
     #   openedx-django-pyfs
     #   openedx-filters
+django-crum==0.7.9
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
+django-waffle==4.1.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
+    #   edx-drf-extensions
 djangorestframework==3.15.2
-    # via -r requirements/test.txt
+    # via
+    #   -r requirements/test.txt
+    #   drf-jwt
+    #   edx-drf-extensions
+dnspython==2.6.1
+    # via
+    #   -r requirements/test.txt
+    #   pymongo
 doc8==1.1.1
     # via -r requirements/doc.in
 docutils==0.19
@@ -76,6 +108,20 @@ docutils==0.19
     #   readme-renderer
     #   restructuredtext-lint
     #   sphinx
+drf-jwt==1.19.2
+    # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
+edx-django-utils==5.14.2
+    # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
+edx-drf-extensions==10.3.0
+    # via -r requirements/test.txt
+edx-opaque-keys==2.10.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
 exceptiongroup==1.2.1
     # via
     #   -r requirements/test.txt
@@ -91,7 +137,9 @@ fs-s3fs==1.1.1
     #   -r requirements/test.txt
     #   openedx-django-pyfs
 idna==3.7
-    # via requests
+    # via
+    #   -r requirements/test.txt
+    #   requests
 imagesize==1.4.1
     # via sphinx
 importlib-metadata==6.11.0
@@ -156,6 +204,10 @@ more-itertools==10.3.0
     # via
     #   jaraco-classes
     #   jaraco-functools
+newrelic==9.11.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
 nh3==0.2.17
     # via readme-renderer
 openedx-django-pyfs==3.6.0
@@ -181,8 +233,14 @@ pluggy==1.5.0
     # via
     #   -r requirements/test.txt
     #   pytest
+psutil==6.0.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
 pycparser==2.22
-    # via cffi
+    # via
+    #   -r requirements/test.txt
+    #   cffi
 pydata-sphinx-theme==0.14.4
     # via sphinx-book-theme
 pygments==2.18.0
@@ -193,6 +251,19 @@ pygments==2.18.0
     #   readme-renderer
     #   rich
     #   sphinx
+pyjwt[crypto]==2.8.0
+    # via
+    #   -r requirements/test.txt
+    #   drf-jwt
+    #   edx-drf-extensions
+pymongo==4.7.3
+    # via
+    #   -r requirements/test.txt
+    #   edx-opaque-keys
+pynacl==1.5.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-django-utils
 pyproject-hooks==1.1.0
     # via build
 pytest==8.2.2
@@ -227,6 +298,8 @@ readme-renderer==43.0
     # via twine
 requests==2.32.3
     # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
     #   requests-toolbelt
     #   sphinx
     #   twine
@@ -244,6 +317,10 @@ s3transfer==0.10.1
     #   boto3
 secretstorage==3.3.3
     # via keyring
+semantic-version==2.10.0
+    # via
+    #   -r requirements/test.txt
+    #   edx-drf-extensions
 simplejson==3.19.2
     # via
     #   -r requirements/test.txt
@@ -287,6 +364,8 @@ stevedore==5.2.0
     #   -r requirements/test.txt
     #   code-annotations
     #   doc8
+    #   edx-django-utils
+    #   edx-opaque-keys
 text-unidecode==1.3
     # via
     #   -r requirements/test.txt
@@ -304,6 +383,7 @@ typing-extensions==4.12.2
     # via
     #   -r requirements/test.txt
     #   asgiref
+    #   edx-opaque-keys
     #   pydata-sphinx-theme
     #   rich
 urllib3==1.26.19

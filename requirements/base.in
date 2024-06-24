@@ -6,3 +6,4 @@ openedx-filters
 XBlock
 xblock-utils
 djangorestframework
+edx-drf-extensions
