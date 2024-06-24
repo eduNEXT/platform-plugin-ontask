@@ -12,7 +12,7 @@ asgiref==3.8.1
     # via
     #   -r requirements/quality.txt
     #   django
-astroid==3.2.1
+astroid==3.2.2
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -23,11 +23,11 @@ backports-zoneinfo==0.2.1
     #   django
 black==24.4.2
     # via -r requirements/dev.in
-boto3==1.34.107
+boto3==1.34.131
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.34.107
+botocore==1.34.131
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -55,7 +55,7 @@ code-annotations==1.8.0
     # via
     #   -r requirements/quality.txt
     #   edx-lint
-coverage[toml]==7.5.1
+coverage[toml]==7.5.4
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -84,7 +84,7 @@ exceptiongroup==1.2.1
     # via
     #   -r requirements/quality.txt
     #   pytest
-filelock==3.14.0
+filelock==3.15.4
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -155,9 +155,9 @@ openedx-django-pyfs==3.6.0
     # via
     #   -r requirements/quality.txt
     #   xblock
-openedx-filters==1.8.1
+openedx-filters==1.9.0
     # via -r requirements/quality.txt
-packaging==24.0
+packaging==24.1
     # via
     #   -r requirements/ci.txt
     #   -r requirements/pip-tools.txt
@@ -196,13 +196,13 @@ py==1.11.0
     # via
     #   -r requirements/ci.txt
     #   tox
-pycodestyle==2.11.1
+pycodestyle==2.12.0
     # via -r requirements/quality.txt
 pydocstyle==6.3.0
     # via -r requirements/quality.txt
 pygments==2.18.0
     # via diff-cover
-pylint==3.2.0
+pylint==3.2.3
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -227,7 +227,7 @@ pyproject-hooks==1.1.0
     #   -r requirements/pip-tools.txt
     #   build
     #   pip-tools
-pytest==8.2.0
+pytest==8.2.2
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -313,18 +313,18 @@ tox-battery==0.6.2
     # via
     #   -r requirements/ci.txt
     #   -r requirements/dev.in
-typing-extensions==4.11.0
+typing-extensions==4.12.2
     # via
     #   -r requirements/quality.txt
     #   asgiref
     #   astroid
     #   black
     #   pylint
-urllib3==1.26.18
+urllib3==1.26.19
     # via
     #   -r requirements/quality.txt
     #   botocore
-virtualenv==20.26.2
+virtualenv==20.26.3
     # via
     #   -r requirements/ci.txt
     #   tox
@@ -347,7 +347,7 @@ xblock[django]==4.0.1
     #   xblock-utils
 xblock-utils==4.0.0
     # via -r requirements/quality.txt
-zipp==3.18.2
+zipp==3.19.2
     # via
     #   -r requirements/pip-tools.txt
     #   importlib-metadata

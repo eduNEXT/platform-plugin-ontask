@@ -20,7 +20,7 @@ babel==2.15.0
     # via
     #   pydata-sphinx-theme
     #   sphinx
-backports-tarfile==1.1.1
+backports-tarfile==1.2.0
     # via jaraco-context
 backports-zoneinfo==0.2.1
     # via
@@ -28,18 +28,18 @@ backports-zoneinfo==0.2.1
     #   django
 beautifulsoup4==4.12.3
     # via pydata-sphinx-theme
-boto3==1.34.107
+boto3==1.34.131
     # via
     #   -r requirements/test.txt
     #   fs-s3fs
-botocore==1.34.107
+botocore==1.34.131
     # via
     #   -r requirements/test.txt
     #   boto3
     #   s3transfer
 build==1.2.1
     # via -r requirements/doc.in
-certifi==2024.2.2
+certifi==2024.6.2
     # via requests
 cffi==1.16.0
     # via cryptography
@@ -51,11 +51,11 @@ click==8.1.7
     #   code-annotations
 code-annotations==1.8.0
     # via -r requirements/test.txt
-coverage[toml]==7.5.1
+coverage[toml]==7.5.4
     # via
     #   -r requirements/test.txt
     #   pytest-cov
-cryptography==42.0.7
+cryptography==42.0.8
     # via secretstorage
 django==4.2.13
     # via
@@ -148,7 +148,7 @@ markupsafe==2.1.5
     #   xblock
 mdurl==0.1.2
     # via markdown-it-py
-more-itertools==10.2.0
+more-itertools==10.3.0
     # via
     #   jaraco-classes
     #   jaraco-functools
@@ -158,9 +158,9 @@ openedx-django-pyfs==3.6.0
     # via
     #   -r requirements/test.txt
     #   xblock
-openedx-filters==1.8.1
+openedx-filters==1.9.0
     # via -r requirements/test.txt
-packaging==24.0
+packaging==24.1
     # via
     #   -r requirements/test.txt
     #   build
@@ -171,7 +171,7 @@ pbr==6.0.0
     # via
     #   -r requirements/test.txt
     #   stevedore
-pkginfo==1.10.0
+pkginfo==1.11.1
     # via twine
 pluggy==1.5.0
     # via
@@ -191,7 +191,7 @@ pygments==2.18.0
     #   sphinx
 pyproject-hooks==1.1.0
     # via build
-pytest==8.2.0
+pytest==8.2.2
     # via
     #   -r requirements/test.txt
     #   pytest-cov
@@ -221,7 +221,7 @@ pyyaml==6.0.1
     #   xblock
 readme-renderer==43.0
     # via twine
-requests==2.31.0
+requests==2.32.3
     # via
     #   requests-toolbelt
     #   sphinx
@@ -296,13 +296,13 @@ tomli==2.0.1
     #   pytest
 twine==5.1.0
     # via -r requirements/doc.in
-typing-extensions==4.11.0
+typing-extensions==4.12.2
     # via
     #   -r requirements/test.txt
     #   asgiref
     #   pydata-sphinx-theme
     #   rich
-urllib3==1.26.18
+urllib3==1.26.19
     # via
     #   -r requirements/test.txt
     #   botocore
@@ -323,7 +323,7 @@ xblock[django]==4.0.1
     #   xblock-utils
 xblock-utils==4.0.0
     # via -r requirements/test.txt
-zipp==3.18.2
+zipp==3.19.2
     # via
     #   importlib-metadata
     #   importlib-resources
