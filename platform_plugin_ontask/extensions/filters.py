@@ -20,13 +20,14 @@ class AddInstructorOnTaskTab(PipelineStep):
 
         Args:
             context (dict): the context for the instructor dashboard.
-            _ (str): instructor dashboard template name.
+            template_name (str): instructor dashboard template name.
         """
         course = context["course"]
         template = Template(self.resource_string("static/html/ontask.html"))
         context.update(
             {
-                "ONTASK_URL": settings.ONTASK_URL,
+                "ontask_url": settings.ONTASK_URL,
+                "workflow_id": course.other_course_settings.get("ontaskWorkflowId"),
             }
         )
         html = template.render(Context(context))
