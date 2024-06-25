@@ -1,16 +1,38 @@
-{% if workflow_id %}
 <div class="ontask-instructor-wrapper">
-  <iframe
-    class="ontask-instructor-iframe"
-    src="{{ ontask_url }}/action/{{ workflow_id }}/index"
-    frameborder="0"
-  ></iframe>
+  {% if workflow_id %}
+  <div class="update-workflow">
+    <button
+      id="update-workflow"
+      data-course-id="{{ course_id }}"
+      class="btn btn-primary"
+    >
+      Load data
+    </button>
+    <iframe
+      class="ontask-instructor-iframe"
+      src="{{ ontask_url }}/action/{{ workflow_id }}/index"
+      frameborder="0"
+      style="margin-top: 20px"
+    ></iframe>
+  </div>
+  {% else %}
+  <div class="create-workflow">
+    <h1>Welcome to OnTask Open edX Connection!</h1>
+    <button
+      id="create-workflow"
+      data-course-id="{{ course_id }}"
+      class="btn btn-primary"
+    >
+      Create workflow
+    </button>
+    <span id="create-workflow-error-message" class="error-message"></span>
+    <h2 class="ontask-message">
+      There is no workflow ID associated with the course.
+    </h2>
+    <p>
+      Create a new one or if you already have one, configure it in the Advanced
+      settings of the course.
+    </p>
+  </div>
+  {% endif %}
 </div>
-{% else %}
-<div class="ontask-student-wrapper" style="display: grid; place-items: center">
-  <h1>Welcome to OnTask!</h1>
-  <button class="btn btn-primary">Create workflow</button>
-  <h2 style="margin-top: 30px">There is no workflow ID associated with the course.</h2>
-  <p>Create a new one or if you already have one, configure it in the Advanced settings of the course.</p>
-</div>
-{% endif %}
