@@ -21,3 +21,8 @@
     color: red;
     padding-top: 15px;
 }
+
+.success-message {
+    color: green;
+    margin-left: 15px;
+}

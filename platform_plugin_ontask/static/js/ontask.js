@@ -33,16 +33,14 @@ createWorkflow.on('click', () => {
           errorData.error || 'Something went wrong. Please try again.'
         );
       }
-      return response.json();
-    })
-    .then((data) => {
-      console.log('Created workflow:', data);
       window.location.reload();
     })
     .catch((error) => {
       $('#create-workflow-error-message').text(error.message);
     });
 });
+
+let timeoutId;
 
 updateWorkflow.on('click', () => {
   const { courseId } = updateWorkflow.data();
@@ -60,10 +58,13 @@ updateWorkflow.on('click', () => {
           errorData.error || 'Something went wrong. Please try again.'
         );
       }
-      return response.json();
-    })
-    .then((data) => {
-      console.log('Updated workflow:', data);
+
+      $('#update-workflow-message').text('Workflow updated successfully.');
+
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        $('#update-workflow-message').text('');
+      }, 2000);
     })
     .catch((error) => {
       $('#update-workflow-error-message').text(error.message);
