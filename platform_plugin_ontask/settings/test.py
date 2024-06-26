@@ -69,3 +69,6 @@ PLATFORM_PLUGIN_ONTASK_AUTHENTICATION_BACKEND = (
 PLATFORM_PLUGIN_ONTASK_MODULESTORE_BACKEND = (
     "platform_plugin_ontask.edxapp_wrapper.backends.tests.modulestore_r_v1_test"
 )
+PLATFORM_PLUGIN_ONTASK_ENROLLMENTS_BACKEND = (
+    "platform_plugin_ontask.edxapp_wrapper.backends.tests.enrollments_r_v1_test"
+)

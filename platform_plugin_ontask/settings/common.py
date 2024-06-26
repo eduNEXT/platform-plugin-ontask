@@ -43,3 +43,6 @@ def plugin_settings(settings):
     settings.PLATFORM_PLUGIN_ONTASK_MODULESTORE_BACKEND = (
         "platform_plugin_ontask.edxapp_wrapper.backends.modulestore_r_v1"
     )
+    settings.PLATFORM_PLUGIN_ONTASK_ENROLLMENTS_BACKEND = (
+        "platform_plugin_ontask.edxapp_wrapper.backends.enrollments_r_v1"
+    )
