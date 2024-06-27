@@ -51,38 +51,6 @@ class OntaskWorkflowView(APIView):
                 status_code=status.HTTP_400_BAD_REQUEST,
             )
 
-        enrollments = get_user_enrollments(course_id).filter(user__is_superuser=False, user__is_staff=False)
-        data_frame = defaultdict(dict)
-
-        # First option
-        index = 0
-        for unit in get_course_units(course_key):
-            block_id = unit.usage_key.block_id
-            block_name = unit.display_name
-            for enrollment in enrollments:
-                completion_service = CompletionService(enrollment.user, course_key)
-                data_frame["id"][index] = index + 1
-                data_frame["user_id"][index] = enrollment.user.id
-                data_frame["email"][index] = enrollment.user.email
-                data_frame["username"][index] = enrollment.user.username
-                data_frame["course_id"][index] = course_id
-                data_frame["block_id"][index] = block_id
-                data_frame["block_name"][index] = block_name
-                data_frame["completed"][index] = completion_service.vertical_is_complete(unit)
-                index += 1
-
-        # Second option
-        # breakpoint()
-        # for index, enrollment in enumerate(enrollments):
-        #     completion_service = CompletionService(enrollment.user, course_key)
-        #     data_frame["user_id"][index] = enrollment.user.id
-        #     data_frame["email"][index] = enrollment.user.email
-        #     data_frame["username"][index] = enrollment.user.username
-        #     data_frame["course_id"][index] = course_id
-        #     for unit in get_course_units(course_key):
-        #         column_name = f"{unit.display_name}:{str(unit.usage_key.block_id)}"
-        #         data_frame[column_name][index] = completion_service.vertical_is_complete(unit)
-
         course_block = modulestore().get_course(course_key)
         if course_block is None:
             return api_field_errors(
@@ -93,11 +61,23 @@ class OntaskWorkflowView(APIView):
         api_auth_token = course_block.other_course_settings.get("ONTASK_API_AUTH_TOKEN")
         workflow_id = course_block.other_course_settings.get("ONTASK_WORKFLOW_ID")
 
-        # current_table = requests.get(
-        #     url=f"{settings.ONTASK_INTERNAL_API}/table/{workflow_id}/ops/",
-        #     headers={"Authorization": f"Token {api_auth_token}"},
-        #     timeout=5,
-        # ).json()
+        enrollments = get_user_enrollments(course_id).filter(user__is_superuser=False, user__is_staff=False)
+        course_units = list(get_course_units(course_key))
+        data_frame = defaultdict(dict)
+
+        index = 0
+        for enrollment in enrollments:
+            completion_service = CompletionService(enrollment.user, course_key)
+            for unit in course_units:
+                data_frame["id"][index] = index + 1
+                data_frame["user_id"][index] = enrollment.user.id
+                data_frame["email"][index] = enrollment.user.email
+                data_frame["username"][index] = enrollment.user.username
+                data_frame["course_id"][index] = course_id
+                data_frame["block_id"][index] = unit.usage_key.block_id
+                data_frame["block_name"][index] = unit.display_name
+                data_frame["completed"][index] = completion_service.vertical_is_complete(unit)
+                index += 1
 
         table_response = requests.put(
             url=f"{settings.ONTASK_INTERNAL_API}/table/{workflow_id}/ops/",
