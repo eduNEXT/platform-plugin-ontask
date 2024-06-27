@@ -46,3 +46,6 @@ def plugin_settings(settings):
     settings.PLATFORM_PLUGIN_ONTASK_ENROLLMENTS_BACKEND = (
         "platform_plugin_ontask.edxapp_wrapper.backends.enrollments_r_v1"
     )
+    settings.PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND = (
+        "platform_plugin_ontask.edxapp_wrapper.backends.completion_r_v1"
+    )

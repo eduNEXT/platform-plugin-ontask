@@ -5,13 +5,13 @@ from __future__ import annotations
 from collections import defaultdict
 
 import requests
-from completion.services import CompletionService
 from django.conf import settings
 from opaque_keys.edx.keys import CourseKey
 from rest_framework.response import Response
 
 from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollments
 from platform_plugin_ontask.edxapp_wrapper.modulestore import modulestore
+from platform_plugin_ontask.edxapp_wrapper.completion import CompletionService
 
 
 def api_field_errors(field_errors: dict, status_code: int) -> Response:
