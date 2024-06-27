@@ -1,5 +1,8 @@
 """Views for the OnTask plugin API."""
 
+from collections import defaultdict
+from copy import deepcopy
+
 import requests
 from completion.services import CompletionService
 from django.conf import settings
@@ -12,8 +15,9 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from platform_plugin_ontask.api.utils import api_error, api_field_errors, get_course_sequences
+from platform_plugin_ontask.api.utils import api_error, api_field_errors, get_course_units
 from platform_plugin_ontask.edxapp_wrapper.authentication import BearerAuthenticationAllowInactiveUser
+from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollments
 from platform_plugin_ontask.edxapp_wrapper.modulestore import modulestore
 
 
@@ -47,8 +51,37 @@ class OntaskWorkflowView(APIView):
                 status_code=status.HTTP_400_BAD_REQUEST,
             )
 
-        # course_subsections = get_course_sequences(course_key)
-        completion_service = CompletionService(request.user, course_key)
+        enrollments = get_user_enrollments(course_id).filter(user__is_superuser=False, user__is_staff=False)
+        data_frame = defaultdict(dict)
+
+        # First option
+        index = 0
+        for unit in get_course_units(course_key):
+            block_id = unit.usage_key.block_id
+            block_name = unit.display_name
+            for enrollment in enrollments:
+                completion_service = CompletionService(enrollment.user, course_key)
+                data_frame["id"][index] = index + 1
+                data_frame["user_id"][index] = enrollment.user.id
+                data_frame["email"][index] = enrollment.user.email
+                data_frame["username"][index] = enrollment.user.username
+                data_frame["course_id"][index] = course_id
+                data_frame["block_id"][index] = block_id
+                data_frame["block_name"][index] = block_name
+                data_frame["completed"][index] = completion_service.vertical_is_complete(unit)
+                index += 1
+
+        # Second option
+        # breakpoint()
+        # for index, enrollment in enumerate(enrollments):
+        #     completion_service = CompletionService(enrollment.user, course_key)
+        #     data_frame["user_id"][index] = enrollment.user.id
+        #     data_frame["email"][index] = enrollment.user.email
+        #     data_frame["username"][index] = enrollment.user.username
+        #     data_frame["course_id"][index] = course_id
+        #     for unit in get_course_units(course_key):
+        #         column_name = f"{unit.display_name}:{str(unit.usage_key.block_id)}"
+        #         data_frame[column_name][index] = completion_service.vertical_is_complete(unit)
 
         course_block = modulestore().get_course(course_key)
         if course_block is None:
@@ -60,43 +93,26 @@ class OntaskWorkflowView(APIView):
         api_auth_token = course_block.other_course_settings.get("ONTASK_API_AUTH_TOKEN")
         workflow_id = course_block.other_course_settings.get("ONTASK_WORKFLOW_ID")
 
-        current_table = requests.get(
+        # current_table = requests.get(
+        #     url=f"{settings.ONTASK_INTERNAL_API}/table/{workflow_id}/ops/",
+        #     headers={"Authorization": f"Token {api_auth_token}"},
+        #     timeout=5,
+        # ).json()
+
+        table_response = requests.put(
             url=f"{settings.ONTASK_INTERNAL_API}/table/{workflow_id}/ops/",
-            headers={"Authorization": f"Token {api_auth_token}"},
-            timeout=5,
-        ).json()
-
-        if current_table["data_frame"] is None:
-            new_table_response = requests.put(
-                url=f"{settings.ONTASK_INTERNAL_API}/table/{workflow_id}/ops/",
-                json={
-                    "data_frame": {
-                        "user_id": {"0": 1, "1": "2"},
-                        "course_id": {"0": "course-v1:edunext+ontask+demo", "1": "course-v1:edunext+ontask+demo"},
-                        "aggregated_completion_data": {"0": "test-data-1", "1": "test-data-2"},
-                    }
-                },
-                headers={"Authorization": f"Token {api_auth_token}"},
-                timeout=5,
-            )
-
-            if new_table_response.status_code != status.HTTP_201_CREATED:
-                return api_error(
-                    {"detail": "An error occurred while creating the data frame"},
-                    status_code=new_table_response.status_code,
-                )
-
-        aggregated_completion = AgregationCompletionData(completion_service)
-        new_data = aggregated_completion.get_agregation_completion_data()
-
-        requests.put(
-            url=f"{settings.ONTASK_INTERNAL_API}/table/{workflow_id}/merge/",
-            json={"how": "outer", "left_on": "user_id", "right_on": "user_id", "src_df": new_data},
+            json={"data_frame": data_frame},
             headers={"Authorization": f"Token {api_auth_token}"},
             timeout=5,
         )
 
-        return Response({"created_data_frame": False, "data_frame": current_table["data_frame"]})
+        if table_response.status_code != status.HTTP_201_CREATED:
+            return api_error(
+                {"detail": "An error occurred while creating the data frame"},
+                status_code=table_response.status_code,
+            )
+
+        return Response({"sucess": True})
 
     def post(self, request, course_id: str) -> HttpResponse:
         """
@@ -153,21 +169,9 @@ class OntaskWorkflowView(APIView):
                 status_code=created_workflow_response.status_code,
             )
 
-        course_block.other_course_settings["ONTASK_WORKFLOW_ID"] = created_workflow["id"]
+        other_course_settings = deepcopy(course_block.other_course_settings)
+        other_course_settings["ONTASK_WORKFLOW_ID"] = created_workflow["id"]
+        course_block.other_course_settings = other_course_settings
         modulestore().update_item(course_block, request.user.id)
 
         return Response({"workflow": created_workflow})
-
-
-class AgregationCompletionData:
-    """Agregate the completion data of a user in a course."""
-
-    def __init__(self, completion_service: CompletionService):
-        self.completion_service = completion_service.get_completions()
-
-    def get_agregation_completion_data(self):
-        return {
-            "user_id": {"0": 1, "1": "2"},
-            "course_id": {"0": "course-v1:edunext+ontask+demo", "1": "course-v1:edunext+ontask+demo"},
-            "aggregated_completion_data": {"0": "test-data-1", "1": "test-data-2"},
-        }
