@@ -60,7 +60,9 @@ updateWorkflow.on('click', () => {
         );
       }
 
-      $('#update-workflow-message').text('Workflow updated successfully.');
+      $('#update-workflow-message').text(
+        'Loading dataframe... please wait a few minutes'
+      );
 
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
