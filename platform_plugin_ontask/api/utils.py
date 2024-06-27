@@ -35,9 +35,9 @@ def api_error(error: str | dict, status_code: int) -> Response:
     return Response(data={"error": error}, status=status_code)
 
 
-def get_course_sequences(course_key):
+def get_course_units(course_key):
     """
-    Extract a list of 'subsections' from a course.
+    Extract a list of 'units' (verticals) from a course.
 
     Args:
         course_key (CourseKey): Course key.
