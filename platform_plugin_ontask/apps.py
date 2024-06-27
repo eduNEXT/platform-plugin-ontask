@@ -9,6 +9,7 @@ try:
 except ImportError:
     COURSE_ID_PATTERN = object
 
+
 class PlatformPluginOntaskConfig(AppConfig):
     """
     Configuration for the platform_plugin_ontask Django application.
