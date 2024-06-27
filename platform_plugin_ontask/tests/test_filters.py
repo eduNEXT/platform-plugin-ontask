@@ -46,15 +46,11 @@ class TestAddInstructorOnTaskTab(TestCase):
         )
         self.assertEqual(len(result["context"]["sections"]), 1)
         self.assertEqual(result["context"]["sections"][0]["section_key"], "ontask")
-        self.assertEqual(
-            result["context"]["sections"][0]["section_display_name"], "On Task"
-        )
+        self.assertEqual(result["context"]["sections"][0]["section_display_name"], "OnTask")
         self.assertEqual(
             result["context"]["sections"][0]["template_path_prefix"],
             "/instructor_dashboard/",
         )
-        self.assertEqual(
-            result["context"]["sections"][0]["course_id"], str(mock_course.id)
-        )
-        self.assertIn("ONTASK_URL", result["context"])
-        self.assertEqual(result["context"]["ONTASK_URL"], settings.ONTASK_URL)
+        self.assertEqual(result["context"]["sections"][0]["course_id"], str(mock_course.id))
+        self.assertIn("ontask_url", result["context"])
+        self.assertEqual(result["context"]["ontask_url"], settings.ONTASK_URL)
