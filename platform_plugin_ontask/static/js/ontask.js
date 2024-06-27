@@ -37,7 +37,9 @@ createWorkflow.on('click', () => {
       window.location.reload();
     })
     .catch((error) => {
-      $('#create-workflow-error-message').text(error.message);
+      $('#create-workflow-error-message')
+        .text(error.message)
+        .removeClass('hidden');
     });
 });
 
@@ -61,7 +63,7 @@ updateWorkflow.on('click', () => {
       }
 
       $('#update-workflow-message').text(
-        'Loading dataframe... please wait a few minutes'
+        'Loading dataframe... Please wait a few minutes'
       );
 
       clearTimeout(timeoutId);
