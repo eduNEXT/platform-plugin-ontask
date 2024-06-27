@@ -8,3 +8,4 @@ xblock-utils
 djangorestframework
 edx-drf-extensions
 edx-completion
+celery

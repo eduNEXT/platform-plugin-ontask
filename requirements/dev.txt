@@ -38,11 +38,11 @@ billiard==4.2.0
     #   celery
 black==24.4.2
     # via -r requirements/dev.in
-boto3==1.34.133
+boto3==1.34.135
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.34.133
+botocore==1.34.135
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -113,7 +113,7 @@ cryptography==42.0.8
     # via
     #   -r requirements/quality.txt
     #   pyjwt
-diff-cover==9.0.0
+diff-cover==9.1.0
     # via -r requirements/dev.in
 dill==0.3.8
     # via
@@ -170,7 +170,7 @@ edx-ccx-keys==1.3.0
     # via
     #   -r requirements/quality.txt
     #   openedx-events
-edx-completion==4.6.4
+edx-completion==4.6.5
     # via -r requirements/quality.txt
 edx-django-utils==5.14.2
     # via
@@ -362,7 +362,7 @@ pyjwt[crypto]==2.8.0
     #   -r requirements/quality.txt
     #   drf-jwt
     #   edx-drf-extensions
-pylint==3.2.3
+pylint==3.2.4
     # via
     #   -r requirements/quality.txt
     #   edx-lint
