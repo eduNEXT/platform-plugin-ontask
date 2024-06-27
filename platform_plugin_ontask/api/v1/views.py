@@ -112,13 +112,8 @@ class OntaskWorkflowView(APIView):
 
         if created_workflow_response.status_code != status.HTTP_201_CREATED:
             return api_error(
-                {
-                    "detail": (
-                        "An error occurred while creating the workflow. Ensure the "
-                        "workflow for this course does not already exist."
-                    ),
-                    "ontask_api_error": created_workflow,
-                },
+                "An error occurred while creating the workflow. Ensure the "
+                "workflow for this course does not already exist.",
                 status_code=created_workflow_response.status_code,
             )
 

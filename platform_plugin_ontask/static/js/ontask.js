@@ -30,7 +30,7 @@ createWorkflow.on('click', () => {
       if (!response.ok) {
         return response.json().then((errorData) => {
           throw new Error(
-            errorData.error.detail || 'Something went wrong. Please try again.'
+            errorData.error || 'Something went wrong. Please try again.'
           );
         });
       }
