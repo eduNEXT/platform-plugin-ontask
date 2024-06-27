@@ -19,7 +19,7 @@
 
 .error-message {
     color: red;
-    padding-top: 15px;
+    margin: 20px 0;
 }
 
 .success-message {
