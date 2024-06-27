@@ -28,10 +28,11 @@ createWorkflow.on('click', () => {
   })
     .then((response) => {
       if (!response.ok) {
-        const errorData = response.json();
-        throw new Error(
-          errorData.error || 'Something went wrong. Please try again.'
-        );
+        return response.json().then((errorData) => {
+          throw new Error(
+            errorData.error.detail || 'Something went wrong. Please try again.'
+          );
+        });
       }
       window.location.reload();
     })
