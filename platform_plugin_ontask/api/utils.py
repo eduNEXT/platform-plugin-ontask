@@ -9,7 +9,7 @@ from django.conf import settings
 from opaque_keys.edx.keys import CourseKey
 from rest_framework.response import Response
 
-from platform_plugin_ontask.edxapp_wrapper.completion import init_completion_service
+from platform_plugin_ontask.edxapp_wrapper.completion import CompletionService
 from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollments
 from platform_plugin_ontask.edxapp_wrapper.modulestore import modulestore
 
@@ -74,7 +74,7 @@ def upload_dataframe_to_ontask(course_id: str, workflow_id: str, api_auth_token:
 
     index = 0
     for enrollment in enrollments:
-        completion_service = init_completion_service(enrollment.user, course_key)
+        completion_service = CompletionService(enrollment.user, course_key)
         for unit in course_units:
             data_frame["id"][index] = index + 1
             data_frame["user_id"][index] = enrollment.user.id
