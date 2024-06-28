@@ -1,15 +1,20 @@
 """
-Common Django settings for eox_hooks project.
-For more information on this file, see
-https://docs.djangoproject.com/en/2.22/topics/settings/
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/2.22/ref/settings/
+These settings are here to use during tests, because django requires them.
+
+In a real-world use case, apps in this project are installed into other
+Django applications, so these settings will not be used.
 """
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.22/howto/deployment/checklist/
+from os.path import abspath, dirname, join
 
-# SECURITY WARNING: keep the secret key used in production secret!
+
+def root(*args):
+    """
+    Get the absolute path of the given path relative to the project root.
+    """
+    return join(abspath(dirname(__file__)), *args)
+
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -18,24 +23,55 @@ DATABASES = {
         "PASSWORD": "",
         "HOST": "",
         "PORT": "",
-    },
-    "read_replica": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "read_replica.db",
-        "USER": "",
-        "PASSWORD": "",
-        "HOST": "",
-        "PORT": "",
-    },
+    }
 }
 
-SECRET_KEY = "not-so-secret-key"
+INSTALLED_APPS = (
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.messages",
+    "django.contrib.sessions",
+    "platform_plugin_ontask",
+)
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.22/topics/i18n/
+LOCALE_PATHS = [
+    root("platform_plugin_ontask", "conf", "locale"),
+]
 
-LANGUAGE_CODE = "en-us"
+SECRET_KEY = "insecure-secret-key"
 
-TIME_ZONE = "UTC"
+MIDDLEWARE = (
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+)
 
-USE_TZ = True
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "APP_DIRS": False,
+        "OPTIONS": {
+            "context_processors": [
+                "django.contrib.auth.context_processors.auth",  # this is required for admin
+                "django.contrib.messages.context_processors.messages",  # this is required for admin
+            ],
+        },
+    }
+]
+
+
+# Settings for the OnTask plugin
+
+ONTASK_URL = "http://localhost:8000"
+PLATFORM_PLUGIN_ONTASK_AUTHENTICATION_BACKEND = (
+    "platform_plugin_ontask.edxapp_wrapper.backends.tests.authentication_r_v1_test"
+)
+PLATFORM_PLUGIN_ONTASK_MODULESTORE_BACKEND = (
+    "platform_plugin_ontask.edxapp_wrapper.backends.tests.modulestore_r_v1_test"
+)
+PLATFORM_PLUGIN_ONTASK_ENROLLMENTS_BACKEND = (
+    "platform_plugin_ontask.edxapp_wrapper.backends.tests.enrollments_r_v1_test"
+)
+PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND = "platform_plugin_ontask.edxapp_wrapper.backends.tests.completion_r_v1_test"
+ONTASK_DATA_SUMMARY_CLASS = "platform_plugin_ontask.datasummary.backends.tests.completion.CompletionDataSummary"

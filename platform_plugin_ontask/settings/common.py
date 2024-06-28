@@ -37,3 +37,16 @@ def plugin_settings(settings):
     """
     settings.MAKO_TEMPLATE_DIRS_BASE.append(ROOT_DIRECTORY / "templates")
     settings.ONTASK_URL = "http://ontask.local.overhang.io:8080/"
+    settings.PLATFORM_PLUGIN_ONTASK_AUTHENTICATION_BACKEND = (
+        "platform_plugin_ontask.edxapp_wrapper.backends.authentication_r_v1"
+    )
+    settings.PLATFORM_PLUGIN_ONTASK_MODULESTORE_BACKEND = (
+        "platform_plugin_ontask.edxapp_wrapper.backends.modulestore_r_v1"
+    )
+    settings.PLATFORM_PLUGIN_ONTASK_ENROLLMENTS_BACKEND = (
+        "platform_plugin_ontask.edxapp_wrapper.backends.enrollments_r_v1"
+    )
+    settings.PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND = (
+        "platform_plugin_ontask.edxapp_wrapper.backends.completion_r_v1"
+    )
+    settings.ONTASK_DATA_SUMMARY_CLASS = "platform_plugin_ontask.datasummary.backends.completion.CompletionDataSummary"
