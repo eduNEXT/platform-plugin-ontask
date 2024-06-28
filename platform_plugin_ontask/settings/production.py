@@ -21,3 +21,6 @@ def plugin_settings(settings):
     settings.PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND = getattr(settings, "ENV_TOKENS", {}).get(
         "PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND", settings.PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND
     )
+    settings.ONTASK_DATA_SUMMARY_CLASS = getattr(settings, "ENV_TOKENS", {}).get(
+        "ONTASK_DATA_SUMMARY_CLASS", settings.ONTASK_DATA_SUMMARY_CLASS
+    )

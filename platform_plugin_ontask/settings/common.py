@@ -49,3 +49,4 @@ def plugin_settings(settings):
     settings.PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND = (
         "platform_plugin_ontask.edxapp_wrapper.backends.completion_r_v1"
     )
+    settings.ONTASK_DATA_SUMMARY_CLASS = "platform_plugin_ontask.datasummary.backends.completion.CompletionDataSummary"

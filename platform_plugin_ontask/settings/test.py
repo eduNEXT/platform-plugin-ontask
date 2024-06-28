@@ -60,9 +60,10 @@ TEMPLATES = [
     }
 ]
 
-ONTASK_URL = "http://localhost:8000"
 
 # Settings for the OnTask plugin
+
+ONTASK_URL = "http://localhost:8000"
 PLATFORM_PLUGIN_ONTASK_AUTHENTICATION_BACKEND = (
     "platform_plugin_ontask.edxapp_wrapper.backends.tests.authentication_r_v1_test"
 )
@@ -73,3 +74,4 @@ PLATFORM_PLUGIN_ONTASK_ENROLLMENTS_BACKEND = (
     "platform_plugin_ontask.edxapp_wrapper.backends.tests.enrollments_r_v1_test"
 )
 PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND = "platform_plugin_ontask.edxapp_wrapper.backends.tests.completion_r_v1_test"
+ONTASK_DATA_SUMMARY_CLASS = "platform_plugin_ontask.datasummary.backends.tests.completion.CompletionDataSummary"
