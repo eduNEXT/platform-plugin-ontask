@@ -1,16 +1,14 @@
-"""Utility functions for the OnTask plugin."""
+"""Utility functions for the OnTask plugin API."""
 
 from __future__ import annotations
 
 from importlib import import_module
-from typing import Iterable
 
 from django.conf import settings
 from rest_framework.response import Response
 
 from platform_plugin_ontask.datasummary.backends.base import DataSummary
 from platform_plugin_ontask.datasummary.backends.completion import CompletionDataSummary
-from platform_plugin_ontask.edxapp_wrapper.modulestore import modulestore
 
 
 def api_field_errors(field_errors: dict, status_code: int) -> Response:
@@ -39,22 +37,6 @@ def api_error(error: str, status_code: int) -> Response:
         Response: Response with an error.
     """
     return Response(data={"error": error}, status=status_code)
-
-
-def get_course_units(course_key) -> Iterable:
-    """
-    Extract a list of 'units' (verticals) from a course.
-
-    Args:
-        course_key (CourseKey): Course key.
-
-    Returns:
-        Iterable: List of units.
-    """
-    course = modulestore().get_course(course_key, depth=0)
-    for section in course.get_children():
-        for subsection in section.get_children():
-            yield from subsection.get_children()
 
 
 def get_data_summary_class() -> DataSummary:

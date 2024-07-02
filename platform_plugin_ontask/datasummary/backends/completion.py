@@ -7,6 +7,7 @@ from opaque_keys.edx.keys import CourseKey
 from platform_plugin_ontask.datasummary.backends.base import DataSummary
 from platform_plugin_ontask.edxapp_wrapper.completion import CompletionService
 from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollments
+from platform_plugin_ontask.utils import get_course_units
 
 
 class CompletionDataSummary(DataSummary):
@@ -19,9 +20,6 @@ class CompletionDataSummary(DataSummary):
         Returns:
             dict: A dataframe with the completion data summary
         """
-        # Avoid circular import
-        from platform_plugin_ontask.api.utils import get_course_units  # pylint: disable=import-outside-toplevel
-
         course_key = CourseKey.from_string(self.course_id)
         enrollments = get_user_enrollments(self.course_id).filter(user__is_superuser=False, user__is_staff=False)
         course_units = list(get_course_units(course_key))
