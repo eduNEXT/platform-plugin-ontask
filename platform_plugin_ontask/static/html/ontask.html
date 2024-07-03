@@ -1,14 +1,14 @@
 <div class="ontask-instructor-wrapper">
   {% if workflow_id %}
-  <div class="update-workflow">
+  <div class="upload-dataframe">
     <button
-      id="update-workflow"
+      id="upload-dataframe"
       data-course-id="{{ course_id }}"
-      class="btn btn-primary update-workflow-button"
+      class="btn btn-primary upload-dataframe-button"
     >
       Load data
     </button>
-    <span id="update-workflow-message" class="success-message"></span>
+    <span id="upload-dataframe-message" class="success-message"></span>
     <iframe
       class="ontask-instructor-iframe"
       src="{{ ontask_url }}/action/{{ workflow_id }}/index"

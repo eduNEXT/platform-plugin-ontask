@@ -1,5 +1,5 @@
 const createWorkflow = $('#create-workflow');
-const updateWorkflow = $('#update-workflow');
+const uploadDataframe = $('#upload-dataframe');
 
 function getCookie(name) {
   let cookieValue = null;
@@ -45,10 +45,10 @@ createWorkflow.on('click', () => {
 
 let timeoutId;
 
-updateWorkflow.on('click', () => {
-  const { courseId } = updateWorkflow.data();
-  fetch(`platform-plugin-ontask/${courseId}/api/v1/workflow/`, {
-    method: 'PATCH',
+uploadDataframe.on('click', () => {
+  const { courseId } = uploadDataframe.data();
+  fetch(`platform-plugin-ontask/${courseId}/api/v1/table/`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': getCookie('csrftoken'),
@@ -62,16 +62,18 @@ updateWorkflow.on('click', () => {
         );
       }
 
-      $('#update-workflow-message').text(
-        'Loading dataframe... Please wait a few minutes'
+      $('#upload-dataframe-message').text(
+        'Loading dataframe... Please wait a few minutes.'
       );
 
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
-        $('#update-workflow-message').text('');
+        $('#upload-dataframe-message').text('');
       }, 2000);
+
+      document.location.reload();
     })
     .catch((error) => {
-      $('#update-workflow-error-message').text(error.message);
+      $('#upload-dataframe-message').text(error.message);
     });
 });
