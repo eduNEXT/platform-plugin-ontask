@@ -21,9 +21,9 @@ backports-zoneinfo[tzdata]==0.2.1 ; python_version < "3.9"
     #   kombu
 billiard==4.2.0
     # via celery
-boto3==1.34.135
+boto3==1.34.138
     # via fs-s3fs
-botocore==1.34.135
+botocore==1.34.138
     # via
     #   boto3
     #   s3transfer
