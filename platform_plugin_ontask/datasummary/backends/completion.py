@@ -34,8 +34,8 @@ class CompletionDataSummary(DataSummary):
                 data_frame["email"][index] = enrollment.user.email
                 data_frame["username"][index] = enrollment.user.username
                 data_frame["course_id"][index] = self.course_id
-                data_frame["block_id"][index] = unit.usage_key.block_id
-                data_frame["block_name"][index] = unit.display_name
+                data_frame["unit_id"][index] = unit.usage_key.block_id
+                data_frame["unit_name"][index] = unit.display_name
                 data_frame["completed"][index] = completion_service.vertical_is_complete(unit)
                 index += 1
 
