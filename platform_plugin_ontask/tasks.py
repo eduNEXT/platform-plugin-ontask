@@ -1,10 +1,14 @@
 """Celery tasks for the OnTask plugin."""
 
+from logging import getLogger
+
 import requests
 from celery import shared_task
 from django.conf import settings
 
 from platform_plugin_ontask.api.utils import get_data_summary_class
+
+log = getLogger(__name__)
 
 
 @shared_task
@@ -21,9 +25,11 @@ def upload_dataframe_to_ontask_task(course_id: str, workflow_id: str, api_auth_t
     data_summary_instance = data_summary_class(course_id)
     data_frame = data_summary_instance.get_data_summary()
 
-    requests.put(
+    response = requests.put(
         url=f"{settings.ONTASK_INTERNAL_API}/table/{workflow_id}/ops/",
         json={"data_frame": data_frame},
         headers={"Authorization": f"Token {api_auth_token}"},
         timeout=5,
     )
+
+    log.info(f"Put request to OnTask: {response.status_code}")
