@@ -60,6 +60,7 @@ TEMPLATES = [
     }
 ]
 
+ROOT_URLCONF = "platform_plugin_ontask.urls"
 
 # Settings for the OnTask plugin
 
