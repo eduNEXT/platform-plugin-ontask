@@ -85,7 +85,7 @@ class OnTaskWorkflowAPIView(APIView):
         course_block.other_course_settings = other_course_settings
         modulestore().update_item(course_block, request.user.id)
 
-        return Response({"workflow": created_workflow})
+        return Response({"success": True}, status=status.HTTP_201_CREATED)
 
 
 class OnTaskTableAPIView(APIView):
@@ -98,9 +98,9 @@ class OnTaskTableAPIView(APIView):
     )
     permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, _, course_id: str) -> HttpResponse:
+    def put(self, _, course_id: str) -> HttpResponse:
         """
-        Handle POST requests to upload the course data to OnTask.
+        Handle PUT requests to upload the course data to OnTask.
 
         The course data is uploaded to the OnTask table in the workflow.
 

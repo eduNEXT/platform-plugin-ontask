@@ -48,7 +48,7 @@ let timeoutId;
 uploadDataframe.on('click', () => {
   const { courseId } = uploadDataframe.data();
   fetch(`platform-plugin-ontask/${courseId}/api/v1/table/`, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': getCookie('csrftoken'),
