@@ -137,4 +137,4 @@ class OnTaskTableAPIView(APIView):
 
         upload_dataframe_to_ontask_task.delay(course_id, workflow_id, api_auth_token)
 
-        return Response({"sucess": True})
+        return Response({"success": True})
