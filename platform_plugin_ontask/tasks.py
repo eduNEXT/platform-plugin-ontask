@@ -2,11 +2,11 @@
 
 from logging import getLogger
 
-import requests
 from celery import shared_task
 from django.conf import settings
 
 from platform_plugin_ontask.api.utils import get_data_summary_class
+from platform_plugin_ontask.client import OnTaskClient
 
 log = getLogger(__name__)
 
@@ -25,11 +25,7 @@ def upload_dataframe_to_ontask_task(course_id: str, workflow_id: str, api_auth_t
     data_summary_instance = data_summary_class(course_id)
     data_frame = data_summary_instance.get_data_summary()
 
-    response = requests.put(
-        url=f"{settings.ONTASK_INTERNAL_API}/table/{workflow_id}/ops/",
-        json={"data_frame": data_frame},
-        headers={"Authorization": f"Token {api_auth_token}"},
-        timeout=5,
-    )
+    ontask_client = OnTaskClient(settings.ONTASK_INTERNAL_API, api_auth_token)
+    response = ontask_client.update_table(workflow_id, data_frame)
 
-    log.info(f"Put request to OnTask: {response.status_code}")
+    log.info(f"PUT {response.url} | status-code={response.status_code} | response={response.text}")

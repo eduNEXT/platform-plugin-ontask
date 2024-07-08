@@ -1,26 +1,57 @@
 """Views for the OnTask plugin API."""
 
 from copy import deepcopy
+from logging import getLogger
 
-import requests
 from django.conf import settings
 from django.http import HttpResponse
 from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthentication
 from edx_rest_framework_extensions.auth.session.authentication import SessionAuthenticationAllowInactiveUser
-from opaque_keys import InvalidKeyError
-from opaque_keys.edx.keys import CourseKey
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from platform_plugin_ontask.api.utils import api_error, api_field_errors
+from platform_plugin_ontask.api.utils import (
+    api_error,
+    get_course_block_by_course_id,
+    validate_api_auth_token,
+    validate_workflow_id,
+)
+from platform_plugin_ontask.client import OnTaskClient
 from platform_plugin_ontask.edxapp_wrapper.authentication import BearerAuthenticationAllowInactiveUser
 from platform_plugin_ontask.edxapp_wrapper.modulestore import modulestore
 from platform_plugin_ontask.tasks import upload_dataframe_to_ontask_task
 
+log = getLogger(__name__)
+
 
 class OnTaskWorkflowAPIView(APIView):
-    """View to manage OnTask Workflows."""
+    """
+    API view for managing OnTask Workflows.
+
+    `Use Cases`:
+
+        * POST: Create a new OnTask workflow for the course.
+
+    `Example Requests`:
+
+        * POST platform-plugin-ontask/{course_id}/api/v1/workflow/
+
+            * Path Parameters:
+                * course_id (str): The unique identifier for the course (required).
+
+    `Example Response`:
+
+        * POST platform-plugin-ontask/{course_id}/api/v1/workflow/
+
+            * 201: The OnTask workflow is created successfully.
+
+            * 400:
+                * The supplied course_id key is not valid.
+                * The OnTask API Auth token is not set.
+
+            * 404: The course is not found.
+    """
 
     authentication_classes = (
         JwtAuthentication,
@@ -40,56 +71,65 @@ class OnTaskWorkflowAPIView(APIView):
         Returns:
             HttpResponse: The response object.
         """
-        try:
-            course_key = CourseKey.from_string(course_id)
-        except InvalidKeyError:
-            return api_field_errors(
-                {"course_id": f"The supplied {course_id=} key is not valid."},
-                status_code=status.HTTP_400_BAD_REQUEST,
-            )
+        course_block = get_course_block_by_course_id(course_id)
+        if isinstance(course_block, Response):
+            return course_block
 
-        course_block = modulestore().get_course(course_key)
-        if course_block is None:
-            return api_field_errors(
-                {"course_id": f"The course with {course_id=} is not found."},
-                status_code=status.HTTP_404_NOT_FOUND,
-            )
+        api_auth_token = validate_api_auth_token(course_block)
+        if isinstance(api_auth_token, Response):
+            return api_auth_token
 
-        api_auth_token = course_block.other_course_settings.get("ONTASK_API_AUTH_TOKEN")
+        ontask_client = OnTaskClient(settings.ONTASK_INTERNAL_API, api_auth_token)
+        response = ontask_client.create_workflow(course_id)
 
-        if api_auth_token is None:
-            return api_error(
-                "The OnTask API Auth Token is not set for this course. "
-                "Please set it in the Advanced Settings of the course.",
-                status_code=status.HTTP_400_BAD_REQUEST,
-            )
-
-        created_workflow_response = requests.post(
-            url=f"{settings.ONTASK_INTERNAL_API}/workflow/workflows/",
-            json={"name": course_id},
-            headers={"Authorization": f"Token {api_auth_token}"},
-            timeout=5,
-        )
-        created_workflow = created_workflow_response.json()
-
-        if created_workflow_response.status_code != status.HTTP_201_CREATED:
+        if not response.ok:
+            log.error(f"POST {response.url} | status-code={response.status_code} | response={response.text}")
             return api_error(
                 "An error occurred while creating the workflow. Ensure the "
                 "workflow for this course does not already exist, and that the "
                 "OnTask API Auth token is correct.",
-                status_code=created_workflow_response.status_code,
+                status_code=response.status_code,
             )
+
+        created_workflow = response.json()
 
         other_course_settings = deepcopy(course_block.other_course_settings)
         other_course_settings["ONTASK_WORKFLOW_ID"] = created_workflow["id"]
         course_block.other_course_settings = other_course_settings
         modulestore().update_item(course_block, request.user.id)
 
-        return Response({"success": True}, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class OnTaskTableAPIView(APIView):
-    """View to manage OnTask Tables."""
+    """
+    API view for managing OnTask Tables.
+
+    `Use Cases`:
+
+        * PUT: Upload the course data to OnTask.
+
+    `Example Requests`:
+
+        * PUT platform-plugin-ontask/{course_id}/api/v1/table/
+
+            * Path Parameters:
+
+                * course_id (str): The unique identifier for the course (required).
+
+    `Example Response`:
+
+        * PUT platform-plugin-ontask/{course_id}/api/v1/table/
+
+            * 200: The course data is uploaded to OnTask successfully.
+
+            * 400:
+                * The supplied course_id key is not valid.
+                * The OnTask API Auth token is not set.
+                * The OnTask Workflow ID is not set.
+
+            * 404: The course is not found.
+    """
 
     authentication_classes = (
         JwtAuthentication,
@@ -111,30 +151,18 @@ class OnTaskTableAPIView(APIView):
         Returns:
             HttpResponse: The response object.
         """
-        try:
-            course_key = CourseKey.from_string(course_id)
-        except InvalidKeyError:
-            return api_field_errors(
-                {"course_id": f"The supplied {course_id=} key is not valid."},
-                status_code=status.HTTP_400_BAD_REQUEST,
-            )
+        course_block = get_course_block_by_course_id(course_id)
+        if isinstance(course_block, Response):
+            return course_block
 
-        course_block = modulestore().get_course(course_key)
-        if course_block is None:
-            return api_field_errors(
-                {"course_id": f"The course with {course_id=} is not found."},
-                status_code=status.HTTP_404_NOT_FOUND,
-            )
+        api_auth_token = validate_api_auth_token(course_block)
+        if isinstance(api_auth_token, Response):
+            return api_auth_token
 
-        api_auth_token = course_block.other_course_settings.get("ONTASK_API_AUTH_TOKEN")
-        workflow_id = course_block.other_course_settings.get("ONTASK_WORKFLOW_ID")
-
-        if api_auth_token is None or workflow_id is None:
-            return api_error(
-                "The OnTask API Auth Token or Workflow ID is not set for this course.",
-                status_code=status.HTTP_400_BAD_REQUEST,
-            )
+        workflow_id = validate_workflow_id(course_block)
+        if isinstance(workflow_id, Response):
+            return workflow_id
 
         upload_dataframe_to_ontask_task.delay(course_id, workflow_id, api_auth_token)
 
-        return Response({"success": True})
+        return Response(status=status.HTTP_200_OK)
