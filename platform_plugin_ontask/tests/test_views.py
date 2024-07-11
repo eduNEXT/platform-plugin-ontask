@@ -2,7 +2,6 @@
 
 from unittest.mock import Mock, patch
 
-from ddt import data, ddt
 from django.test import override_settings
 from django.urls import reverse
 from rest_framework import status
@@ -115,7 +114,6 @@ class OnTaskWorkflowAPIViewTest(APITestCase):
         )
 
 
-@ddt
 class OnTaskTableAPIViewTest(APITestCase):
     """Tests for the OnTaskTableAPIView."""
 
