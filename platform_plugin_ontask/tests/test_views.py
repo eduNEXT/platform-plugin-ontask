@@ -1,4 +1,4 @@
-"""Tests for the api views."""
+"""Tests for the API views of the OnTask plugin."""
 
 from unittest.mock import Mock, patch
 
@@ -11,10 +11,12 @@ from rest_framework.test import APIRequestFactory, APITestCase, force_authentica
 from platform_plugin_ontask.api.v1.views import OnTaskTableAPIView, OnTaskWorkflowAPIView
 
 VIEWS_MODULE_PATH = "platform_plugin_ontask.api.v1.views"
+UTILS_MODULE_PATH = "platform_plugin_ontask.api.utils"
 
-modulestore_patch = patch(f"{VIEWS_MODULE_PATH}.modulestore")
+modulestore_patch = patch(f"{UTILS_MODULE_PATH}.modulestore")
 request_post_patch = patch(f"{VIEWS_MODULE_PATH}.requests.post")
 task_patch = patch(f"{VIEWS_MODULE_PATH}.upload_dataframe_to_ontask_task.delay")
+create_workflow_patch = patch(f"{VIEWS_MODULE_PATH}.OnTaskClient.create_workflow")
 
 
 class OnTaskWorkflowAPIViewTest(APITestCase):
@@ -34,34 +36,36 @@ class OnTaskWorkflowAPIViewTest(APITestCase):
             "ONTASK_WORKFLOW_ID": "ontask-workflow-id",
         }
         self.course = Mock(id=self.course_id, other_course_settings=self.other_course_settings)
-        self.mock_response = Mock(status_code=status.HTTP_201_CREATED, json=lambda: {"id": "new_workflow_id"})
 
-    @override_settings(ONTASK_INTERNAL_API="http://ontask:8080")
-    @request_post_patch
-    @modulestore_patch
-    def test_create_workflow(self, modulestore_mock: Mock, post_mock: Mock):
-        """Test POST request for creating a new workflow in OnTask."""
-        modulestore_mock.return_value.get_course.return_value = self.course
-        post_mock.return_value = self.mock_response
-
+    def post_request(self):
+        """Return a POST request."""
         request = self.factory.post(self.url)
         force_authenticate(request, user=self.request_user)
-        response = self.view(request, course_id=self.course_id)
+        return self.view(request, course_id=self.course_id)
+
+    @override_settings(ONTASK_INTERNAL_API="http://ontask:8080")
+    @create_workflow_patch
+    @modulestore_patch
+    def test_create_workflow(self, modulestore_mock: Mock, create_workflow_mock: Mock):
+        """Test POST request for creating a new workflow in OnTask."""
+        modulestore_mock.return_value.get_course.return_value = self.course
+        create_workflow_mock.return_value = Mock(
+            status_code=status.HTTP_201_CREATED, json=lambda: {"id": "new_workflow_id"}
+        )
+
+        response = self.post_request()
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(response.data["success"])
 
     def test_create_workflow_invalid_course_key(self):
         """Test POST request for creating a new workflow with invalid course key."""
         self.course_id = "invalid_course_key"
 
-        request = self.factory.post(self.url)
-        force_authenticate(request, user=self.request_user)
-        response = self.view(request, course_id=self.course_id)
+        response = self.post_request()
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            response.data["field_errors"]["course_id"],
+            response.data["error"]["course_id"],
             f"The supplied course_id='{self.course_id}' key is not valid.",
         )
 
@@ -70,14 +74,11 @@ class OnTaskWorkflowAPIViewTest(APITestCase):
         """Test POST request for creating a new workflow with course not found."""
         modulestore_mock.return_value.get_course.return_value = None
 
-        request = self.factory.post(self.url)
-        force_authenticate(request, user=self.request_user)
-        response = self.view(request, course_id=self.course_id)
+        response = self.post_request()
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(
-            response.data["field_errors"]["course_id"],
-            f"The course with course_id='{self.course_id}' is not found.",
+            response.data["error"]["course_id"], f"The course with course_id='{self.course_id}' does not exist."
         )
 
     @modulestore_patch
@@ -86,9 +87,7 @@ class OnTaskWorkflowAPIViewTest(APITestCase):
         self.course.other_course_settings = {}
         modulestore_mock.return_value.get_course.return_value = self.course
 
-        request = self.factory.post(self.url)
-        force_authenticate(request, user=self.request_user)
-        response = self.view(request, course_id=self.course_id)
+        response = self.post_request()
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
@@ -98,16 +97,14 @@ class OnTaskWorkflowAPIViewTest(APITestCase):
         )
 
     @override_settings(ONTASK_INTERNAL_API="http://ontask:8080")
-    @request_post_patch
+    @create_workflow_patch
     @modulestore_patch
-    def test_create_workflow_external_api_failure(self, modulestore_mock: Mock, post_mock: Mock):
+    def test_create_workflow_external_api_failure(self, modulestore_mock: Mock, create_workflow_mock: Mock):
         """Test POST request for creating a new workflow with external API failure."""
         modulestore_mock.return_value.get_course.return_value = self.course
-        post_mock.return_value.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        create_workflow_mock.return_value = Mock(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, ok=False)
 
-        request = self.factory.post(self.url)
-        force_authenticate(request, user=self.request_user)
-        response = self.view(request, course_id=self.course_id)
+        response = self.post_request()
 
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.assertEqual(
@@ -147,53 +144,65 @@ class OnTaskTableAPIViewTest(APITestCase):
     @task_patch
     @modulestore_patch
     def test_upload_dataframe(self, modulestore_mock: Mock, task_mock: Mock):
-        """Test POST request for uploading a dataframe to OnTask."""
+        """Test PUT request for uploading a dataframe to OnTask."""
         modulestore_mock.return_value.get_course.return_value = self.course
         task_mock.return_value = None
 
         response = self.put_request()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(response.data["success"])
 
     def test_upload_dataframe_invalid_course_key(self):
-        """Test POST request for uploading a dataframe with invalid course key."""
+        """Test PUT request for uploading a dataframe with invalid course key."""
         self.course_id = "invalid_course_key"
 
         response = self.put_request()
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            response.data["field_errors"]["course_id"],
+            response.data["error"]["course_id"],
             f"The supplied course_id='{self.course_id}' key is not valid.",
         )
 
     @modulestore_patch
     def test_upload_dataframe_course_not_found(self, modulestore_mock: Mock):
-        """Test POST request for uploading a dataframe with course not found."""
+        """Test PUT request for uploading a dataframe with course not found."""
         modulestore_mock.return_value.get_course.return_value = None
 
         response = self.put_request()
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(
-            response.data["field_errors"]["course_id"],
-            f"The course with course_id='{self.course_id}' is not found.",
+            response.data["error"]["course_id"],
+            f"The course with course_id='{self.course_id}' does not exist.",
         )
 
-    @data(
-        {},
-        {"ONTASK_API_AUTH_TOKEN": None, "ONTASK_WORKFLOW_ID": "ontask-workflow-id"},
-        {"ONTASK_API_AUTH_TOKEN": "ontask-api-auth-token", "ONTASK_WORKFLOW_ID": None},
-        {"ONTASK_API_AUTH_TOKEN": None, "ONTASK_WORKFLOW_ID": None},
-    )
     @modulestore_patch
-    def test_upload_dataframe_missing_setting(self, other_course_settings: dict, modulestore_mock: Mock):
-        """Test POST request for uploading a dataframe with missing auth token."""
-        self.course.other_course_settings = other_course_settings
+    def test_upload_dataframe_missing_api_auth_token(self, modulestore_mock: Mock):
+        """Test PUT request for uploading a dataframe with missing auth token."""
+        self.course.other_course_settings = {}
         modulestore_mock.return_value.get_course.return_value = self.course
 
         response = self.put_request()
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data["error"], "The OnTask API Auth Token or Workflow ID is not set for this course.")
+        self.assertEqual(
+            response.data["error"],
+            "The OnTask API Auth Token is not set for this course. "
+            "Please set it in the Advanced Settings of the course.",
+        )
+
+    @modulestore_patch
+    def test_upload_dataframe_missing_workflow_id(self, modulestore_mock: Mock):
+        """Test PUT request for uploading a dataframe with missing workflow ID."""
+        self.course.other_course_settings = {"ONTASK_API_AUTH_TOKEN": "ontask-api-auth-token"}
+        modulestore_mock.return_value.get_course.return_value = self.course
+
+        response = self.put_request()
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data["error"],
+            "The OnTask Workflow ID is not set for this course. Please set "
+            "it in the Advanced Settings of the course or create a new workflow.",
+        )
