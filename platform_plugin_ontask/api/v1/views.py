@@ -1,12 +1,12 @@
 """Views for the OnTask plugin API."""
 
-from copy import deepcopy
 from logging import getLogger
 
 from django.conf import settings
 from django.http import HttpResponse
 from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthentication
 from edx_rest_framework_extensions.auth.session.authentication import SessionAuthenticationAllowInactiveUser
+from opaque_keys.edx.keys import CourseKey
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -19,7 +19,7 @@ from platform_plugin_ontask.api.utils import (
 )
 from platform_plugin_ontask.client import OnTaskClient
 from platform_plugin_ontask.edxapp_wrapper.authentication import BearerAuthenticationAllowInactiveUser
-from platform_plugin_ontask.edxapp_wrapper.modulestore import modulestore
+from platform_plugin_ontask.edxapp_wrapper.modulestore import update_item
 from platform_plugin_ontask.tasks import upload_dataframe_to_ontask_task
 
 log = getLogger(__name__)
@@ -92,11 +92,8 @@ class OnTaskWorkflowAPIView(APIView):
             )
 
         created_workflow = response.json()
-
-        other_course_settings = deepcopy(course_block.other_course_settings)
-        other_course_settings["ONTASK_WORKFLOW_ID"] = created_workflow["id"]
-        course_block.other_course_settings = other_course_settings
-        modulestore().update_item(course_block, request.user.id)
+        course_block.other_course_settings["ONTASK_WORKFLOW_ID"] = created_workflow["id"]
+        update_item(CourseKey.from_string(course_id), course_block, request.user.id)
 
         return Response(status=status.HTTP_201_CREATED)
 
