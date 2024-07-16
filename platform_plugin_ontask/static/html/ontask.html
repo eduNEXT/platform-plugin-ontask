@@ -1,6 +1,13 @@
 <div class="ontask-instructor-wrapper">
   {% if workflow_id %}
   <div class="upload-dataframe">
+    <p>
+      Load the data from the course into OnTask. This will create a new table in
+      OnTask with the data summary configured in the plugin settings. The
+      default data summary is the completion data of the course. Every time you
+      load the data, the table will be overwritten with the new data. To view
+      the OnTask table you need login to OnTask and go to Table > View data.
+    </p>
     <button
       id="upload-dataframe"
       data-course-id="{{ course_id }}"

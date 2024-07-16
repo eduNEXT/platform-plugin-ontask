@@ -24,7 +24,10 @@
     margin: 0 15px;
 }
 
-.create-workflow-button,
-.upload-dataframe-button {
+.create-workflow-button {
     margin: 20px;
+}
+
+.upload-dataframe-button {
+    margin-bottom: 20px;
 }
