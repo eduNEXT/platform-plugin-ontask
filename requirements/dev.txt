@@ -124,7 +124,7 @@ distlib==0.3.8
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-django==4.2.13
+django==4.2.14
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/quality.txt
@@ -186,7 +186,7 @@ edx-drf-extensions==10.3.0
     #   edx-completion
 edx-i18n-tools==1.6.0
     # via -r requirements/dev.in
-edx-lint==5.3.6
+edx-lint==5.3.7
     # via -r requirements/quality.txt
 edx-opaque-keys[django]==2.10.0
     # via
@@ -460,7 +460,7 @@ snowballstemmer==2.2.0
     # via
     #   -r requirements/quality.txt
     #   pydocstyle
-sqlparse==0.5.0
+sqlparse==0.5.1
     # via
     #   -r requirements/quality.txt
     #   django
@@ -486,7 +486,7 @@ tomli==2.0.1
     #   pylint
     #   pytest
     #   tox
-tomlkit==0.12.5
+tomlkit==0.13.0
     # via
     #   -r requirements/quality.txt
     #   pylint
