@@ -40,3 +40,59 @@ msgid ""
 msgstr ""
 "Ŧɥǝ ØnŦɐsʞ Wøɹʞɟløʍ ƗĐ ᴉs nøʇ sǝʇ ɟøɹ ʇɥᴉs ɔønɹsǝ. Ᵽlǝɐsǝ sǝʇ ᴉʇ ᴉn ʇɥǝ "
 "Ⱥdʌɐnɔǝd Sǝʇʇᴉnƃs øɟ ʇɥǝ ɔønɹsǝ."
+
+#: static/html/ontask.html
+msgid ""
+"Load the data from the course into OnTask. This will create a new table in "
+"OnTask with the data summary configured. The default data summary is the "
+"completion data of the course. Every time you load the data, the table will "
+"be recreated. To view the OnTask table you need login to OnTask and go to "
+"Table > View data."
+msgstr ""
+"Łøɐd ʇɥǝ dɐʇɐ ɟɹøɯ ʇɥǝ ɔønɹsǝ ᴉnʇø ØnŦɐsʞ. Ŧɥᴉs ʍᴉll ɔɹǝɐʇǝ ɐ nǝʍ ʇɐblǝ ᴉn "
+"ØnŦɐsʞ ʍᴉʇɥ ʇɥǝ dɐʇɐ snɯɯɐɹʎ ɔønɟᴉƃnɹǝd. Ŧɥǝ dǝɟɐnlʇ dɐʇɐ snɯɯɐɹʎ ᴉs ʇɥǝ "
+"ɔøɯdlǝʇᴉøn dɐʇɐ øɟ ʇɥǝ ɔønɹsǝ. Ɇʌǝɹʎ ʇᴉɯǝ ʎøn løɐd ʇɥǝ dɐʇɐ, ʇɥǝ ʇɐblǝ ʍᴉll "
+"bǝ ɹǝɔɹǝɐʇǝd. Ŧø ʌᴉǝʍ ʇɥǝ ØnŦɐsʞ ʇɐblǝ ʎøn nǝǝd løƃᴉn ʇø ØnŦɐsʞ ɐnd ƃø ʇø "
+"Ŧɐblǝ > Vᴉǝʍ dɐʇɐ."
+
+#: static/html/ontask.html
+msgid "Load data"
+msgstr "Łøɐd dɐʇɐ"
+
+#: static/html/ontask.html
+msgid "Loading dataframe... Please wait a few minutes."
+msgstr "Łøɐdᴉnƃ dɐʇɐɟɹɐɯǝ... Ᵽlǝɐsǝ ʍɐᴉʇ ɐ ɟǝʍ ɯᴉnnʇǝs."
+
+#: static/html/ontask.html
+msgid "Welcome to OnTask Open edX Connection"
+msgstr "Wǝlɔøɯǝ ʇø ØnŦɐsʞ Ødǝn ǝdX Ȼønnǝɔʇᴉøn"
+
+#: static/html/ontask.html
+msgid "Create workflow"
+msgstr "Ȼɹǝɐʇǝ ʍøɹʞɟløʍ"
+
+#: static/html/ontask.html
+msgid ""
+"An error occurred while creating the workflow. Ensure the workflow for this "
+"course does not already exist, and that the OnTask API Auth token is "
+"correct."
+msgstr ""
+"Ⱥn ǝɹɹøɹ øɔɔnɹɹǝd ʍɥᴉlǝ ɔɹǝɐʇᴉnƃ ʇɥǝ ʍøɹʞɟløʍ. Ɇnsnɹǝ ʇɥǝ ʍøɹʞɟløʍ ɟøɹ ʇɥᴉs "
+"ɔønɹsǝ døǝs nøʇ ɐlɹǝɐdʎ ǝxᴉsʇ, ɐnd ʇɥɐʇ ʇɥǝ ØnŦɐsʞ ȺⱣƗ Ⱥnʇɥ ʇøʞǝn ᴉs "
+"ɔøɹɹǝɔʇ."
+
+#: static/html/ontask.html
+msgid "There is no workflow ID associated with the course."
+msgstr "Ŧɥǝɹǝ ᴉs nø ʍøɹʞɟløʍ ƗĐ ɐssøɔᴉɐʇǝd ʍᴉʇɥ ʇɥǝ ɔønɹsǝ."
+
+#: static/html/ontask.html
+msgid ""
+"Create a new one by pressing the 'Create Workflow' button. Optionally, if "
+"you already have one, configure it from Studio > Advanced Settings > Other "
+"Course Settings. You should add the property 'ONTASK_WORKFLOW_ID' with the "
+"OnTask workflow ID."
+msgstr ""
+"Ȼɹǝɐʇǝ ɐ nǝʍ ønǝ bʎ dɹǝssᴉnƃ ʇɥǝ 'Ȼɹǝɐʇǝ Wøɹʞɟløʍ' bnʇʇøn. Ødʇᴉønɐllʎ, ᴉɟ "
+"ʎøn ɐlɹǝɐdʎ ɥɐʌǝ ønǝ, ɔønɟᴉƃnɹǝ ᴉʇ ɟɹøɯ Sʇndᴉø > Ⱥdʌɐnɔǝd Sǝʇʇᴉnƃs > Øʇɥǝɹ "
+"Ȼønɹsǝ Sǝʇʇᴉnƃs. Ɏøn sɥønld ɐdd ʇɥǝ dɹødǝɹʇʎ 'ØNŦȺSꝀ_WØɌꝀFŁØW_ƗĐ' ʍᴉʇɥ ʇɥǝ "
+"ØnŦɐsʞ ʍøɹʞɟløʍ ƗĐ."

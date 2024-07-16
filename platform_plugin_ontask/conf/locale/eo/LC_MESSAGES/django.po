@@ -40,3 +40,76 @@ msgid ""
 msgstr ""
 "Thé ÖnTäsk Wörkflöw ÌD ïs nöt sét för thïs çöürsé. Pléäsé sét ït ïn thé "
 "Àdvänçéd Séttïngs öf thé çöürsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: static/html/ontask.html
+msgid ""
+"Load the data from the course into OnTask. This will create a new table in "
+"OnTask with the data summary configured. The default data summary is the "
+"completion data of the course. Every time you load the data, the table will "
+"be recreated. To view the OnTask table you need login to OnTask and go to "
+"Table > View data."
+msgstr ""
+"Löäd thé dätä fröm thé çöürsé ïntö ÖnTäsk. Thïs wïll çréäté ä néw täßlé ïn "
+"ÖnTäsk wïth thé dätä sümmärý çönfïgüréd. Thé défäült dätä sümmärý ïs thé "
+"çömplétïön dätä öf thé çöürsé. Évérý tïmé ýöü löäd thé dätä, thé täßlé wïll "
+"ßé réçréätéd. Tö vïéw thé ÖnTäsk täßlé ýöü nééd lögïn tö ÖnTäsk änd gö tö "
+"Täßlé > Vïéw dätä. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg "
+"єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт "
+"єηιм α∂ #"
+
+#: static/html/ontask.html
+msgid "Load data"
+msgstr "Löäd dätä Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: static/html/ontask.html
+msgid "Loading dataframe... Please wait a few minutes."
+msgstr ""
+"Löädïng dätäfrämé... Pléäsé wäït ä féw mïnütés. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
+
+#: static/html/ontask.html
+msgid "Welcome to OnTask Open edX Connection"
+msgstr ""
+"Wélçömé tö ÖnTäsk Öpén édX Çönnéçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: static/html/ontask.html
+msgid "Create workflow"
+msgstr "Çréäté wörkflöw Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: static/html/ontask.html
+msgid ""
+"An error occurred while creating the workflow. Ensure the workflow for this "
+"course does not already exist, and that the OnTask API Auth token is "
+"correct."
+msgstr ""
+"Àn érrör öççürréd whïlé çréätïng thé wörkflöw. Énsüré thé wörkflöw för thïs "
+"çöürsé döés nöt älréädý éxïst, änd thät thé ÖnTäsk ÀPÌ Àüth tökén ïs "
+"çörréçt. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłι#"
+
+#: static/html/ontask.html
+msgid "There is no workflow ID associated with the course."
+msgstr ""
+"Théré ïs nö wörkflöw ÌD ässöçïätéd wïth thé çöürsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: static/html/ontask.html
+msgid ""
+"Create a new one by pressing the 'Create Workflow' button. Optionally, if "
+"you already have one, configure it from Studio > Advanced Settings > Other "
+"Course Settings. You should add the property 'ONTASK_WORKFLOW_ID' with the "
+"OnTask workflow ID."
+msgstr ""
+"Çréäté ä néw öné ßý préssïng thé 'Çréäté Wörkflöw' ßüttön. Öptïönällý, ïf "
+"ýöü älréädý hävé öné, çönfïgüré ït fröm Stüdïö > Àdvänçéd Séttïngs > Öthér "
+"Çöürsé Séttïngs. Ýöü shöüld ädd thé pröpértý 'ÖNTÀSK_WÖRKFLÖW_ÌD' wïth thé "
+"ÖnTäsk wörkflöw ÌD. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg "
+"єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт "
+"єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт "
+"αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη "
+"νσłυρтαтє ν#"

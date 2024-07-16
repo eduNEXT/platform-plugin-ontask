@@ -36,3 +36,47 @@ msgid ""
 "The OnTask Workflow ID is not set for this course. Please set it in the "
 "Advanced Settings of the course."
 msgstr ""
+
+#: static/html/ontask.html:7
+msgid ""
+"Load the data from the course into OnTask. This will create a new table in "
+"OnTask with the data summary configured. The default data summary is the "
+"completion data of the course. Every time you load the data, the table will "
+"be recreated. To view the OnTask table you need login to OnTask and go to "
+"Table > View data."
+msgstr ""
+
+#: static/html/ontask.html:14
+msgid "Load data"
+msgstr ""
+
+#: static/html/ontask.html:17
+msgid "Loading dataframe... Please wait a few minutes."
+msgstr ""
+
+#: static/html/ontask.html:27
+msgid "Welcome to OnTask Open edX Connection"
+msgstr ""
+
+#: static/html/ontask.html:33
+msgid "Create workflow"
+msgstr ""
+
+#: static/html/ontask.html:36
+msgid ""
+"An error occurred while creating the workflow. Ensure the workflow for this "
+"course does not already exist, and that the OnTask API Auth token is "
+"correct."
+msgstr ""
+
+#: static/html/ontask.html:38
+msgid "There is no workflow ID associated with the course."
+msgstr ""
+
+#: static/html/ontask.html:40
+msgid ""
+"Create a new one by pressing the 'Create Workflow' button. Optionally, if "
+"you already have one, configure it from Studio > Advanced Settings > Other "
+"Course Settings. You should add the property 'ONTASK_WORKFLOW_ID' with the "
+"OnTask workflow ID."
+msgstr ""
