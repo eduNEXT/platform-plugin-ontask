@@ -16,6 +16,17 @@ Unreleased
 
 *
 
+0.3.0 - 2024-06-16
+**********************************************
+
+Added
+======
+
+* Added connection with OnTask using the new API.
+* Added unit tests for the plugin.
+* Added documentation for the plugin.
+* Added translation support for the plugin and added Spanish (es_ES and es_419) translation.
+
 0.2.3 – 2024-05-21
 **********************************************
 
