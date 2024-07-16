@@ -18,7 +18,7 @@ class CustomInvalidKeyError(Exception):
 class CourseNotFoundError(Exception):
     """The course is not found."""
 
-    def __init__(self, message: str = "The course is not found.") -> None:
+    def __init__(self, message: str = "The course does not exist.") -> None:
         """
         Initialize the exception.
 

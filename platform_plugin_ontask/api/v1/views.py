@@ -56,8 +56,7 @@ class OnTaskWorkflowAPIView(APIView):
             * 400:
                 * The supplied course_id key is not valid.
                 * The OnTask API Auth token is not set.
-
-            * 404: The course is not found.
+                * The course does not exist.
     """
 
     authentication_classes = (
@@ -129,8 +128,7 @@ class OnTaskTableAPIView(APIView):
                 * The supplied course_id key is not valid.
                 * The OnTask API Auth token is not set.
                 * The OnTask Workflow ID is not set.
-
-            * 404: The course is not found.
+                * The course does not exist.
     """
 
     authentication_classes = (
