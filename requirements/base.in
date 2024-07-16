@@ -1,11 +1,11 @@
 # Core requirements for using this application
 -c constraints.txt
 
-Django             # Web application framework
-openedx-filters
-XBlock
-xblock-utils
-djangorestframework
-edx-drf-extensions
-edx-completion
-celery
+Django                      # Web application framework
+openedx-filters             # Django filters for Open edX
+XBlock                      # Open edX XBlock library
+xblock-utils                # Open edX XBlock utilities
+djangorestframework         # Django REST framework
+edx-drf-extensions          # Open edX Django REST framework extensions
+edx-completion              # Open edX completion API
+celery                      # Distributed task queue
