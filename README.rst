@@ -240,7 +240,7 @@ create an OnTask Workflow in case there is not one configured. Once the
 **Create Workflow** button is clicked, a workflow will be created in OnTask and
 will be named as the current course ID. e.g. ``course-v1:edunext+ontask+demo``.
 
-.. image:: https://github.com/eduNEXT/platform-plugin-ontask/assets/64033729/ab2c2623-1b74-479e-b8f2-7d37cb4b9a64
+.. image:: https://github.com/user-attachments/assets/ebb3daf7-361a-48d4-956a-d04eb8d7d405
 
 The instructor can then view the OnTask workflow related to the course. From
 there the instructor can create, import/export or execute all actions. In the
@@ -250,13 +250,13 @@ course and load it into a table in the OnTask Workflow. Each time the button is
 pressed, the data will be recreated. The instructor can then use this data to
 create different actions.
 
-.. image:: https://github.com/eduNEXT/platform-plugin-ontask/assets/64033729/e59f763f-27e6-43aa-bde4-4e80ec41674e
+.. image:: https://github.com/user-attachments/assets/564993af-171a-4ebe-b264-f2b8590ea17a
 
 Once the data has been loaded, the instructor can go to **Table** > **View
 data**. There the instructor find the table with all the data summary of the
 course.
 
-.. image:: https://github.com/eduNEXT/platform-plugin-ontask/assets/64033729/6dbb34b7-9829-4bb8-9526-f1b8d5d207cb
+.. image:: https://github.com/user-attachments/assets/436ca58e-05fd-43d1-ae6d-f4550bfd652a
 
 
 Create a Custom Data Summary Backend
