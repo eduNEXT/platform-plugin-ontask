@@ -247,7 +247,7 @@ there the instructor can create, import/export or execute all actions. In the
 upper left corner there will be a button called **Load Data**. Once pressed, an
 asynchronous task will be executed that will generate a data summary of the
 course and load it into a table in the OnTask Workflow. Each time the button is
-pressed, the data will be overwritten. The instructor can then use this data to
+pressed, the data will be recreated. The instructor can then use this data to
 create different actions.
 
 .. image:: https://github.com/eduNEXT/platform-plugin-ontask/assets/64033729/e59f763f-27e6-43aa-bde4-4e80ec41674e
