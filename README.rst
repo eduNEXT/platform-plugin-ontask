@@ -285,7 +285,33 @@ that is loaded into the OnTask table. To do this, follow these steps:
 3. Implement the ``get_data_summary`` method to return the data summary. The
    method must return a dictionary where each key is the column name and the
    value is other dictionary with the id as key and the value as the value of
-   the column. You can check an example in the ``dummy.py`` file.
+   the column.
+
+   .. code-block:: python
+
+      class CustomDataSummary(DataSummary):
+        """Custom data summary for example purposes."""
+
+        def get_data_summary(self) -> dict:
+          """
+          Get a custom data summary.
+
+          Returns:
+              dict: A custom data summary.
+          """
+          data_frame = {
+              "id": {"0": 1},
+              "user_id": {"0": 1},
+              "email": {"0": "john@doe.com"},
+              "username": {"0": "john_doe"},
+              "course_id": {"0": "course-v1:edX+DemoX+Demo_Course"},
+              "block_id": {"0": "5c56dbeb30504c8fb899553f080cf15d"},
+              "block_name": {"0": "Unit 1"},
+              "custom_value": {"0": False},
+              "another_custom_value": {"0": "value"},
+          }
+          return data_frame
+
 4. Edit the ``ONTASK_DATA_SUMMARY_CLASS`` setting in the ``common.py`` file to
    use the new backend.
 
