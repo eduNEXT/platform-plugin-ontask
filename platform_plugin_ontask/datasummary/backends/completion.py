@@ -90,18 +90,18 @@ class CompletionDataSummary(DataSummary):
         course_units = list(get_course_units(course_key))
 
         data_frame = defaultdict(dict)
-        index = 0
+        unique_id = 0
         for enrollment in enrollments:
             completion_service = CompletionService(enrollment.user, course_key)
             for unit in course_units:
-                data_frame[self.ID][index] = index + 1
-                data_frame[self.USER_ID][index] = enrollment.user.id
-                data_frame[self.EMAIL][index] = enrollment.user.email
-                data_frame[self.USERNAME][index] = enrollment.user.username
-                data_frame[self.COURSE_ID][index] = self.course_id
-                data_frame[self.UNIT_ID][index] = unit.usage_key.block_id
-                data_frame[self.UNIT_NAME][index] = unit.display_name
-                data_frame[self.COMPLETED][index] = completion_service.vertical_is_complete(unit)
-                index += 1
+                data_frame[self.ID][unique_id] = unique_id + 1
+                data_frame[self.USER_ID][unique_id] = enrollment.user.id
+                data_frame[self.EMAIL][unique_id] = enrollment.user.email
+                data_frame[self.USERNAME][unique_id] = enrollment.user.username
+                data_frame[self.COURSE_ID][unique_id] = self.course_id
+                data_frame[self.UNIT_ID][unique_id] = unit.usage_key.block_id
+                data_frame[self.UNIT_NAME][unique_id] = unit.display_name
+                data_frame[self.COMPLETED][unique_id] = completion_service.vertical_is_complete(unit)
+                unique_id += 1
 
         return data_frame
