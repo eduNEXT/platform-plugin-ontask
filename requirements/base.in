@@ -5,3 +5,7 @@ Django             # Web application framework
 openedx-filters
 XBlock
 xblock-utils
+djangorestframework
+edx-drf-extensions
+edx-completion
+celery
