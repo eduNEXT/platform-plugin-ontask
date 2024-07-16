@@ -41,7 +41,7 @@ sys.path.append(REPO_ROOT)
 
 VERSION = get_version('../platform_plugin_ontask', '__init__.py')
 # Configure Django for autodoc usage
-os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'platform_plugin_ontask.settings.test'
 django_setup()
 
 # If extensions (or modules to document with autodoc) are in another directory,

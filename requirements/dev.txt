@@ -16,7 +16,7 @@ asgiref==3.8.1
     # via
     #   -r requirements/quality.txt
     #   django
-astroid==3.2.2
+astroid==3.2.3
     # via
     #   -r requirements/quality.txt
     #   pylint
@@ -39,11 +39,11 @@ billiard==4.2.0
     #   celery
 black==24.4.2
     # via -r requirements/dev.in
-boto3==1.34.135
+boto3==1.34.144
     # via
     #   -r requirements/quality.txt
     #   fs-s3fs
-botocore==1.34.135
+botocore==1.34.144
     # via
     #   -r requirements/quality.txt
     #   boto3
@@ -56,7 +56,7 @@ celery==5.4.0
     # via
     #   -r requirements/quality.txt
     #   event-tracking
-certifi==2024.6.2
+certifi==2024.7.4
     # via
     #   -r requirements/quality.txt
     #   requests
@@ -106,7 +106,7 @@ code-annotations==1.8.0
     #   -r requirements/quality.txt
     #   edx-lint
     #   edx-toggles
-coverage[toml]==7.5.4
+coverage[toml]==7.6.0
     # via
     #   -r requirements/quality.txt
     #   pytest-cov
@@ -124,7 +124,7 @@ distlib==0.3.8
     # via
     #   -r requirements/ci.txt
     #   virtualenv
-django==4.2.13
+django==4.2.14
     # via
     #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/quality.txt
@@ -171,7 +171,7 @@ edx-ccx-keys==1.3.0
     # via
     #   -r requirements/quality.txt
     #   openedx-events
-edx-completion==4.6.5
+edx-completion==4.6.6
     # via -r requirements/quality.txt
 edx-django-utils==5.14.2
     # via
@@ -186,7 +186,7 @@ edx-drf-extensions==10.3.0
     #   edx-completion
 edx-i18n-tools==1.6.0
     # via -r requirements/dev.in
-edx-lint==5.3.6
+edx-lint==5.3.7
     # via -r requirements/quality.txt
 edx-opaque-keys[django]==2.10.0
     # via
@@ -202,13 +202,14 @@ edx-toggles==5.2.0
     #   event-tracking
 event-tracking==2.4.0
     # via
+    #   -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
     #   -r requirements/quality.txt
     #   edx-completion
-exceptiongroup==1.2.1
+exceptiongroup==1.2.2
     # via
     #   -r requirements/quality.txt
     #   pytest
-fastavro==1.9.4
+fastavro==1.9.5
     # via
     #   -r requirements/quality.txt
     #   openedx-events
@@ -287,7 +288,7 @@ mccabe==0.7.0
     #   pylint
 mypy-extensions==1.0.0
     # via black
-newrelic==9.11.0
+newrelic==9.12.0
     # via
     #   -r requirements/quality.txt
     #   edx-django-utils
@@ -363,7 +364,7 @@ pyjwt[crypto]==2.8.0
     #   -r requirements/quality.txt
     #   drf-jwt
     #   edx-drf-extensions
-pylint==3.2.4
+pylint==3.2.5
     # via
     #   -r requirements/quality.txt
     #   edx-lint
@@ -460,7 +461,7 @@ snowballstemmer==2.2.0
     # via
     #   -r requirements/quality.txt
     #   pydocstyle
-sqlparse==0.5.0
+sqlparse==0.5.1
     # via
     #   -r requirements/quality.txt
     #   django
@@ -486,7 +487,7 @@ tomli==2.0.1
     #   pylint
     #   pytest
     #   tox
-tomlkit==0.12.5
+tomlkit==0.13.0
     # via
     #   -r requirements/quality.txt
     #   pylint
