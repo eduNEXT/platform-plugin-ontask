@@ -21,3 +21,10 @@ def get_course_units(course_key: CourseKey) -> Iterable:
     for section in course.get_children():
         for subsection in section.get_children():
             yield from subsection.get_children()
+
+
+def _(text):
+    """
+    Make '_' a no-op so we can scrape strings.
+    """
+    return text

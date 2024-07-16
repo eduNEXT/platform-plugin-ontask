@@ -1,21 +1,21 @@
+{% load i18n %}
+
 <div class="ontask-instructor-wrapper">
   {% if workflow_id %}
   <div class="upload-dataframe">
     <p>
-      Load the data from the course into OnTask. This will create a new table in
-      OnTask with the data summary configured. The default data summary is the
-      completion data of the course. Every time you load the data, the table
-      will be recreated. To view the OnTask table you need login to OnTask and
-      go to Table > View data.
+      {% trans "Load the data from the course into OnTask. This will create a new table in OnTask with the data summary configured. The default data summary is the completion data of the course. Every time you load the data, the table will be recreated. To view the OnTask table you need login to OnTask and go to Table > View data." %}
     </p>
     <button
       id="upload-dataframe"
       data-course-id="{{ course_id }}"
       class="btn btn-primary upload-dataframe-button"
     >
-      Load data
+      {% trans "Load data" %}
     </button>
-    <span id="upload-dataframe-message" class="success-message"></span>
+    <span id="upload-dataframe-message" class="success-message hidden"
+      >{% trans "Loading dataframe... Please wait a few minutes." %}</span
+    >
     <iframe
       class="ontask-instructor-iframe"
       src="{{ ontask_url }}/action/{{ workflow_id }}/index"
@@ -24,25 +24,21 @@
   </div>
   {% else %}
   <div class="create-workflow-wrapper">
-    <h2 class="hd hd-2">Welcome to OnTask Open edX Connection</h2>
+    <h2 class="hd hd-2">{% trans "Welcome to OnTask Open edX Connection" %}</h2>
     <button
       id="create-workflow"
       data-course-id="{{ course_id }}"
       class="btn btn-primary create-workflow-button"
     >
-      Create workflow
+      {% trans "Create workflow" %}
     </button>
-    <span
-      id="create-workflow-error-message"
-      class="error-message hidden"
-    ></span>
-    <h3 class="hd hd-3">There is no workflow ID associated with the course.</h3>
+    <span id="create-workflow-error-message" class="error-message hidden">
+      {% trans "An error occurred while creating the workflow. Ensure the workflow for this course does not already exist, and that the OnTask API Auth token is correct." %}
+    </span>
+    <h3 class="hd hd-3">{% trans "There is no workflow ID associated with the course." %}</h3>
     <p class="create-workflow-message">
-      Create a new one by pressing the 'Create Workflow' button. Optionally, if
-      you already have one, configure it from Studio > Advanced Settings > Other
-      Course Settings. You should add the property 'ONTASK_WORKFLOW_ID' with the
-      OnTask workflow ID.
-    </p>
+      {% trans "Create a new one by pressing the 'Create Workflow' button. Optionally, if you already have one, configure it from Studio > Advanced Settings > Other Course Settings. You should add the property 'ONTASK_WORKFLOW_ID' with the OnTask workflow ID." %}
+    <p>
   </div>
   {% endif %}
 </div>

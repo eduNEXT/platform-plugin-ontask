@@ -1,10 +1,12 @@
 """Custom exceptions for the OnTask plugin."""
 
+from platform_plugin_ontask.utils import _
+
 
 class CustomInvalidKeyError(Exception):
     """The course key is not valid."""
 
-    def __init__(self, message: str = "The course key is not valid.") -> None:
+    def __init__(self, message: str = _("The course key is not valid.")) -> None:
         """
         Initialize the exception.
 
@@ -18,7 +20,7 @@ class CustomInvalidKeyError(Exception):
 class CourseNotFoundError(Exception):
     """The course is not found."""
 
-    def __init__(self, message: str = "The course does not exist.") -> None:
+    def __init__(self, message: str = _("The course does not exist.")) -> None:
         """
         Initialize the exception.
 
@@ -34,7 +36,7 @@ class APIAuthTokenNotSetError(Exception):
 
     def __init__(
         self,
-        message: str = (
+        message: str = _(
             "The OnTask API Auth Token is not set for this course. "
             "Please set it in the Advanced Settings of the course."
         ),
@@ -54,7 +56,7 @@ class WorkflowIDNotSetError(Exception):
 
     def __init__(
         self,
-        message: str = (
+        message: str = _(
             "The OnTask Workflow ID is not set for this course. "
             "Please set it in the Advanced Settings of the course."
         ),

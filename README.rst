@@ -51,15 +51,15 @@ Clone the repository:
 
 .. code-block:: bash
 
-  git clone git@github.com:eduNEXT/platform_plugin_ontask.git
-  cd platform_plugin_ontask
+  git clone git@github.com:eduNEXT/platform-plugin-ontask.git
+  cd platform-plugin-ontask
 
 Set up a virtualenv with the same name as the repo and activate it. Here's how
 you might do that if you have ``virtualenv`` set up:
 
 .. code-block:: bash
 
-  virtualenv -p python3.8 platform_plugin_ontask
+  virtualenv -p python3.8 platform-plugin-ontask
 
 Every time you develop something in this repo
 ---------------------------------------------
@@ -69,7 +69,7 @@ Activate the virtualenv. Here's how you might do that if you're using
 
 .. code-block:: bash
 
-  source platform_plugin_ontask/bin/activate
+  source platform-plugin-ontask/bin/activate
 
 Grab the latest code:
 

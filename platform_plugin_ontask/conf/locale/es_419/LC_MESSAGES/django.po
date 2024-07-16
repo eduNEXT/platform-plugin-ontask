@@ -1,0 +1,98 @@
+# edX translation file.
+# Copyright (C) 2024 EdX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# EdX Team <info@edx.org>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1a\n"
+"Report-Msgid-Bugs-To: openedx-translation@googlegroups.com\n"
+"POT-Creation-Date: 2023-06-13 08:00+0000\n"
+"PO-Revision-Date: 2023-06-13 09:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: exceptions.py:9
+msgid "The course key is not valid."
+msgstr "El course key no es válido."
+
+#: exceptions.py:23
+msgid "The course does not exist."
+msgstr "El curso no existe."
+
+#: exceptions.py:40
+msgid ""
+"The OnTask API Auth Token is not set for this course. Please set it in the "
+"Advanced Settings of the course."
+msgstr ""
+"El token de autenticación de la API de OnTask no está configurado para este "
+"curso. Por favor, configúrelo en la Configuración Avanzada del curso."
+
+#: exceptions.py:60
+msgid ""
+"The OnTask Workflow ID is not set for this course. Please set it in the "
+"Advanced Settings of the course."
+msgstr ""
+"El ID del workflow de OnTask no está configurado para este curso. "
+"Por favor, configúrelo en la Configuración Avanzada del curso."
+
+#: static/html/ontask.html:7
+msgid ""
+"Load the data from the course into OnTask. This will create a new table in "
+"OnTask with the data summary configured. The default data summary is the "
+"completion data of the course. Every time you load the data, the table will "
+"be recreated. To view the OnTask table you need login to OnTask and go to "
+"Table > View data."
+msgstr ""
+"Carga los datos del curso en OnTask. Esto creará una nueva tabla en OnTask "
+"con el resumen de datos configurado. El resumen de datos predeterminado se "
+"basa los datos de finalización del curso. Cada vez que cargues los datos, la "
+"tabla se recreará. Para ver la tabla de OnTask, debes iniciar sesión en OnTask "
+"e ir a Table > View data."
+
+#: static/html/ontask.html:14
+msgid "Load data"
+msgstr "Cargar datos"
+
+#: static/html/ontask.html:17
+msgid "Loading dataframe... Please wait a few minutes."
+msgstr "Cargando dataframe... Por favor, espera unos minutos."
+
+#: static/html/ontask.html:27
+msgid "Welcome to OnTask Open edX Connection"
+msgstr "Bienvenido a la Conexión de OnTask con Open edX"
+
+#: static/html/ontask.html:33
+msgid "Create workflow"
+msgstr "Crear workflow"
+
+#: static/html/ontask.html:36
+msgid ""
+"An error occurred while creating the workflow. Ensure the workflow for this "
+"course does not already exist, and that the OnTask API Auth token is "
+"correct."
+msgstr ""
+"Ocurrió un error al crear el workflow. Asegúrese que el workflow para este "
+"curso no exista aún y que el token de autenticación de la API de OnTask sea "
+"correcto."
+
+#: static/html/ontask.html:38
+msgid "There is no workflow ID associated with the course."
+msgstr "No hay un ID de workflow asociado con el curso."
+
+#: static/html/ontask.html:40
+msgid ""
+"Create a new one by pressing the 'Create Workflow' button. Optionally, if "
+"you already have one, configure it from Studio > Advanced Settings > Other "
+"Course Settings. You should add the property 'ONTASK_WORKFLOW_ID' with the "
+"OnTask workflow ID."
+msgstr ""
+"Crea uno nuevo presionando el botón 'Crear Workflow'. Opcionalmente, si ya "
+"tienes uno, configúralo desde Studio > Configuración Avanzada > Other Course "
+"Settings. Debes agregar la propiedad 'ONTASK_WORKFLOW_ID' con el ID del "
+"workflow de OnTask."
