@@ -7,7 +7,6 @@ from importlib import import_module
 from django.conf import settings
 from opaque_keys import InvalidKeyError
 from opaque_keys.edx.keys import CourseKey
-from rest_framework.response import Response
 
 from platform_plugin_ontask.datasummary.backends.base import DataSummary
 from platform_plugin_ontask.datasummary.backends.completion import CompletionDataSummary
@@ -20,20 +19,6 @@ from platform_plugin_ontask.exceptions import (
 )
 
 DEFAULT_DATA_SUMMARY_CLASS = CompletionDataSummary
-
-
-def api_error(error: str, status_code: int) -> Response:
-    """
-    Build a response with an error.
-
-    Args:
-        error (str): Error to return.
-        status_code (int): Status code to return.
-
-    Returns:
-        Response: Response with an error.
-    """
-    return Response(data={"error": error}, status=status_code)
 
 
 def get_course_key(course_id: str) -> CourseKey:

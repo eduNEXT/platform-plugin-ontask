@@ -3,7 +3,6 @@
 from logging import getLogger
 
 from django.conf import settings
-from django.http import HttpResponse
 from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthentication
 from edx_rest_framework_extensions.auth.session.authentication import SessionAuthenticationAllowInactiveUser
 from opaque_keys.edx.keys import CourseKey
@@ -12,7 +11,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from platform_plugin_ontask.api.utils import (
-    api_error,
     get_api_auth_token,
     get_course_block,
     get_course_key,
@@ -66,16 +64,18 @@ class OnTaskWorkflowAPIView(APIView):
     )
     permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, request, course_id: str) -> HttpResponse:
+    def post(self, request, course_id: str) -> Response:
         """
-        Handle POST requests to set the OnTask workflow ID.
+        Handle POST requests to create a new OnTask workflow for the course.
+
+        The workflow ID is stored in the Other Course Settings of the course.
 
         Arguments:
             request (Request): The HTTP request object.
             course_id (str): The course ID.
 
         Returns:
-            HttpResponse: The response object.
+            Response: The response object.
         """
         try:
             course_block = get_course_block(get_course_key(course_id))
@@ -86,11 +86,13 @@ class OnTaskWorkflowAPIView(APIView):
 
             if not response.ok:
                 log.error(f"POST {response.url} | status-code={response.status_code} | response={response.text}")
-                return api_error(
-                    "An error occurred while creating the workflow. Ensure the "
-                    "workflow for this course does not already exist, and that the "
-                    "OnTask API Auth token is correct.",
-                    status_code=response.status_code,
+                return Response(
+                    data={
+                        "error": "An error occurred while creating the workflow. Ensure the "
+                        "workflow for this course does not already exist, and that the OnTask "
+                        "API Auth token is correct."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
 
             created_workflow = response.json()
@@ -99,7 +101,7 @@ class OnTaskWorkflowAPIView(APIView):
 
             return Response(status=status.HTTP_201_CREATED)
         except (CustomInvalidKeyError, CourseNotFoundError, APIAuthTokenNotSetError) as error:
-            return api_error(str(error), status_code=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OnTaskTableAPIView(APIView):
@@ -138,7 +140,7 @@ class OnTaskTableAPIView(APIView):
     )
     permission_classes = (permissions.IsAuthenticated,)
 
-    def put(self, _, course_id: str) -> HttpResponse:
+    def put(self, _, course_id: str) -> Response:
         """
         Handle PUT requests to upload the course data to OnTask.
 
@@ -149,7 +151,7 @@ class OnTaskTableAPIView(APIView):
             course_id (str): The course ID.
 
         Returns:
-            HttpResponse: The response object.
+            Response: The response object.
         """
         try:
             course_block = get_course_block(get_course_key(course_id))
@@ -161,4 +163,4 @@ class OnTaskTableAPIView(APIView):
             return Response(status=status.HTTP_200_OK)
 
         except (CustomInvalidKeyError, CourseNotFoundError, APIAuthTokenNotSetError, WorkflowIDNotSetError) as error:
-            return api_error(str(error), status_code=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error": str(error)}, status=status.HTTP_400_BAD_REQUEST)
