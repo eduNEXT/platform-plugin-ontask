@@ -31,3 +31,8 @@
 .upload-dataframe-button {
     margin-bottom: 20px;
 }
+
+.create-workflow-message {
+    width: 50%;
+    text-align: center
+}
