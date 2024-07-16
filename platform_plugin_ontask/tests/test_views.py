@@ -63,10 +63,7 @@ class OnTaskWorkflowAPIViewTest(APITestCase):
         response = self.post_request()
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data["error"]["course_id"],
-            f"The supplied course_id='{self.course_id}' key is not valid.",
-        )
+        self.assertEqual(response.data["error"], "The course key is not valid.")
 
     @modulestore_patch
     def test_create_workflow_course_not_found(self, modulestore_mock: Mock):
@@ -75,10 +72,8 @@ class OnTaskWorkflowAPIViewTest(APITestCase):
 
         response = self.post_request()
 
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(
-            response.data["error"]["course_id"], f"The course with course_id='{self.course_id}' does not exist."
-        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data["error"], "The course does not exist.")
 
     @modulestore_patch
     def test_create_workflow_missing_auth_token(self, modulestore_mock: Mock):
@@ -157,10 +152,7 @@ class OnTaskTableAPIViewTest(APITestCase):
         response = self.put_request()
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(
-            response.data["error"]["course_id"],
-            f"The supplied course_id='{self.course_id}' key is not valid.",
-        )
+        self.assertEqual(response.data["error"], "The course key is not valid.")
 
     @modulestore_patch
     def test_upload_dataframe_course_not_found(self, modulestore_mock: Mock):
@@ -169,11 +161,8 @@ class OnTaskTableAPIViewTest(APITestCase):
 
         response = self.put_request()
 
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(
-            response.data["error"]["course_id"],
-            f"The course with course_id='{self.course_id}' does not exist.",
-        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data["error"], "The course does not exist.")
 
     @modulestore_patch
     def test_upload_dataframe_missing_api_auth_token(self, modulestore_mock: Mock):
@@ -202,5 +191,5 @@ class OnTaskTableAPIViewTest(APITestCase):
         self.assertEqual(
             response.data["error"],
             "The OnTask Workflow ID is not set for this course. Please set "
-            "it in the Advanced Settings of the course or create a new workflow.",
+            "it in the Advanced Settings of the course.",
         )
