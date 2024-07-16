@@ -10,12 +10,7 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from platform_plugin_ontask.api.utils import (
-    get_api_auth_token,
-    get_course_block,
-    get_course_key,
-    get_workflow_id,
-)
+from platform_plugin_ontask.api.utils import get_api_auth_token, get_course_block, get_course_key, get_workflow_id
 from platform_plugin_ontask.client import OnTaskClient
 from platform_plugin_ontask.edxapp_wrapper.authentication import BearerAuthenticationAllowInactiveUser
 from platform_plugin_ontask.edxapp_wrapper.modulestore import update_item
