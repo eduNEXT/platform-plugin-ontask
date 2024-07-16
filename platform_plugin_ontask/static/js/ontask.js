@@ -29,17 +29,13 @@ createWorkflow.on('click', () => {
     .then((response) => {
       if (!response.ok) {
         return response.json().then((errorData) => {
-          throw new Error(
-            errorData.error || 'Something went wrong. Please try again.'
-          );
+          throw new Error(errorData.error);
         });
       }
       window.location.reload();
     })
-    .catch((error) => {
-      $('#create-workflow-error-message')
-        .text(error.message)
-        .removeClass('hidden');
+    .catch(() => {
+      $('#create-workflow-error-message').removeClass('hidden');
     });
 });
 
@@ -56,15 +52,12 @@ uploadDataframe.on('click', () => {
   })
     .then((response) => {
       if (!response.ok) {
-        const errorData = response.json();
-        throw new Error(
-          errorData.error || 'Something went wrong. Please try again.'
-        );
+        return response.json().then((errorData) => {
+          throw new Error(errorData.error);
+        });
       }
 
-      $('#upload-dataframe-message').text(
-        'Loading dataframe... Please wait a few minutes.'
-      );
+      $('#upload-dataframe-message').removeClass('hidden');
 
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
@@ -74,6 +67,8 @@ uploadDataframe.on('click', () => {
       document.location.reload();
     })
     .catch((error) => {
-      $('#upload-dataframe-message').text(error.message);
+      $('#upload-dataframe-message')
+        .text(gettext(error.message))
+        .removeClass('hidden');
     });
 });

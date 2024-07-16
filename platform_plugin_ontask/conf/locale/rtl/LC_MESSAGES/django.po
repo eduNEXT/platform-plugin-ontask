@@ -1,0 +1,42 @@
+# edX translation file.
+# Copyright (C) 2024 EdX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# EdX Team <info@edx.org>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1a\n"
+"Report-Msgid-Bugs-To: openedx-translation@googlegroups.com\n"
+"POT-Creation-Date: 2023-06-13 08:00+0000\n"
+"PO-Revision-Date: 2023-06-13 09:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
+"Language: rtl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: exceptions.py
+msgid "The course key is not valid."
+msgstr "Ŧɥǝ ɔønɹsǝ ʞǝʎ ᴉs nøʇ ʌɐlᴉd."
+
+#: exceptions.py
+msgid "The course does not exist."
+msgstr "Ŧɥǝ ɔønɹsǝ døǝs nøʇ ǝxᴉsʇ."
+
+#: exceptions.py
+msgid ""
+"The OnTask API Auth Token is not set for this course. Please set it in the "
+"Advanced Settings of the course."
+msgstr ""
+"Ŧɥǝ ØnŦɐsʞ ȺⱣƗ Ⱥnʇɥ Ŧøʞǝn ᴉs nøʇ sǝʇ ɟøɹ ʇɥᴉs ɔønɹsǝ. Ᵽlǝɐsǝ sǝʇ ᴉʇ ᴉn ʇɥǝ "
+"Ⱥdʌɐnɔǝd Sǝʇʇᴉnƃs øɟ ʇɥǝ ɔønɹsǝ."
+
+#: exceptions.py
+msgid ""
+"The OnTask Workflow ID is not set for this course. Please set it in the "
+"Advanced Settings of the course."
+msgstr ""
+"Ŧɥǝ ØnŦɐsʞ Wøɹʞɟløʍ ƗĐ ᴉs nøʇ sǝʇ ɟøɹ ʇɥᴉs ɔønɹsǝ. Ᵽlǝɐsǝ sǝʇ ᴉʇ ᴉn ʇɥǝ "
+"Ⱥdʌɐnɔǝd Sǝʇʇᴉnƃs øɟ ʇɥǝ ɔønɹsǝ."
