@@ -1,4 +1,4 @@
-Platform Plugin On Task
+Platform Plugin OnTask
 ########################
 
 |ci-badge| |license-badge| |status-badge|
@@ -7,13 +7,16 @@ Platform Plugin On Task
 Purpose
 *******
 
-Open edX plugin that includes adds a new tab to the instructor dashboard for easy access
-to the On Task service. For serving On Task along with the Open edX ecosystem we recommended using
-`tutor-contrib-ontask <https://github.com/eduNEXT/tutor-contrib-ontask/>`_.
+Open edX plugin that includes adds a new tab to the instructor dashboard for
+easy access to the OnTask service. Also, it includes an API to create a new
+workflow and table in OnTask based on the course data. For serving OnTask along
+with the Open edX ecosystem we recommended using `tutor-contrib-ontask`_.
 
 This plugin has been created as an open source contribution to the Open edX
 platform and has been funded by the Unidigital project from the Spanish
 Government - 2024.
+
+.. _tutor-contrib-ontask: https://github.com/eduNEXT/tutor-contrib-ontask/
 
 Compatibility Notes
 ===================
@@ -125,7 +128,8 @@ Deploying
 Tutor environments
 ------------------
 
-To use this plugin in a Tutor environment, you must install it as a requirement of the ``openedx`` image. To achieve this, follow these steps:
+To use this plugin in a Tutor environment, you must install it as a requirement
+of the ``openedx`` image. To achieve this, follow these steps:
 
 .. code-block:: bash
 
@@ -134,11 +138,59 @@ To use this plugin in a Tutor environment, you must install it as a requirement 
 
 Then, deploy the resultant image in your environment.
 
+
+Using the API
+*************
+
+The API endpoint is protected with the same auth method as the Open edX
+platform. For generate a token, you can use the next endpoint:
+
+- POST ``/<lms_host>/oauth2/access_token/``: Generate a token for the user. The
+  content type of the request must be ``application/x-www-form-urlencoded``.
+
+  **Body parameters**
+
+  - ``client_id``: Client ID of the OAuth2 application. You can find it in the
+    Django admin panel. Normally, it is ``login-service-client-id``.
+  - ``grant_type``: Grant type of the OAuth2 application. Normally, it is
+    ``password``.
+  - ``username``: Username of the user.
+  - ``password``: Password of the user.
+  - ``token_type``: Type of the token. By default, it is ``bearer``
+
+  Alternatively, you can use a new OAuth2 application. You can create a new
+  application in the Django admin panel. The body parameters are the same as
+  the previous endpoint, but you must use the ``client_id`` and ``client_secret``
+  of the new application. The ``grant_type`` must be ``client_credentials``.
+
+  **Response**
+
+  - ``access_token``: Access token of the user. You must use this token in the
+    ``Authorization`` header of the requests to the API.
+
+Finally, you are ready to use the API. The next endpoints are available:
+
+- **POST** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/workflow/``:
+  Create a new workflow in OnTask.
+
+  **Path parameters**
+
+  - **course_id (Required)**: ID of the course.
+
+- **POST** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/table/``:
+  Create a new table in a OnTask workflow. If a table already exists, it will
+  be overwritten.
+
+  **Path parameters**
+
+  - **course_id (Required)**: ID of the course.
+
+
 Configuring required in the Open edX platform
 *********************************************
 
-You must include the following setting in the LMS to enable the filter that will
-display add the new tab for On Task:
+You must include the following setting in the LMS to enable the filter that
+will display add the new tab for OnTask:
 
 .. code-block:: python
 
@@ -151,10 +203,122 @@ display add the new tab for On Task:
         },
     }
 
-You can add it using your favorite configuration method. Then, you'll see:
+It is also necessary to include these settings for each course using the
+**Other Course Settings** in the **Advanced Settings** section in Studio:
 
-.. image:: https://github.com/eduNEXT/platform-plugin-ontask/assets/64440265/f4d5adbf-8900-49fc-b7ce-dffaf179b3d8
-.. image:: https://github.com/eduNEXT/platform-plugin-ontask/assets/64440265/7ed01c38-6651-43eb-a6c5-cb3f774835b1
+- **ONTASK_API_AUTH_TOKEN** *(Required)*: API Auth token for the OnTask
+  service. You can find it in the OnTask service from **Profile** >
+  **API Auth token**. If the token has not been generated, you can create
+  a new one.
+- **ONTASK_WORKFLOW_ID** *(Optional)*: ID of the workflow in OnTask. If you
+  already have a workflow, you can include it here. If you do not have a
+  workflow, the plugin will create a new one from the OnTask tab in the
+  instructor dashboard.
+
+Example:
+
+.. code-block:: json
+
+  {
+    ...
+    "ONTASK_API_AUTH_TOKEN": "your-api-auth-token",
+    "ONTASK_WORKFLOW_ID": 1
+  }
+
+**NOTE**: It is important to have enabled the **Other Course Settings** in the
+settings of the platform. You can find more information about this in the
+`Open edX documentation`_.
+
+.. _Open edX documentation: https://edx.readthedocs.io/projects/edx-installing-configuring-and-running/en/latest/configuration/enable_custom_course_settings.html
+
+
+View from the Learning Management System (LMS)
+**********************************************
+
+When the instructor accesses the OnTask tab, they will have the option to
+create an OnTask Workflow in case there is not one configured. Once the
+**Create Workflow** button is clicked, a workflow will be created in OnTask and
+will be named as the current course ID. e.g. ``course-v1:edunext+ontask+demo``.
+
+.. image:: https://github.com/user-attachments/assets/ebb3daf7-361a-48d4-956a-d04eb8d7d405
+
+The instructor can then view the OnTask workflow related to the course. From
+there the instructor can create, import/export or execute all actions. In the
+upper left corner there will be a button called **Load Data**. Once pressed, an
+asynchronous task will be executed that will generate a data summary of the
+course and load it into a table in the OnTask Workflow. Each time the button is
+pressed, the data will be recreated. The instructor can then use this data to
+create different actions.
+
+.. image:: https://github.com/user-attachments/assets/564993af-171a-4ebe-b264-f2b8590ea17a
+
+Once the data has been loaded, the instructor can go to **Table** > **View
+data**. There the instructor find the table with all the data summary of the
+course.
+
+.. image:: https://github.com/user-attachments/assets/436ca58e-05fd-43d1-ae6d-f4550bfd652a
+
+
+Create a Custom Data Summary Backend
+*********************************************
+
+By default, the data summary that is loaded into the OnTask table is generated
+from the course completion data. This are the columns that are loaded into
+OnTask:
+
+- **ID** *(Integer)*: An incremental ID.
+- **User ID** *(Integer)*: ID of the user.
+- **Username** *(String)*: Username of the user.
+- **Email** *(String)*: Email of the user.
+- **Course ID** *(String)*: ID of the course.
+- **Unit ID** *(String)*: ID of the unit.
+- **Unit Name** *(String)*: Name of the unit.
+- **Is Completed** *(Boolean)*: If the unit is completed.
+
+You can create a custom data summary backend to customize the data summary
+that is loaded into the OnTask table. To do this, follow these steps:
+
+1. Create a new file in the ``datasummary`` directory with the name of the
+   backend, e.g., ``custom.py``
+2. Create a class that inherits from ``DataSummary``, e.g.,
+   ``CustomDataSummary(DataSummary)``
+3. Implement the ``get_data_summary`` method to return the data summary. The
+   method must return a dictionary where each key is the column name and the
+   value is other dictionary with the id as key and the value as the value of
+   the column.
+
+   .. code-block:: python
+
+      class CustomDataSummary(DataSummary):
+        """Custom data summary for example purposes."""
+
+        def get_data_summary(self) -> dict:
+          """
+          Get a custom data summary.
+
+          Returns:
+              dict: A custom data summary.
+          """
+          data_frame = {
+              "id": {"0": 1},
+              "user_id": {"0": 1},
+              "email": {"0": "john@doe.com"},
+              "username": {"0": "john_doe"},
+              "course_id": {"0": "course-v1:edX+DemoX+Demo_Course"},
+              "block_id": {"0": "5c56dbeb30504c8fb899553f080cf15d"},
+              "block_name": {"0": "Unit 1"},
+              "custom_value": {"0": False},
+              "another_custom_value": {"0": "value"},
+          }
+          return data_frame
+
+4. Edit the ``ONTASK_DATA_SUMMARY_CLASS`` setting in the ``common.py`` file to
+   use the new backend.
+
+   .. code-block:: python
+
+      settings.ONTASK_DATA_SUMMARY_CLASS = "platform_plugin_ontask.datasummary.backends.custom.CustomDataSummary"
+
 
 Getting Help
 ************
