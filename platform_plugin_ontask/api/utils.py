@@ -61,7 +61,10 @@ def get_course_block(course_key: CourseKey):
 
 def get_api_auth_token(course_block) -> str:
     """
-    Get the OnTask API Auth Token from the other course settings.
+    Get the OnTask API Auth Token.
+
+    First, it tries to get the token from the django settings. If it is not set,
+    it tries to get it from the other course settings.
 
     Args:
         course_block (CourseBlock): The course block.
@@ -72,7 +75,9 @@ def get_api_auth_token(course_block) -> str:
     Returns:
         str: The OnTask API Auth Token.
     """
-    api_auth_token = course_block.other_course_settings.get("ONTASK_API_AUTH_TOKEN")
+    api_auth_token = getattr(settings, "ONTASK_API_AUTH_TOKEN", None) or course_block.other_course_settings.get(
+        "ONTASK_API_AUTH_TOKEN"
+    )
     if api_auth_token is None:
         raise APIAuthTokenNotSetError()
     return api_auth_token
