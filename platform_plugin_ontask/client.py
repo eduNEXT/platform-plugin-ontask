@@ -6,6 +6,9 @@ import requests
 class OnTaskClient:
     """Client to interact with the OnTask API."""
 
+    MERGE_COLUMN = "user_id"
+    MERGE_TYPE = "outer"
+
     def __init__(self, api_url: str, api_key: str):
         """
         Initialize the OnTask client.
@@ -50,6 +53,30 @@ class OnTaskClient:
         return requests.put(
             url=f"{self.api_url}/table/{workflow_id}/ops/",
             json={"data_frame": data_frame},
+            headers=self.headers,
+            timeout=self.timeout,
+        )
+
+    def merge_table(self, workflow_id: str, data_frame: dict) -> requests.Response:
+        """
+        Merge a data frame in an OnTask table.
+
+        Arguments:
+            workflow_id (str): The workflow ID.
+            data_frame (dict): The data frame to merge.
+
+        Returns:
+            requests.Response: The response object.
+        """
+        merge_dict = {
+            "how": self.MERGE_TYPE,
+            "left_on": self.MERGE_COLUMN,
+            "right_on": self.MERGE_COLUMN,
+            "src_df": data_frame,
+        }
+        return requests.put(
+            url=f"{self.api_url}/table/{workflow_id}/merge/",
+            json=merge_dict,
             headers=self.headers,
             timeout=self.timeout,
         )
