@@ -75,6 +75,6 @@ PLATFORM_PLUGIN_ONTASK_ENROLLMENTS_BACKEND = (
     "platform_plugin_ontask.edxapp_wrapper.backends.tests.enrollments_r_v1_test"
 )
 PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND = "platform_plugin_ontask.edxapp_wrapper.backends.tests.completion_r_v1_test"
-ONTASK_DATA_SUMMARY_CLASSES = ["platform_plugin_ontask.datasummary.backends.tests.dummy.DummyDataSummary"]
+ONTASK_DATA_SUMMARY_CLASSES = ["platform_plugin_ontask.data_summary.backends.tests.dummy.DummyDataSummary"]
 ONTASK_API_AUTH_TOKEN = "ontask-api-auth-token"
 ONTASK_INTERNAL_API="http://ontask:8080"
