@@ -75,4 +75,4 @@ PLATFORM_PLUGIN_ONTASK_ENROLLMENTS_BACKEND = (
     "platform_plugin_ontask.edxapp_wrapper.backends.tests.enrollments_r_v1_test"
 )
 PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND = "platform_plugin_ontask.edxapp_wrapper.backends.tests.completion_r_v1_test"
-ONTASK_DATA_SUMMARY_CLASS = "platform_plugin_ontask.datasummary.backends.tests.completion.CompletionDataSummary"
+ONTASK_DATA_SUMMARY_CLASSES = ["platform_plugin_ontask.datasummary.backends.tests.dummy.DummyDataSummary"]

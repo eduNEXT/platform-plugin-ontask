@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
+import logging
 from importlib import import_module
 
 from django.conf import settings
 from opaque_keys import InvalidKeyError
 from opaque_keys.edx.keys import CourseKey
+from requests import Response
 
-from platform_plugin_ontask.datasummary.backends.base import DataSummary
-from platform_plugin_ontask.datasummary.backends.completion import CompletionDataSummary
+from platform_plugin_ontask.data_summary.backends.base import DataSummary
 from platform_plugin_ontask.edxapp_wrapper.modulestore import modulestore
 from platform_plugin_ontask.exceptions import (
     APIAuthTokenNotSetError,
@@ -18,7 +19,21 @@ from platform_plugin_ontask.exceptions import (
     WorkflowIDNotSetError,
 )
 
-DEFAULT_DATA_SUMMARY_CLASS = CompletionDataSummary
+log = logging.getLogger(__name__)
+
+
+def ontask_log_from_response(response: Response) -> str:
+    """
+    Return a log message from a response object.
+
+    Arguments:
+        response (Response): The response object.
+    """
+    return (
+        f"{response.request.method} {response.url} | "
+        f"status-code={response.status_code} | "
+        f"response={response.text}",
+    )
 
 
 def get_course_key(course_id: str) -> CourseKey:
@@ -102,24 +117,17 @@ def get_workflow_id(course_block) -> str:
     return workflow_id
 
 
-def get_data_summary_class() -> DataSummary:
+def get_data_summary_class(data_summary_class_path: str) -> DataSummary | None:
     """
-    Get the data summary class based on django settings.
-
-    This function retrieves the data summary class to be used based
-    on the value of the `ONTASK_DATA_SUMMARY_CLASS` django setting.
-    If the variable is not set or is empty, it returns the default
-    data summary class `CompletionDataSummary`.
+    Get the data summary class based on the module path.
 
     Returns:
-        DataSummary: The class to be used to generate the data summary.
+        DataSummary | None: The class to be used to generate the data summary.
+            If the class is not found, it returns None.
     """
-    data_summary_class = getattr(settings, "ONTASK_DATA_SUMMARY_CLASS", None)
-
-    if not data_summary_class:
-        return DEFAULT_DATA_SUMMARY_CLASS
-
-    module_name, class_name = data_summary_class.rsplit(".", 1)
-    module = import_module(module_name)
-
-    return getattr(module, class_name, DEFAULT_DATA_SUMMARY_CLASS)
+    module_name, class_name = data_summary_class_path.rsplit(".", 1)
+    try:
+        module = import_module(module_name)
+        return getattr(module, class_name)
+    except ImportError:
+        return None

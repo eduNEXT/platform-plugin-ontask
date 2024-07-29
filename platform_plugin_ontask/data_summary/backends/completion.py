@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from opaque_keys.edx.keys import CourseKey
 
-from platform_plugin_ontask.datasummary.backends.base import DataSummary
+from platform_plugin_ontask.data_summary.backends.base import DataSummary
 from platform_plugin_ontask.edxapp_wrapper.completion import CompletionService
 from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollments
 from platform_plugin_ontask.utils import get_course_units
@@ -33,10 +33,6 @@ class CompletionDataSummary(DataSummary):
     completion_data_summary.get_data_summary()
 
     {
-        "id": {
-            "0": 1,
-            "1": 2,
-        },
         "user_id": {
             "0": 5,
             "1": 6,
@@ -53,30 +49,25 @@ class CompletionDataSummary(DataSummary):
             "0": "course-v1:edunext+ontask+demo",
             "1": "course-v1:edunext+ontask+demo",
         },
-        "block_id": {
-            "0": "9c56dbeb30504c8fb799553f080cf15d",
-            "1": "9c56dbeb30504c8fb799553f080cf15d",
-        },
-        "block_name": {
+        "block_id_9c56dbeb30504c8fb799553f080cf15d_unit_name": {
             "0": "Unit 1.1",
             "1": "Unit 1.1",
         },
-        "completed": {
+        "block_id_9c56dbeb30504c8fb799553f080cf15d_completed": {
             "0": False,
             "1": True,
         }
     }
+
     ```
     """
 
-    ID = "id"
     USER_ID = "user_id"
     EMAIL = "email"
     USERNAME = "username"
     COURSE_ID = "course_id"
-    UNIT_ID = "unit_id"
-    UNIT_NAME = "unit_name"
-    COMPLETED = "completed"
+    UNIT_NAME = "block_id_{}_unit_name"
+    COMPLETED = "block_id_{}_completed"
 
     def get_data_summary(self) -> dict:
         """
@@ -90,18 +81,15 @@ class CompletionDataSummary(DataSummary):
         course_units = list(get_course_units(course_key))
 
         data_frame = defaultdict(dict)
-        unique_id = 0
-        for enrollment in enrollments:
+        for index, enrollment in enumerate(enrollments):
             completion_service = CompletionService(enrollment.user, course_key)
+            data_frame[self.USER_ID][index] = enrollment.user.id
+            data_frame[self.EMAIL][index] = enrollment.user.email
+            data_frame[self.USERNAME][index] = enrollment.user.username
+            data_frame[self.COURSE_ID][index] = self.course_id
             for unit in course_units:
-                data_frame[self.ID][unique_id] = unique_id + 1
-                data_frame[self.USER_ID][unique_id] = enrollment.user.id
-                data_frame[self.EMAIL][unique_id] = enrollment.user.email
-                data_frame[self.USERNAME][unique_id] = enrollment.user.username
-                data_frame[self.COURSE_ID][unique_id] = self.course_id
-                data_frame[self.UNIT_ID][unique_id] = unit.usage_key.block_id
-                data_frame[self.UNIT_NAME][unique_id] = unit.display_name
-                data_frame[self.COMPLETED][unique_id] = completion_service.vertical_is_complete(unit)
-                unique_id += 1
+                block_id = unit.usage_key.block_id
+                data_frame[self.UNIT_NAME.format(block_id)][index] = unit.display_name
+                data_frame[self.COMPLETED.format(block_id)][index] = completion_service.vertical_is_complete(unit)
 
         return data_frame

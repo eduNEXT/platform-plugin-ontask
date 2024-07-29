@@ -1,6 +1,6 @@
 """Dummy data summary for testing purposes."""
 
-from platform_plugin_ontask.datasummary.backends.base import DataSummary
+from platform_plugin_ontask.data_summary.backends.base import DataSummary
 
 
 class DummyDataSummary(DataSummary):
