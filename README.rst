@@ -171,15 +171,15 @@ platform. For generate a token, you can use the next endpoint:
 Finally, you are ready to use the API. The next endpoints are available:
 
 - **POST** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/workflow/``:
-  Create a new workflow in OnTask.
+  Create a new workflow in OnTask. This also creates a new table in the workflow.
 
   **Path parameters**
 
   - **course_id (Required)**: ID of the course.
 
-- **POST** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/table/``:
-  Create a new table in a OnTask workflow. If a table already exists, it will
-  be overwritten.
+- **PUT** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/table/``:
+  Updates the current table in a OnTask workflow. This performs a merge of the
+  current table with the new data.
 
   **Path parameters**
 
@@ -224,6 +224,10 @@ Example:
     "ONTASK_API_AUTH_TOKEN": "your-api-auth-token",
     "ONTASK_WORKFLOW_ID": 1
   }
+
+**NOTE**: It is posible to configure the **ONTASK_API_AUTH_TOKEN** at platform
+level. You can include it in the LMS settings. This way, you do not need to
+configure it in each course.
 
 **NOTE**: It is important to have enabled the **Other Course Settings** in the
 settings of the platform. You can find more information about this in the
