@@ -129,5 +129,5 @@ def get_data_summary_class(data_summary_class_path: str) -> DataSummary | None:
     try:
         module = import_module(module_name)
         return getattr(module, class_name)
-    except ImportError:
+    except (ImportError, AttributeError):
         return None
