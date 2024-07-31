@@ -54,5 +54,5 @@ def plugin_settings(settings):
     )
     settings.ONTASK_DATA_SUMMARY_CLASSES = [
         "platform_plugin_ontask.data_summary.backends.completion.UnitCompletionDataSummary",
-        "platform_plugin_ontask.data_summary.backends.grade.ComponentsGradeDataSummary",
+        "platform_plugin_ontask.data_summary.backends.grade.ComponentGradeDataSummary",
     ]
