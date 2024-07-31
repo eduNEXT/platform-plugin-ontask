@@ -16,7 +16,26 @@ Unreleased
 
 *
 
-0.3.0 - 2024-06-16
+0.4.0 - 2024-08-01
+**********************************************
+
+Added
+======
+
+* Added support for multiple Data Summary backends.
+* Added a Django setting to allow configure the OnTask API Auth token at
+  platform level.
+* Added a new ``ComponentGradeDataSummary`` backend.
+
+Changed
+=======
+
+* Updated the plugin documentation.
+* Updated the plugin unit tests.
+* Updated ``CompletionDataSummary`` backend. It was renamed to
+  ``UnitCompletionDataSummary``.
+
+0.3.0 - 2024-07-16
 **********************************************
 
 Added
