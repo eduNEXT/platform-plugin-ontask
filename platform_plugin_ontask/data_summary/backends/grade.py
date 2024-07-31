@@ -2,16 +2,17 @@
 
 from collections import defaultdict
 
+from lms.djangoapps.courseware.model_data import get_score
 from opaque_keys.edx.keys import CourseKey
 
 from platform_plugin_ontask.data_summary.backends.base import DataSummary
 from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollments
-from platform_plugin_ontask.utils import get_course_units
+from platform_plugin_ontask.utils import get_course_components
 
 
-class GradeDataSummary(DataSummary):
+class ComponentsGradeDataSummary(DataSummary):
     """
-    Data summary for grade data.
+    Data summary for components grade data.
 
     A completion data summary is a summary of all the completion data for a specific course.
     Each record contains information about the user, the course, the unit, and whether the
@@ -40,7 +41,7 @@ class GradeDataSummary(DataSummary):
             "0": "jhon@doe.com",
             "1": "jane@doe.com",
         },
-        "block_id_9c56dbeb30504c8fb799553f080cf15d_grade": {
+        "component_9c56dbeb30504c8fb799553f080cf15d_grade": {
             "0": 1.0,
             "1": 0.5,
         },
@@ -49,9 +50,7 @@ class GradeDataSummary(DataSummary):
     ```
     """
 
-    USER_ID = "user_id"
-    EMAIL = "email"
-    GRADE = "block_id_{}_grade"
+    GRADE = "component_{}_grade"
 
     def get_data_summary(self) -> dict:
         """
@@ -62,14 +61,16 @@ class GradeDataSummary(DataSummary):
         """
         course_key = CourseKey.from_string(self.course_id)
         enrollments = get_user_enrollments(self.course_id).filter(user__is_superuser=False, user__is_staff=False)
-        course_units = list(get_course_units(course_key))
+        course_components = list(get_course_components(course_key))
 
         data_frame = defaultdict(dict)
         for index, enrollment in enumerate(enrollments):
-            data_frame[self.USER_ID][index] = enrollment.user.id
-            data_frame[self.EMAIL][index] = enrollment.user.email
-            for unit in course_units:
-                block_id = unit.usage_key.block_id
-                data_frame[self.GRADE.format(block_id)][index] = 1.0
+            user_id = enrollment.user.id
+            data_frame[self.USER_ID][index] = user_id
+            for component in course_components:
+                usage_key = component.usage_key
+                student_module = get_score(user_id, usage_key)
+                grade = student_module.grade if student_module and student_module.grade is not None else 0
+                data_frame[self.GRADE.format(usage_key.block_id)][index] = grade
 
         return data_frame
