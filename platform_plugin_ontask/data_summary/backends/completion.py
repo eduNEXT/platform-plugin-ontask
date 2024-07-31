@@ -10,7 +10,7 @@ from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollmen
 from platform_plugin_ontask.utils import get_course_units
 
 
-class CompletionDataSummary(DataSummary):
+class UnitCompletionDataSummary(DataSummary):
     """
     Data summary for completion data.
 
@@ -49,11 +49,11 @@ class CompletionDataSummary(DataSummary):
             "0": "course-v1:edunext+ontask+demo",
             "1": "course-v1:edunext+ontask+demo",
         },
-        "block_id_9c56dbeb30504c8fb799553f080cf15d_unit_name": {
+        "unit_9c56dbeb30504c8fb799553f080cf15d_name": {
             "0": "Unit 1.1",
             "1": "Unit 1.1",
         },
-        "block_id_9c56dbeb30504c8fb799553f080cf15d_completed": {
+        "unit_9c56dbeb30504c8fb799553f080cf15d_completed": {
             "0": False,
             "1": True,
         }
@@ -62,19 +62,18 @@ class CompletionDataSummary(DataSummary):
     ```
     """
 
-    USER_ID = "user_id"
     EMAIL = "email"
     USERNAME = "username"
     COURSE_ID = "course_id"
-    UNIT_NAME = "block_id_{}_unit_name"
-    COMPLETED = "block_id_{}_completed"
+    UNIT_NAME = "unit_{}_name"
+    COMPLETED = "unit_{}_completed"
 
     def get_data_summary(self) -> dict:
         """
-        Get the completion data summary.
+        Get the unit completion data summary.
 
         Returns:
-            dict: A dataframe with the completion data summary
+            dict: A dataframe with the unit completion data summary
         """
         course_key = CourseKey.from_string(self.course_id)
         enrollments = get_user_enrollments(self.course_id).filter(user__is_superuser=False, user__is_staff=False)

@@ -3,7 +3,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from platform_plugin_ontask.data_summary.backends.completion import CompletionDataSummary
+from platform_plugin_ontask.data_summary.backends.completion import UnitCompletionDataSummary
 
 
 class TestCompletionDataSummary(TestCase):
@@ -32,12 +32,12 @@ class TestCompletionDataSummary(TestCase):
         mock_completion_service = MockCompletionService.return_value
         mock_completion_service.vertical_is_complete.return_value = True
 
-        completion_data_summary = CompletionDataSummary(self.course_id)
+        completion_data_summary = UnitCompletionDataSummary(self.course_id)
         result = completion_data_summary.get_data_summary()
 
         self.assertEqual(result["user_id"][0], self.user.id)
         self.assertEqual(result["email"][0], self.user.email)
         self.assertEqual(result["username"][0], self.user.username)
         self.assertEqual(result["course_id"][0], self.course_id)
-        self.assertEqual(result[f"block_id_{self.block_id}_unit_name"][0], self.unit.display_name)
-        self.assertTrue(result[f"block_id_{self.block_id}_completed"][0])
+        self.assertEqual(result[f"unit_{self.block_id}_name"][0], self.unit.display_name)
+        self.assertTrue(result[f"unit_{self.block_id}_completed"][0])
