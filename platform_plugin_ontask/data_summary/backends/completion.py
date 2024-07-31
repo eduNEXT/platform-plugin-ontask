@@ -12,24 +12,24 @@ from platform_plugin_ontask.utils import get_course_units
 
 class UnitCompletionDataSummary(DataSummary):
     """
-    Data summary for completion data.
+    Data summary for the completion of the units in a course.
 
-    A completion data summary is a summary of all the completion data for a specific course.
-    Each record contains information about the user, the course, the unit, and whether the
-    user has completed the unit.
+    A unit completion data summary is a summary of all the completion data of
+    the units in a specific course. Each record contains information about the
+    user, the course, the unit, and whether the user has completed the unit.
 
     `get_data_summary` performs the following steps:
 
     1. Get the course key from the course ID.
     2. Get all the enrollments for the course.
     3. Get all the course units for the course.
-    4. Create a dictionary with the completion data summary.
+    4. Create a dictionary with the unit completion data summary.
 
     Example result:
 
     ```python
 
-    completion_data_summary = CompletionDataSummary()
+    completion_data_summary = UnitCompletionDataSummary()
     completion_data_summary.get_data_summary()
 
     {
@@ -73,7 +73,7 @@ class UnitCompletionDataSummary(DataSummary):
         Get the unit completion data summary.
 
         Returns:
-            dict: A dataframe with the unit completion data summary
+            data_frame (dict): A dataframe with the unit completion data summary
         """
         course_key = CourseKey.from_string(self.course_id)
         enrollments = get_user_enrollments(self.course_id).filter(user__is_superuser=False, user__is_staff=False)
