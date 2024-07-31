@@ -145,8 +145,8 @@ Using the API
 The API endpoint is protected with the same auth method as the Open edX
 platform. For generate a token, you can use the next endpoint:
 
-- POST ``/<lms_host>/oauth2/access_token/``: Generate a token for the user. The
-  content type of the request must be ``application/x-www-form-urlencoded``.
+- **POST** ``/<lms_host>/oauth2/access_token/``: Generate a token for the user.
+  The content type of the request must be ``application/x-www-form-urlencoded``.
 
   **Body parameters**
 
