@@ -318,7 +318,7 @@ summary that is loaded into the OnTask table. To do this, follow these steps:
    .. code-block:: python
 
       settings.ONTASK_DATA_SUMMARY_CLASSES = [
-        ...
+        # ...Another data summary backends
         "platform_plugin_ontask.datasummary.backends.custom.CustomDataSummary"
       ]
 
