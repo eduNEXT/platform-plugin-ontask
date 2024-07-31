@@ -309,8 +309,8 @@ summary that is loaded into the OnTask table. To do this, follow these steps:
           }
           return data_frame
 
-    **NOTE**: The dataframe must include at least the ``user_id`` column. This
-    is important when merge the data with the current OnTask table.
+   **NOTE**: The dataframe must include at least the ``user_id`` column. This
+   is important when merge the data with the current OnTask table.
 
 4. Edit the ``ONTASK_DATA_SUMMARY_CLASSES`` setting in the ``common.py`` file
    to include the new backend in the list of backends.
