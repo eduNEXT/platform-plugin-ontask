@@ -16,6 +16,14 @@ def upload_dataframe_to_ontask_task(course_id: str, workflow_id: str, api_auth_t
     """
     Task to upload a dataframe to a OnTask workflow.
 
+    If the `ONTASK_DATA_SUMMARY_CLASSES` setting is not set, the task will log an
+    error message and return.
+
+    For each data summary class in the `ONTASK_DATA_SUMMARY_CLASSES` setting, the
+    task will create an instance of the class and call the `get_data_summary` method
+    to get the dataframe. The task will then merge the dataframe to the current
+    OnTask table.
+
     Args:
         course_id (str): The course ID.
         workflow_id (str): The OnTask workflow ID.
@@ -26,8 +34,8 @@ def upload_dataframe_to_ontask_task(course_id: str, workflow_id: str, api_auth_t
     if not data_summary_classes:
         log.info("ONTASK_DATA_SUMMARY_CLASSES is not set.")
 
+    ontask_client = OnTaskClient(settings.ONTASK_INTERNAL_API, api_auth_token)
     for data_summary_class_path in data_summary_classes:
-
         data_summary_class = get_data_summary_class(data_summary_class_path)
         if data_summary_class is None:
             log.error(f"Data summary class {data_summary_class_path} not found.")
@@ -36,7 +44,6 @@ def upload_dataframe_to_ontask_task(course_id: str, workflow_id: str, api_auth_t
         data_summary_instance = data_summary_class(course_id)
         data_frame = data_summary_instance.get_data_summary()
 
-        ontask_client = OnTaskClient(settings.ONTASK_INTERNAL_API, api_auth_token)
         response = ontask_client.merge_table(workflow_id, data_frame)
 
         log.info(ontask_log_from_response(response))
