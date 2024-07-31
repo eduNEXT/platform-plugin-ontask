@@ -206,7 +206,7 @@ will display add the new tab for OnTask:
 It is also necessary to include these settings for each course using the
 **Other Course Settings** in the **Advanced Settings** section in Studio:
 
-- **ONTASK_API_AUTH_TOKEN** *(Required)*: API Auth token for the OnTask
+- **ONTASK_API_AUTH_TOKEN** *(Optional)*: API Auth token for the OnTask
   service. You can find it in the OnTask service from **Profile** >
   **API Auth token**. If the token has not been generated, you can create
   a new one.
