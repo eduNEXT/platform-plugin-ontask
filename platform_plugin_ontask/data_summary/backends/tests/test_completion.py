@@ -1,4 +1,4 @@
-"""Tests for the CompletionDataSummary class."""
+"""Tests for the Completion backend module."""
 
 from unittest import TestCase
 from unittest.mock import Mock, patch
@@ -7,29 +7,24 @@ from platform_plugin_ontask.data_summary.backends.completion import UnitCompleti
 
 
 class TestCompletionDataSummary(TestCase):
-    """Tests for the `CompletionDataSummary` class."""
+    """Tests for the Completion backend module."""
 
     def setUp(self):
         self.course_id = "course-v1:edunext+ontask+demo"
-        self.user = Mock()
-        self.user.id = 1
-        self.user.email = "john@doe.com"
-        self.user.username = "john_doe"
+        self.user = Mock(id=1, email="john@doe.com", username="john_doe")
         self.enrollment = Mock(user=self.user)
         self.block_id = "9c56d"
-        self.unit = Mock()
-        self.unit.usage_key.block_id = self.block_id
-        self.unit.display_name = "Unit 1"
+        self.unit = Mock(usage_key=Mock(block_id=self.block_id), display_name="Unit 1")
 
     @patch("platform_plugin_ontask.data_summary.backends.completion.get_user_enrollments")
     @patch("platform_plugin_ontask.data_summary.backends.completion.get_course_units")
     @patch("platform_plugin_ontask.data_summary.backends.completion.CompletionService")
     def test_get_data_summary(
-        self, MockCompletionService: Mock, mock_get_course_units: Mock, mock_get_user_enrollments: Mock
+        self, mock_completion_service: Mock, mock_get_course_units: Mock, mock_get_user_enrollments: Mock
     ):
         mock_get_user_enrollments.return_value.filter.return_value = [self.enrollment]
         mock_get_course_units.return_value = [self.unit]
-        mock_completion_service = MockCompletionService.return_value
+        mock_completion_service = mock_completion_service.return_value
         mock_completion_service.vertical_is_complete.return_value = True
 
         completion_data_summary = UnitCompletionDataSummary(self.course_id)
