@@ -266,29 +266,28 @@ course.
 Create a Custom Data Summary Backend
 *********************************************
 
-By default, the data summary that is loaded into the OnTask table is generated
-from the course completion data. This are the columns that are loaded into
-OnTask:
+By default, the data summary loaded into the OnTask table is generated from the
+course completion and grade data. These are the columns that are loaded into
+the OnTask table:
 
-- **ID** *(Integer)*: An incremental ID.
-- **User ID** *(Integer)*: ID of the user.
-- **Username** *(String)*: Username of the user.
-- **Email** *(String)*: Email of the user.
-- **Course ID** *(String)*: ID of the course.
-- **Unit ID** *(String)*: ID of the unit.
-- **Unit Name** *(String)*: Name of the unit.
-- **Is Completed** *(Boolean)*: If the unit is completed.
+- ``user_id`` *(Integer)*: ID of the user.
+- ``username`` *(String)*: Username of the user.
+- ``email`` *(String)*: Email of the user.
+- ``course_id`` *(String)*: ID of the course.
+- ``unit_{block_id}_name`` *(String)*: Name of the unit.
+- ``unit_{block_id}_completed`` *(Boolean)*: If the unit is completed.
+- ``component_{block_id}_grade`` *(Float)*: Grade of the component.
 
-You can create a custom data summary backend to customize the data summary
-that is loaded into the OnTask table. To do this, follow these steps:
+You can create a custom data summary backend to add new columns to the data
+summary that is loaded into the OnTask table. To do this, follow these steps:
 
-1. Create a new file in the ``datasummary`` directory with the name of the
+1. Create a new file in the ``data_summary`` directory with the name of the
    backend, e.g., ``custom.py``
 2. Create a class that inherits from ``DataSummary``, e.g.,
    ``CustomDataSummary(DataSummary)``
 3. Implement the ``get_data_summary`` method to return the data summary. The
    method must return a dictionary where each key is the column name and the
-   value is other dictionary with the id as key and the value as the value of
+   value is other dictionary with the ID as key, and the value as the value of
    the column.
 
    .. code-block:: python
@@ -304,25 +303,27 @@ that is loaded into the OnTask table. To do this, follow these steps:
               dict: A custom data summary.
           """
           data_frame = {
-              "id": {"0": 1},
               "user_id": {"0": 1},
-              "email": {"0": "john@doe.com"},
-              "username": {"0": "john_doe"},
-              "course_id": {"0": "course-v1:edX+DemoX+Demo_Course"},
-              "block_id": {"0": "5c56dbeb30504c8fb899553f080cf15d"},
-              "block_name": {"0": "Unit 1"},
-              "custom_value": {"0": False},
-              "another_custom_value": {"0": "value"},
+              "unit_a7e390b77964476fb9924f0bc194da4c_custom_value": {"0": False},
+              "unit_a7e390b77964476fb9924f0bc194da4c_another_custom_value": {"0": "value"},
           }
           return data_frame
 
-4. Edit the ``ONTASK_DATA_SUMMARY_CLASS`` setting in the ``common.py`` file to
-   use the new backend.
+    **NOTE**: The dataframe must include at least the ``user_id`` column. This
+    is important when merge the data with the current OnTask table.
+
+4. Edit the ``ONTASK_DATA_SUMMARY_CLASSES`` setting in the ``common.py`` file
+   to include the new backend in the list of backends.
 
    .. code-block:: python
 
-      settings.ONTASK_DATA_SUMMARY_CLASS = "platform_plugin_ontask.datasummary.backends.custom.CustomDataSummary"
+      settings.ONTASK_DATA_SUMMARY_CLASSES = [
+        ...
+        "platform_plugin_ontask.datasummary.backends.custom.CustomDataSummary"
+      ]
 
+**NOTE**: The default data summaries are optional. You can remove them from the
+``ONTASK_DATA_SUMMARY_CLASSES`` setting if you do not want to use them.
 
 Getting Help
 ************
