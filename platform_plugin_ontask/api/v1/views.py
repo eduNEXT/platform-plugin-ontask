@@ -38,7 +38,8 @@ class OnTaskWorkflowAPIView(APIView):
 
     `Use Cases`:
 
-        * POST: Create a new OnTask workflow for the course.
+        * POST: Create a new OnTask workflow for the course. Also, create a
+            table in the workflow with the enrollment data.
 
     `Example Requests`:
 
@@ -71,6 +72,7 @@ class OnTaskWorkflowAPIView(APIView):
         Handle POST requests to create a new OnTask workflow for the course.
 
         The workflow ID is stored in the Other Course Settings of the course.
+        A table is created in the workflow with the enrollment data.
 
         Arguments:
             request (Request): The HTTP request object.
@@ -130,7 +132,8 @@ class OnTaskTableAPIView(APIView):
 
     `Use Cases`:
 
-        * PUT: Upload the course data to OnTask.
+        * PUT: Upload the course data to OnTask. This merge the new data with
+            the existing data in the table.
 
     `Example Requests`:
 
