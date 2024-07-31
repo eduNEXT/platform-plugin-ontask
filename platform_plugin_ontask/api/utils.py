@@ -32,7 +32,7 @@ def ontask_log_from_response(response: Response) -> str:
     return (
         f"{response.request.method} {response.url} | "
         f"status-code={response.status_code} | "
-        f"response={response.text}",
+        f"response={response.text}"
     )
 
 
