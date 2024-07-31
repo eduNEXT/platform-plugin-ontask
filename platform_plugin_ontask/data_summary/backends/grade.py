@@ -2,10 +2,10 @@
 
 from collections import defaultdict
 
-from lms.djangoapps.courseware.model_data import get_score
 from opaque_keys.edx.keys import CourseKey
 
 from platform_plugin_ontask.data_summary.backends.base import DataSummary
+from platform_plugin_ontask.edxapp_wrapper.courseware import get_score
 from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollments
 from platform_plugin_ontask.utils import get_course_components
 
