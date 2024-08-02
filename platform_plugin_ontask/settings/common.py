@@ -49,4 +49,10 @@ def plugin_settings(settings):
     settings.PLATFORM_PLUGIN_ONTASK_COMPLETION_BACKEND = (
         "platform_plugin_ontask.edxapp_wrapper.backends.completion_r_v1"
     )
-    settings.ONTASK_DATA_SUMMARY_CLASS = "platform_plugin_ontask.datasummary.backends.completion.CompletionDataSummary"
+    settings.PLATFORM_PLUGIN_ONTASK_COURSEWARE_BACKEND = (
+        "platform_plugin_ontask.edxapp_wrapper.backends.courseware_r_v1"
+    )
+    settings.ONTASK_DATA_SUMMARY_CLASSES = [
+        "platform_plugin_ontask.data_summary.backends.completion.UnitCompletionDataSummary",
+        "platform_plugin_ontask.data_summary.backends.grade.ComponentGradeDataSummary",
+    ]

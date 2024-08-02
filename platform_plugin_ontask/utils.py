@@ -23,6 +23,21 @@ def get_course_units(course_key: CourseKey) -> Iterable:
             yield from subsection.get_children()
 
 
+def get_course_components(course_key: CourseKey) -> Iterable:
+    """
+    Extract a list of 'components' (blocks) from a course.
+
+    Args:
+        course_key (CourseKey): Course key.
+
+    Returns:
+        Iterable: List of components.
+    """
+    course_units = get_course_units(course_key)
+    for unit in course_units:
+        yield from unit.get_children()
+
+
 def _(text):
     """
     Make '_' a no-op so we can scrape strings.

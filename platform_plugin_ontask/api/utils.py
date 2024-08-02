@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
+import logging
 from importlib import import_module
 
 from django.conf import settings
 from opaque_keys import InvalidKeyError
 from opaque_keys.edx.keys import CourseKey
 
-from platform_plugin_ontask.datasummary.backends.base import DataSummary
-from platform_plugin_ontask.datasummary.backends.completion import CompletionDataSummary
+from platform_plugin_ontask.data_summary.backends.base import DataSummary
 from platform_plugin_ontask.edxapp_wrapper.modulestore import modulestore
 from platform_plugin_ontask.exceptions import (
     APIAuthTokenNotSetError,
@@ -18,7 +18,7 @@ from platform_plugin_ontask.exceptions import (
     WorkflowIDNotSetError,
 )
 
-DEFAULT_DATA_SUMMARY_CLASS = CompletionDataSummary
+log = logging.getLogger(__name__)
 
 
 def get_course_key(course_id: str) -> CourseKey:
@@ -61,7 +61,10 @@ def get_course_block(course_key: CourseKey):
 
 def get_api_auth_token(course_block) -> str:
     """
-    Get the OnTask API Auth Token from the other course settings.
+    Get the OnTask API Auth Token.
+
+    First, it tries to get the token from the django settings. If it is not set,
+    it tries to get it from the other course settings.
 
     Args:
         course_block (CourseBlock): The course block.
@@ -72,7 +75,9 @@ def get_api_auth_token(course_block) -> str:
     Returns:
         str: The OnTask API Auth Token.
     """
-    api_auth_token = course_block.other_course_settings.get("ONTASK_API_AUTH_TOKEN")
+    api_auth_token = getattr(settings, "ONTASK_API_AUTH_TOKEN", None) or course_block.other_course_settings.get(
+        "ONTASK_API_AUTH_TOKEN"
+    )
     if api_auth_token is None:
         raise APIAuthTokenNotSetError()
     return api_auth_token
@@ -97,24 +102,17 @@ def get_workflow_id(course_block) -> str:
     return workflow_id
 
 
-def get_data_summary_class() -> DataSummary:
+def get_data_summary_class(data_summary_class_path: str) -> DataSummary | None:
     """
-    Get the data summary class based on django settings.
-
-    This function retrieves the data summary class to be used based
-    on the value of the `ONTASK_DATA_SUMMARY_CLASS` django setting.
-    If the variable is not set or is empty, it returns the default
-    data summary class `CompletionDataSummary`.
+    Get the data summary class based on the module path.
 
     Returns:
-        DataSummary: The class to be used to generate the data summary.
+        DataSummary | None: The class to be used to generate the data summary.
+            If the class is not found, it returns None.
     """
-    data_summary_class = getattr(settings, "ONTASK_DATA_SUMMARY_CLASS", None)
-
-    if not data_summary_class:
-        return DEFAULT_DATA_SUMMARY_CLASS
-
-    module_name, class_name = data_summary_class.rsplit(".", 1)
-    module = import_module(module_name)
-
-    return getattr(module, class_name, DEFAULT_DATA_SUMMARY_CLASS)
+    module_name, class_name = data_summary_class_path.rsplit(".", 1)
+    try:
+        module = import_module(module_name)
+        return getattr(module, class_name)
+    except (ImportError, AttributeError):
+        return None

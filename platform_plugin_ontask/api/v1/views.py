@@ -1,6 +1,6 @@
 """Views for the OnTask plugin API."""
 
-from logging import getLogger
+import logging
 
 from django.conf import settings
 from edx_rest_framework_extensions.auth.jwt.authentication import JwtAuthentication
@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from platform_plugin_ontask.api.utils import get_api_auth_token, get_course_block, get_course_key, get_workflow_id
 from platform_plugin_ontask.client import OnTaskClient
 from platform_plugin_ontask.edxapp_wrapper.authentication import BearerAuthenticationAllowInactiveUser
+from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollments
 from platform_plugin_ontask.edxapp_wrapper.modulestore import update_item
 from platform_plugin_ontask.exceptions import (
     APIAuthTokenNotSetError,
@@ -22,7 +23,7 @@ from platform_plugin_ontask.exceptions import (
 )
 from platform_plugin_ontask.tasks import upload_dataframe_to_ontask_task
 
-log = getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 class OnTaskWorkflowAPIView(APIView):
@@ -31,7 +32,8 @@ class OnTaskWorkflowAPIView(APIView):
 
     `Use Cases`:
 
-        * POST: Create a new OnTask workflow for the course.
+        * POST: Create a new OnTask workflow for the course. Also, create a
+            table in the workflow with the enrollment data.
 
     `Example Requests`:
 
@@ -64,6 +66,7 @@ class OnTaskWorkflowAPIView(APIView):
         Handle POST requests to create a new OnTask workflow for the course.
 
         The workflow ID is stored in the Other Course Settings of the course.
+        A table is created in the workflow with the enrollment data.
 
         Arguments:
             request (Request): The HTTP request object.
@@ -77,22 +80,36 @@ class OnTaskWorkflowAPIView(APIView):
             api_auth_token = get_api_auth_token(course_block)
 
             ontask_client = OnTaskClient(settings.ONTASK_INTERNAL_API, api_auth_token)
-            response = ontask_client.create_workflow(course_id)
+            create_workflow_response = ontask_client.create_workflow(course_id)
 
-            if not response.ok:
-                log.error(f"POST {response.url} | status-code={response.status_code} | response={response.text}")
+            if not create_workflow_response.ok:
+                log.error(create_workflow_response.text)
                 return Response(
-                    data={
-                        "error": "An error occurred while creating the workflow. Ensure the "
-                        "workflow for this course does not already exist, and that the OnTask "
-                        "API Auth token is correct."
-                    },
+                    "An error occurred while creating the workflow. "
+                    "Ensure the workflow for this course does not already "
+                    "exist, and that the OnTask API Auth token is correct.",
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-            created_workflow = response.json()
-            course_block.other_course_settings["ONTASK_WORKFLOW_ID"] = created_workflow["id"]
+            workflow_id = create_workflow_response.json()["id"]
+            course_block.other_course_settings["ONTASK_WORKFLOW_ID"] = workflow_id
             update_item(CourseKey.from_string(course_id), course_block, request.user.id)
+
+            enrollments = get_user_enrollments(course_id)
+            data_frame = {"user_id": {}}
+            for index, enrollment in enumerate(enrollments):
+                data_frame["user_id"][index] = enrollment.user.id
+
+            update_table_response = ontask_client.update_table(workflow_id, data_frame)
+
+            if not update_table_response.ok:
+                log.error(update_table_response.text)
+                return Response(
+                    "An error occurred while updating the table. "
+                    "Ensure the workflow for this course exists, and that "
+                    "the OnTask API Auth token is correct.",
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
             return Response(status=status.HTTP_201_CREATED)
         except (CustomInvalidKeyError, CourseNotFoundError, APIAuthTokenNotSetError) as error:
@@ -105,7 +122,8 @@ class OnTaskTableAPIView(APIView):
 
     `Use Cases`:
 
-        * PUT: Upload the course data to OnTask.
+        * PUT: Upload the course data to OnTask. This merge the new data with
+            the existing data in the table.
 
     `Example Requests`:
 

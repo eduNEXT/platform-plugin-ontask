@@ -145,8 +145,8 @@ Using the API
 The API endpoint is protected with the same auth method as the Open edX
 platform. For generate a token, you can use the next endpoint:
 
-- POST ``/<lms_host>/oauth2/access_token/``: Generate a token for the user. The
-  content type of the request must be ``application/x-www-form-urlencoded``.
+- **POST** ``/<lms_host>/oauth2/access_token/``: Generate a token for the user.
+  The content type of the request must be ``application/x-www-form-urlencoded``.
 
   **Body parameters**
 
@@ -171,19 +171,24 @@ platform. For generate a token, you can use the next endpoint:
 Finally, you are ready to use the API. The next endpoints are available:
 
 - **POST** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/workflow/``:
-  Create a new workflow in OnTask.
+  Create a new workflow in OnTask. This also creates a new table in the workflow.
+  This endpoint uses the `create workflow`_ endpoint from OnTask API.
 
   **Path parameters**
 
   - **course_id (Required)**: ID of the course.
 
-- **POST** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/table/``:
-  Create a new table in a OnTask workflow. If a table already exists, it will
-  be overwritten.
+- **PUT** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/table/``:
+  Updates the current table in a OnTask workflow. This performs a merge of the
+  current table with the new data. This endpoint uses the `merge table`_
+  endpoint from OnTask API.
 
   **Path parameters**
 
   - **course_id (Required)**: ID of the course.
+
+.. _create workflow: https://ontask-version-b.readthedocs.io/en/latest/Tutorial/Tasks/api_browse.html#workflow-api
+.. _merge table: https://ontask-version-b.readthedocs.io/en/latest/Tutorial/Tasks/api_browse.html#table-api
 
 
 Configuring required in the Open edX platform
@@ -206,7 +211,7 @@ will display add the new tab for OnTask:
 It is also necessary to include these settings for each course using the
 **Other Course Settings** in the **Advanced Settings** section in Studio:
 
-- **ONTASK_API_AUTH_TOKEN** *(Required)*: API Auth token for the OnTask
+- **ONTASK_API_AUTH_TOKEN** *(Optional)*: API Auth token for the OnTask
   service. You can find it in the OnTask service from **Profile** >
   **API Auth token**. If the token has not been generated, you can create
   a new one.
@@ -225,6 +230,10 @@ Example:
     "ONTASK_WORKFLOW_ID": 1
   }
 
+**NOTE**: It is posible to configure the **ONTASK_API_AUTH_TOKEN** at platform
+level. You can include it in the LMS settings. This way, you do not need to
+configure it in each course.
+
 **NOTE**: It is important to have enabled the **Other Course Settings** in the
 settings of the platform. You can find more information about this in the
 `Open edX documentation`_.
@@ -240,7 +249,7 @@ create an OnTask Workflow in case there is not one configured. Once the
 **Create Workflow** button is clicked, a workflow will be created in OnTask and
 will be named as the current course ID. e.g. ``course-v1:edunext+ontask+demo``.
 
-.. image:: https://github.com/user-attachments/assets/ebb3daf7-361a-48d4-956a-d04eb8d7d405
+.. image:: https://github.com/user-attachments/assets/efc836ac-bdbb-4857-8791-cfb1602b820f
 
 The instructor can then view the OnTask workflow related to the course. From
 there the instructor can create, import/export or execute all actions. In the
@@ -250,41 +259,40 @@ course and load it into a table in the OnTask Workflow. Each time the button is
 pressed, the data will be recreated. The instructor can then use this data to
 create different actions.
 
-.. image:: https://github.com/user-attachments/assets/564993af-171a-4ebe-b264-f2b8590ea17a
+.. image:: https://github.com/user-attachments/assets/c7d4fe5c-c2d0-4d81-975d-1766912568c1
 
 Once the data has been loaded, the instructor can go to **Table** > **View
 data**. There the instructor find the table with all the data summary of the
 course.
 
-.. image:: https://github.com/user-attachments/assets/436ca58e-05fd-43d1-ae6d-f4550bfd652a
+.. image:: https://github.com/user-attachments/assets/05a416d6-a29f-4fbd-9508-61ed8b9575c5
 
 
 Create a Custom Data Summary Backend
 *********************************************
 
-By default, the data summary that is loaded into the OnTask table is generated
-from the course completion data. This are the columns that are loaded into
-OnTask:
+By default, the data summary loaded into the OnTask table is generated from the
+course completion and grade data. These are the columns that are loaded into
+the OnTask table:
 
-- **ID** *(Integer)*: An incremental ID.
-- **User ID** *(Integer)*: ID of the user.
-- **Username** *(String)*: Username of the user.
-- **Email** *(String)*: Email of the user.
-- **Course ID** *(String)*: ID of the course.
-- **Unit ID** *(String)*: ID of the unit.
-- **Unit Name** *(String)*: Name of the unit.
-- **Is Completed** *(Boolean)*: If the unit is completed.
+- ``user_id`` *(Integer)*: ID of the user.
+- ``username`` *(String)*: Username of the user.
+- ``email`` *(String)*: Email of the user.
+- ``course_id`` *(String)*: ID of the course.
+- ``unit_{unit_id}_name`` *(String)*: Name of the unit.
+- ``unit_{unit_id}_completed`` *(Boolean)*: If the unit is completed.
+- ``component_{component_id}_grade`` *(Float)*: Grade of the component.
 
-You can create a custom data summary backend to customize the data summary
-that is loaded into the OnTask table. To do this, follow these steps:
+You can create a custom data summary backend to add new columns to the data
+summary that is loaded into the OnTask table. To do this, follow these steps:
 
-1. Create a new file in the ``datasummary`` directory with the name of the
+1. Create a new file in the ``data_summary`` directory with the name of the
    backend, e.g., ``custom.py``
 2. Create a class that inherits from ``DataSummary``, e.g.,
    ``CustomDataSummary(DataSummary)``
 3. Implement the ``get_data_summary`` method to return the data summary. The
    method must return a dictionary where each key is the column name and the
-   value is other dictionary with the id as key and the value as the value of
+   value is other dictionary with the ID as key, and the value as the value of
    the column.
 
    .. code-block:: python
@@ -300,25 +308,28 @@ that is loaded into the OnTask table. To do this, follow these steps:
               dict: A custom data summary.
           """
           data_frame = {
-              "id": {"0": 1},
               "user_id": {"0": 1},
-              "email": {"0": "john@doe.com"},
-              "username": {"0": "john_doe"},
-              "course_id": {"0": "course-v1:edX+DemoX+Demo_Course"},
-              "block_id": {"0": "5c56dbeb30504c8fb899553f080cf15d"},
-              "block_name": {"0": "Unit 1"},
-              "custom_value": {"0": False},
-              "another_custom_value": {"0": "value"},
+              "unit_a7e390b77964476fb9924f0bc194da4c_custom_value": {"0": False},
+              "unit_a7e390b77964476fb9924f0bc194da4c_another_custom_value": {"0": "value"},
           }
           return data_frame
 
-4. Edit the ``ONTASK_DATA_SUMMARY_CLASS`` setting in the ``common.py`` file to
-   use the new backend.
+   **NOTE**: The dataframe must include at least the ``user_id`` column. This
+   is important when merge the data with the current OnTask table.
+
+4. Edit the ``ONTASK_DATA_SUMMARY_CLASSES`` setting in the ``common.py`` file
+   to include the new backend in the list of backends.
 
    .. code-block:: python
 
-      settings.ONTASK_DATA_SUMMARY_CLASS = "platform_plugin_ontask.datasummary.backends.custom.CustomDataSummary"
+      settings.ONTASK_DATA_SUMMARY_CLASSES = [
+        # ...Another data summary backends
+        "platform_plugin_ontask.datasummary.backends.custom.CustomDataSummary"
+      ]
 
+   **NOTE**: The ``UnitCompletionDataSummary`` and ``ComponentGradeDataSummary``
+   are the default data summary backends. If you do not want to use them, you
+   can do so by removing them from the ``ONTASK_DATA_SUMMARY_CLASSES`` setting.
 
 Getting Help
 ************
