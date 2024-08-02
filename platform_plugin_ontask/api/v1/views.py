@@ -90,11 +90,9 @@ class OnTaskWorkflowAPIView(APIView):
             if not create_workflow_response.ok:
                 log.error(create_workflow_response.text)
                 return Response(
-                    data={
-                        "error": "An error occurred while creating the workflow. "
-                        "Ensure the workflow for this course does not already "
-                        "exist, and that the OnTask API Auth token is correct."
-                    },
+                    "An error occurred while creating the workflow. "
+                    "Ensure the workflow for this course does not already "
+                    "exist, and that the OnTask API Auth token is correct.",
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
@@ -112,11 +110,9 @@ class OnTaskWorkflowAPIView(APIView):
             if not update_table_response.ok:
                 log.error(update_table_response.text)
                 return Response(
-                    data={
-                        "error": "An error occurred while updating the table. "
-                        "Ensure the workflow for this course exists, and that "
-                        "the OnTask API Auth token is correct."
-                    },
+                    "An error occurred while updating the table. "
+                    "Ensure the workflow for this course exists, and that "
+                    "the OnTask API Auth token is correct.",
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
