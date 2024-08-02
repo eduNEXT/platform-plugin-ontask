@@ -5,7 +5,7 @@ import logging
 from celery import shared_task
 from django.conf import settings
 
-from platform_plugin_ontask.api.utils import get_data_summary_class, ontask_log_from_response
+from platform_plugin_ontask.api.utils import get_data_summary_class
 from platform_plugin_ontask.client import OnTaskClient
 
 log = logging.getLogger(__name__)
@@ -46,4 +46,4 @@ def upload_dataframe_to_ontask_task(course_id: str, workflow_id: str, api_auth_t
 
         response = ontask_client.merge_table(workflow_id, data_frame)
 
-        log.info(ontask_log_from_response(response))
+        log.info(response.text)

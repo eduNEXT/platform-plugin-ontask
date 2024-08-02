@@ -6,7 +6,6 @@ from unittest.mock import Mock, patch
 from django.test.utils import override_settings
 from rest_framework import status
 
-from platform_plugin_ontask.api.utils import ontask_log_from_response
 from platform_plugin_ontask.data_summary.backends.tests.dummy import DummyDataSummary
 from platform_plugin_ontask.tasks import upload_dataframe_to_ontask_task
 
@@ -34,7 +33,7 @@ class TestUploadDataframeOnTaskTask(TestCase):
         upload_dataframe_to_ontask_task(self.course_id, self.workflow_id, self.api_auth_token)
 
         mock_merge_table.assert_called_once_with(self.workflow_id, DummyDataSummary(self.course_id).get_data_summary())
-        mock_log.info.assert_called_with(ontask_log_from_response(mock_merge_table.return_value))
+        mock_log.info.assert_called_with(mock_merge_table.text)
 
     @override_settings(ONTASK_DATA_SUMMARY_CLASSES=[])
     @patch(f"{TASKS_MODULE_PATH}.log")

@@ -15,7 +15,6 @@ from platform_plugin_ontask.api.utils import (
     get_course_block,
     get_course_key,
     get_workflow_id,
-    ontask_log_from_response,
 )
 from platform_plugin_ontask.client import OnTaskClient
 from platform_plugin_ontask.edxapp_wrapper.authentication import BearerAuthenticationAllowInactiveUser
@@ -89,7 +88,7 @@ class OnTaskWorkflowAPIView(APIView):
             create_workflow_response = ontask_client.create_workflow(course_id)
 
             if not create_workflow_response.ok:
-                log.error(ontask_log_from_response(create_workflow_response))
+                log.error(create_workflow_response.text)
                 return Response(
                     data={
                         "error": "An error occurred while creating the workflow. "
@@ -111,7 +110,7 @@ class OnTaskWorkflowAPIView(APIView):
             update_table_response = ontask_client.update_table(workflow_id, data_frame)
 
             if not update_table_response.ok:
-                log.error(ontask_log_from_response(update_table_response))
+                log.error(update_table_response.text)
                 return Response(
                     data={
                         "error": "An error occurred while updating the table. "
