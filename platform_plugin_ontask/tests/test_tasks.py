@@ -33,7 +33,7 @@ class TestUploadDataframeOnTaskTask(TestCase):
         upload_dataframe_to_ontask_task(self.course_id, self.workflow_id, self.api_auth_token)
 
         mock_merge_table.assert_called_once_with(self.workflow_id, DummyDataSummary(self.course_id).get_data_summary())
-        mock_log.info.assert_called_with(mock_merge_table.text)
+        mock_log.info.assert_called_with("response")
 
     @override_settings(ONTASK_DATA_SUMMARY_CLASSES=[])
     @patch(f"{TASKS_MODULE_PATH}.log")

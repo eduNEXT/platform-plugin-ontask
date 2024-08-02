@@ -104,7 +104,7 @@ class OnTaskWorkflowAPIViewTest(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            response.data["error"],
+            response.data,
             "An error occurred while creating the workflow. Ensure the "
             "workflow for this course does not already exist, and that the "
             "OnTask API Auth token is correct.",
@@ -128,7 +128,7 @@ class OnTaskWorkflowAPIViewTest(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(
-            response.data["error"],
+            response.data,
             "An error occurred while updating the table. Ensure the workflow for "
             "this course exists, and that the OnTask API Auth token is correct.",
         )
