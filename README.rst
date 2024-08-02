@@ -322,8 +322,9 @@ summary that is loaded into the OnTask table. To do this, follow these steps:
         "platform_plugin_ontask.datasummary.backends.custom.CustomDataSummary"
       ]
 
-**NOTE**: The default data summaries are optional. You can remove them from the
-``ONTASK_DATA_SUMMARY_CLASSES`` setting if you do not want to use them.
+   **NOTE**: The ``UnitCompletionDataSummary`` and ``ComponentGradeDataSummary``
+   are the default data summary backends. If you do not want to use them, you
+   can do so by removing them from the ``ONTASK_DATA_SUMMARY_CLASSES`` setting.
 
 Getting Help
 ************
