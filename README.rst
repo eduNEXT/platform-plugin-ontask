@@ -172,6 +172,7 @@ Finally, you are ready to use the API. The next endpoints are available:
 
 - **POST** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/workflow/``:
   Create a new workflow in OnTask. This also creates a new table in the workflow.
+  This endpoint uses the `create workflow`_ endpoint from OnTask API.
 
   **Path parameters**
 
@@ -179,11 +180,15 @@ Finally, you are ready to use the API. The next endpoints are available:
 
 - **PUT** ``/<lms_host>/platform-plugin-ontask/<course_id>/api/v1/table/``:
   Updates the current table in a OnTask workflow. This performs a merge of the
-  current table with the new data.
+  current table with the new data. This endpoint uses the `merge table`_
+  endpoint from OnTask API.
 
   **Path parameters**
 
   - **course_id (Required)**: ID of the course.
+
+.. _create workflow: https://ontask-version-b.readthedocs.io/en/latest/Tutorial/Tasks/api_browse.html#workflow-api
+.. _merge table: https://ontask-version-b.readthedocs.io/en/latest/Tutorial/Tasks/api_browse.html#table-api
 
 
 Configuring required in the Open edX platform
