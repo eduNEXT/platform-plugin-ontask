@@ -104,8 +104,8 @@ class OnTaskWorkflowAPIView(APIView):
 
             enrollments = get_user_enrollments(course_id)
             data_frame = {"user_id": {}}
-            for idx, enrollment in enumerate(enrollments):
-                data_frame["user_id"][idx] = enrollment.user.id
+            for index, enrollment in enumerate(enrollments):
+                data_frame["user_id"][index] = enrollment.user.id
 
             update_table_response = ontask_client.update_table(workflow_id, data_frame)
 
