@@ -274,9 +274,9 @@ the OnTask table:
 - ``username`` *(String)*: Username of the user.
 - ``email`` *(String)*: Email of the user.
 - ``course_id`` *(String)*: ID of the course.
-- ``unit_{block_id}_name`` *(String)*: Name of the unit.
-- ``unit_{block_id}_completed`` *(Boolean)*: If the unit is completed.
-- ``component_{block_id}_grade`` *(Float)*: Grade of the component.
+- ``unit_{unit_id}_name`` *(String)*: Name of the unit.
+- ``unit_{unit_id}_completed`` *(Boolean)*: If the unit is completed.
+- ``component_{component_id}_grade`` *(Float)*: Grade of the component.
 
 You can create a custom data summary backend to add new columns to the data
 summary that is loaded into the OnTask table. To do this, follow these steps:
