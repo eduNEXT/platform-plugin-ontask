@@ -6,8 +6,8 @@ from unittest.mock import Mock, patch
 from platform_plugin_ontask.data_summary.backends.grade import ComponentGradeDataSummary
 
 
-class TestGradeDataSummary(TestCase):
-    """Tests for the Grade backend module."""
+class TestComponentGradeDataSummary(TestCase):
+    """Tests for the Component Grade data summary class."""
 
     def setUp(self):
         self.course_id = "course-v1:edunext+ontask+demo"

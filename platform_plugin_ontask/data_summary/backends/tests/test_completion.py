@@ -6,8 +6,8 @@ from unittest.mock import Mock, patch
 from platform_plugin_ontask.data_summary.backends.completion import UnitCompletionDataSummary
 
 
-class TestCompletionDataSummary(TestCase):
-    """Tests for the Completion backend module."""
+class TestUnitCompletionDataSummary(TestCase):
+    """Tests for the Unit Completion data summary class."""
 
     def setUp(self):
         self.course_id = "course-v1:edunext+ontask+demo"
