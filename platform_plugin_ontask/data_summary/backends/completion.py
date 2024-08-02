@@ -62,11 +62,11 @@ class UnitCompletionDataSummary(DataSummary):
     ```
     """
 
-    EMAIL = "email"
-    USERNAME = "username"
-    COURSE_ID = "course_id"
-    UNIT_NAME = "unit_{}_name"
-    COMPLETED = "unit_{}_completed"
+    EMAIL_COLUMN_NAME = "email"
+    USERNAME_COLUMN_NAME = "username"
+    COURSE_ID_COLUMN_NAME = "course_id"
+    UNIT_NAME_COLUMN_NAME = "unit_{}_name"
+    COMPLETED_COLUMN_NAME = "unit_{}_completed"
 
     def get_data_summary(self) -> dict:
         """
@@ -82,13 +82,15 @@ class UnitCompletionDataSummary(DataSummary):
         data_frame = defaultdict(dict)
         for index, enrollment in enumerate(enrollments):
             completion_service = CompletionService(enrollment.user, course_key)
-            data_frame[self.USER_ID][index] = enrollment.user.id
-            data_frame[self.EMAIL][index] = enrollment.user.email
-            data_frame[self.USERNAME][index] = enrollment.user.username
-            data_frame[self.COURSE_ID][index] = self.course_id
+            data_frame[self.USER_ID_COLUMN_NAME][index] = enrollment.user.id
+            data_frame[self.EMAIL_COLUMN_NAME][index] = enrollment.user.email
+            data_frame[self.USERNAME_COLUMN_NAME][index] = enrollment.user.username
+            data_frame[self.COURSE_ID_COLUMN_NAME][index] = self.course_id
             for unit in course_units:
                 block_id = unit.usage_key.block_id
-                data_frame[self.UNIT_NAME.format(block_id)][index] = unit.display_name
-                data_frame[self.COMPLETED.format(block_id)][index] = completion_service.vertical_is_complete(unit)
+                data_frame[self.UNIT_NAME_COLUMN_NAME.format(block_id)][index] = unit.display_name
+                data_frame[self.COMPLETED_COLUMN_NAME.format(block_id)][index] = (
+                    completion_service.vertical_is_complete(unit)
+                )
 
         return data_frame

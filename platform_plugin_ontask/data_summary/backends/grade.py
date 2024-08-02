@@ -51,7 +51,7 @@ class ComponentGradeDataSummary(DataSummary):
     ```
     """
 
-    GRADE = "component_{}_grade"
+    GRADE_COLUMN_NAME = "component_{}_grade"
 
     def get_data_summary(self) -> dict:
         """
@@ -67,11 +67,11 @@ class ComponentGradeDataSummary(DataSummary):
         data_frame = defaultdict(dict)
         for index, enrollment in enumerate(enrollments):
             user_id = enrollment.user.id
-            data_frame[self.USER_ID][index] = user_id
+            data_frame[self.USER_ID_COLUMN_NAME][index] = user_id
             for component in course_components:
                 usage_key = component.usage_key
                 student_module = get_score(user_id, usage_key)
                 grade = student_module.grade if student_module and student_module.grade is not None else 0
-                data_frame[self.GRADE.format(usage_key.block_id)][index] = grade
+                data_frame[self.GRADE_COLUMN_NAME.format(usage_key.block_id)][index] = grade
 
         return data_frame
