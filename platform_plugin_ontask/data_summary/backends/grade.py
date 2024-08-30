@@ -37,11 +37,11 @@ class ComponentGradeDataSummary(DataSummary):
             "0": 5,
             "1": 6,
         },
-        "component_9c56dbeb30504c8fb799553f080cf15d_grade": {
+        "Unit 2.1.2(abf24)> Dropdown fd8d6 Grade": {
             "0": 1,
             "1": 0,
         },
-        "component_6c7e4b1b7b7e4b3e8b7b7e4b3e8b7b7_grade": {
+        "Unit 3.1.2(8917f)> Single select 91121 Grade": {
             "0": 0,
             "1": 1,
         },
@@ -81,7 +81,7 @@ class ComponentGradeDataSummary(DataSummary):
             data_frame (dict): A dataframe with the component completion data summary
         """
         course_key = CourseKey.from_string(self.course_id)
-        enrollments = get_user_enrollments(self.course_id).filter(user__is_superuser=False, user__is_staff=False)
+        enrollments = get_user_enrollments(self.course_id)
         course_components = list(get_course_components(course_key))
 
         data_frame = defaultdict(dict)

@@ -37,23 +37,11 @@ class UnitCompletionDataSummary(DataSummary):
             "0": 5,
             "1": 6,
         },
-        "email": {
-            "0": "jhon@doe.com",
-            "1": "jane@doe.com",
+        "Section 1> Subsect..1.1> Unit 1.1.2 92909 Completed": {
+            "0": False,
+            "1": True,
         },
-        "username": {
-            "0": "john",
-            "1": "jane",
-        },
-        "course_id": {
-            "0": "course-v1:edunext+ontask+demo",
-            "1": "course-v1:edunext+ontask+demo",
-        },
-        "unit_9c56dbeb30504c8fb799553f080cf15d_name": {
-            "0": "Unit 1.1",
-            "1": "Unit 1.1",
-        },
-        "unit_9c56dbeb30504c8fb799553f080cf15d_completed": {
+        "Section 3> Subsect..3.1> Unit 3.1.1 8c8e7 Completed": {
             "0": False,
             "1": True,
         }

@@ -46,4 +46,8 @@ def upload_dataframe_to_ontask_task(course_id: str, workflow_id: str, api_auth_t
 
         response = ontask_client.merge_table(workflow_id, data_frame)
 
+        # handle the exception when the workflow exists and the table is just emtpy
+        if response.status_code == 400 and "non-empty table" in response.text:
+            log.info("Workflow appears emtpy, retrying ...")
+            response = ontask_client.update_table(workflow_id, data_frame)
         log.info(response.text)

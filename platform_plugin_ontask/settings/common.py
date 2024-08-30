@@ -53,7 +53,7 @@ def plugin_settings(settings):
         "platform_plugin_ontask.edxapp_wrapper.backends.courseware_r_v1"
     )
     settings.ONTASK_DATA_SUMMARY_CLASSES = [
-        # "platform_plugin_ontask.data_summary.backends.user.UserDataSummary",
+        "platform_plugin_ontask.data_summary.backends.user.UserDataSummary",
         "platform_plugin_ontask.data_summary.backends.completion.UnitCompletionDataSummary",
-        # "platform_plugin_ontask.data_summary.backends.grade.ComponentGradeDataSummary",
+        "platform_plugin_ontask.data_summary.backends.grade.ComponentGradeDataSummary",
     ]
