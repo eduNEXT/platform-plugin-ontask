@@ -61,10 +61,6 @@ class UnitCompletionDataSummary(DataSummary):
 
     ```
     """
-
-    EMAIL_COLUMN_NAME = "email"
-    USERNAME_COLUMN_NAME = "username"
-    COURSE_ID_COLUMN_NAME = "course_id"
     UNIT_NAME_COLUMN_NAME = "unit_{}_name"
     COMPLETED_COLUMN_NAME = "unit_{}_completed"
 
@@ -83,9 +79,6 @@ class UnitCompletionDataSummary(DataSummary):
         for index, enrollment in enumerate(enrollments):
             completion_service = CompletionService(enrollment.user, course_key)
             data_frame[self.USER_ID_COLUMN_NAME][index] = enrollment.user.id
-            data_frame[self.EMAIL_COLUMN_NAME][index] = enrollment.user.email
-            data_frame[self.USERNAME_COLUMN_NAME][index] = enrollment.user.username
-            data_frame[self.COURSE_ID_COLUMN_NAME][index] = self.course_id
             for unit in course_units:
                 block_id = unit.usage_key.block_id
                 data_frame[self.UNIT_NAME_COLUMN_NAME.format(block_id)][index] = unit.display_name
