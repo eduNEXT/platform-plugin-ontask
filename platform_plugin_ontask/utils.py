@@ -39,9 +39,14 @@ def get_course_components(course_key: CourseKey) -> Iterable:
     Returns:
         Iterable: List of components.
     """
-    course_units = get_course_units(course_key)
-    for unit in course_units:
-        yield from unit.get_children()
+    course_units_with_parent_names = get_course_units(course_key)
+    for unit, subsection_name, section_name in course_units_with_parent_names:
+        for component in unit.get_children():
+            yield (
+                component,
+                unit.usage_key.block_id,
+                unit.display_name_with_default,
+            )
 
 
 def _(text):
