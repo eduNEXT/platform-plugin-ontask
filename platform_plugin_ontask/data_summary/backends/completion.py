@@ -61,8 +61,36 @@ class UnitCompletionDataSummary(DataSummary):
 
     ```
     """
-    UNIT_NAME_COLUMN_NAME = "unit_{}_name"
-    COMPLETED_COLUMN_NAME = "unit_{}_completed"
+    UNIQUE_KEY_LENGTH = 5
+    UNIT_NAME_LENGTH = 16
+    SUBSECTION_NAME_LENGTH = 12
+    SECTION_NAME_LENGTH = 12
+
+    def get_unit_name(self, block_id, unit_name, subsection_name, section_name) -> str:
+        """
+        Returns a string with a mix of the original location values.
+
+        Args:
+            block_id (str): The block ID.
+            unit_name (str): The unit name.
+            subsection_name (str): The subsection name.
+            section_name (str): The section name.
+
+        Returns:
+            str: A formatted string with the shortened values.
+        """
+
+        def shorten(value, length):
+            """Shorten the string to the specified length."""
+            return value[:length-5] + '..' + value[-3:] if len(value) > length else value
+
+        short_block_id = block_id[-self.UNIQUE_KEY_LENGTH:]
+        short_unit_name = shorten(unit_name, self.UNIT_NAME_LENGTH)
+        short_subsection_name = shorten(subsection_name, self.SUBSECTION_NAME_LENGTH)
+        short_section_name = shorten(section_name, self.SECTION_NAME_LENGTH)
+
+        return f"{short_section_name}> {short_subsection_name}> {short_unit_name} {short_block_id} Completed"
+
 
     def get_data_summary(self) -> dict:
         """
@@ -72,17 +100,21 @@ class UnitCompletionDataSummary(DataSummary):
             data_frame (dict): A dataframe with the unit completion data summary
         """
         course_key = CourseKey.from_string(self.course_id)
-        enrollments = get_user_enrollments(self.course_id).filter(user__is_superuser=False, user__is_staff=False)
+        enrollments = get_user_enrollments(self.course_id)
         course_units = list(get_course_units(course_key))
 
         data_frame = defaultdict(dict)
         for index, enrollment in enumerate(enrollments):
             completion_service = CompletionService(enrollment.user, course_key)
             data_frame[self.USER_ID_COLUMN_NAME][index] = enrollment.user.id
-            for unit in course_units:
-                block_id = unit.usage_key.block_id
-                data_frame[self.UNIT_NAME_COLUMN_NAME.format(block_id)][index] = unit.display_name
-                data_frame[self.COMPLETED_COLUMN_NAME.format(block_id)][index] = (
+            for unit, subsection_name, section_name in course_units:
+                column_name = self.get_unit_name(
+                    unit.usage_key.block_id,
+                    unit.display_name_with_default,
+                    subsection_name,
+                    section_name,
+                )
+                data_frame[column_name][index] = (
                     completion_service.vertical_is_complete(unit)
                 )
 
