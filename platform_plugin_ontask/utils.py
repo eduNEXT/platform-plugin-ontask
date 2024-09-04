@@ -40,7 +40,7 @@ def get_course_components(course_key: CourseKey) -> Iterable:
         Iterable: List of components.
     """
     course_units_with_parent_names = get_course_units(course_key)
-    for unit, subsection_name, section_name in course_units_with_parent_names:
+    for unit, _, _ in course_units_with_parent_names:
         for component in unit.get_children():
             yield (
                 component,

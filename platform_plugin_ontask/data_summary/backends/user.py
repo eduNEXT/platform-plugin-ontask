@@ -2,7 +2,6 @@
 
 from collections import defaultdict
 
-from opaque_keys.edx.keys import CourseKey
 from platform_plugin_ontask.data_summary.backends.base import DataSummary
 from platform_plugin_ontask.edxapp_wrapper.enrollments import get_user_enrollments
 
@@ -47,7 +46,6 @@ class UserDataSummary(DataSummary):
         Returns:
             data_frame (dict): A dataframe with the user data summary
         """
-        course_key = CourseKey.from_string(self.course_id)
         enrollments = get_user_enrollments(self.course_id)
 
         data_frame = defaultdict(dict)

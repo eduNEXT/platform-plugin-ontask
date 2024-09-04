@@ -79,7 +79,6 @@ class UnitCompletionDataSummary(DataSummary):
 
         return f"{short_section_name}> {short_subsection_name}> {short_unit_name} {short_block_id} Completed"
 
-
     def get_data_summary(self) -> dict:
         """
         Get the unit completion data summary.
