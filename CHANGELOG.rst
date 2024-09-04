@@ -16,6 +16,22 @@ Unreleased
 
 *
 
+0.5.0 - 2024-09-03
+**********************************************
+
+Added
+======
+
+* Added a new ``UserDataSummary`` backend.
+
+Changed
+=======
+
+* Updated the plugin unit tests.
+* Updated ``CompletionDataSummary`` and ``ComponentGradeDataSummary`` backend
+  so that column names are human readable and unique.
+
+
 0.4.0 - 2024-08-01
 **********************************************
 
