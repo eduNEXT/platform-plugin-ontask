@@ -272,16 +272,14 @@ Create a Custom Data Summary Backend
 *********************************************
 
 By default, the data summary loaded into the OnTask table is generated from the
-course completion and grade data. These are the columns that are loaded into
-the OnTask table:
+user, unit completion and component grade data. These are the columns that are
+loaded into the OnTask table:
 
 - ``user_id`` *(Integer)*: ID of the user.
-- ``username`` *(String)*: Username of the user.
 - ``email`` *(String)*: Email of the user.
-- ``course_id`` *(String)*: ID of the course.
-- ``unit_{unit_id}_name`` *(String)*: Name of the unit.
-- ``unit_{unit_id}_completed`` *(Boolean)*: If the unit is completed.
-- ``component_{component_id}_grade`` *(Float)*: Grade of the component.
+- ``username`` *(String)*: Username of the user.
+- ``{short_section_name}> {short_subsection_name}> {short_unit_name} {short_block_id} Completed`` *(Boolean)*: If the unit is completed.
+- ``{short_unit_name}({short_unit_blockid})> {short_component_name} {short_block_id} Grade`` *(Integer)*: Grade of the component.
 
 You can create a custom data summary backend to add new columns to the data
 summary that is loaded into the OnTask table. To do this, follow these steps:
@@ -309,8 +307,8 @@ summary that is loaded into the OnTask table. To do this, follow these steps:
           """
           data_frame = {
               "user_id": {"0": 1},
-              "unit_a7e390b77964476fb9924f0bc194da4c_custom_value": {"0": False},
-              "unit_a7e390b77964476fb9924f0bc194da4c_another_custom_value": {"0": "value"},
+              "unit (a7e390) > component 841e2 custom_value": {"0": False},
+              "unit (a7e390) > component 841e2 another_custom_value": {"0": "value"},
           }
           return data_frame
 
@@ -327,9 +325,10 @@ summary that is loaded into the OnTask table. To do this, follow these steps:
         "platform_plugin_ontask.datasummary.backends.custom.CustomDataSummary"
       ]
 
-   **NOTE**: The ``UnitCompletionDataSummary`` and ``ComponentGradeDataSummary``
-   are the default data summary backends. If you do not want to use them, you
-   can do so by removing them from the ``ONTASK_DATA_SUMMARY_CLASSES`` setting.
+   **NOTE**: The ``UserDataSummary``, ``UnitCompletionDataSummary`` and
+   ``ComponentGradeDataSummary`` are the default data summary backends. If you
+   do not want to use them, you can do so by removing them from the
+   ``ONTASK_DATA_SUMMARY_CLASSES`` setting.
 
 Getting Help
 ************
