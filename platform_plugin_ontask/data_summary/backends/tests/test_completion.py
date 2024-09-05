@@ -30,7 +30,6 @@ class TestUnitCompletionDataSummary(TestCase):
         completion_data_summary = UnitCompletionDataSummary(self.course_id)
         result = completion_data_summary.get_data_summary()
 
-        print(result)
         self.assertEqual(result["user_id"][0], self.user.id)
         self.assertIn(self.block_id, list(result.keys())[1])
         self.assertIn(self.unit.display_name_with_default, list(result.keys())[1])
