@@ -14,7 +14,7 @@ class TestUnitCompletionDataSummary(TestCase):
         self.user = Mock(id=1, email="john@doe.com", username="john_doe")
         self.enrollment = Mock(user=self.user)
         self.block_id = "9c56d"
-        self.unit = Mock(usage_key=Mock(block_id=self.block_id), display_name="Unit 1")
+        self.unit = Mock(usage_key=Mock(block_id=self.block_id), display_name_with_default="Unit 1")
 
     @patch("platform_plugin_ontask.data_summary.backends.completion.get_user_enrollments")
     @patch("platform_plugin_ontask.data_summary.backends.completion.get_course_units")
@@ -22,8 +22,8 @@ class TestUnitCompletionDataSummary(TestCase):
     def test_get_data_summary(
         self, mock_completion_service: Mock, mock_get_course_units: Mock, mock_get_user_enrollments: Mock
     ):
-        mock_get_user_enrollments.return_value.filter.return_value = [self.enrollment]
-        mock_get_course_units.return_value = [self.unit]
+        mock_get_user_enrollments.return_value = [self.enrollment]
+        mock_get_course_units.return_value = [(self.unit, "fake_subsection_name", "fake_section_name")]
         mock_completion_service = mock_completion_service.return_value
         mock_completion_service.vertical_is_complete.return_value = True
 
@@ -31,8 +31,6 @@ class TestUnitCompletionDataSummary(TestCase):
         result = completion_data_summary.get_data_summary()
 
         self.assertEqual(result["user_id"][0], self.user.id)
-        self.assertEqual(result["email"][0], self.user.email)
-        self.assertEqual(result["username"][0], self.user.username)
-        self.assertEqual(result["course_id"][0], self.course_id)
-        self.assertEqual(result[f"unit_{self.block_id}_name"][0], self.unit.display_name)
-        self.assertTrue(result[f"unit_{self.block_id}_completed"][0])
+        self.assertIn(self.block_id, list(result.keys())[1])
+        self.assertIn(self.unit.display_name_with_default, list(result.keys())[1])
+        self.assertTrue(result[f"fake_se..ame> fake_su..ame> Unit 1 {self.block_id} Completed"][0])

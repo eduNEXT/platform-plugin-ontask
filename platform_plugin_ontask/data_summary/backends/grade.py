@@ -37,11 +37,11 @@ class ComponentGradeDataSummary(DataSummary):
             "0": 5,
             "1": 6,
         },
-        "component_9c56dbeb30504c8fb799553f080cf15d_grade": {
+        "Unit 2.1.2(abf24)> Dropdown fd8d6 Grade": {
             "0": 1,
             "1": 0,
         },
-        "component_6c7e4b1b7b7e4b3e8b7b7e4b3e8b7b7_grade": {
+        "Unit 3.1.2(8917f)> Single select 91121 Grade": {
             "0": 0,
             "1": 1,
         },
@@ -50,8 +50,28 @@ class ComponentGradeDataSummary(DataSummary):
 
     ```
     """
+    UNIQUE_KEY_LENGTH = 5
+    COMPONENT_NAME_LENGTH = 20
+    UNIT_NAME_LENGTH = 16
 
-    GRADE_COLUMN_NAME = "component_{}_grade"
+    def get_component_name(self, block_id, component_name, unit_blockid, unit_name) -> str:
+        """
+        Returns a string with a mix of the original location values.
+
+        Returns:
+            str: A formatted string with the shortened values.
+        """
+
+        def shorten(value, length):
+            """Shorten the string to the specified length."""
+            return value[:length-5] + '..' + value[-3:] if len(value) > length else value
+
+        short_block_id = block_id[-self.UNIQUE_KEY_LENGTH:]
+        short_component_name = shorten(component_name, self.COMPONENT_NAME_LENGTH)
+        short_unit_blockid = unit_blockid[-self.UNIQUE_KEY_LENGTH:]
+        short_unit_name = shorten(unit_name, self.UNIT_NAME_LENGTH)
+
+        return f"{short_unit_name}({short_unit_blockid})> {short_component_name} {short_block_id} Grade"
 
     def get_data_summary(self) -> dict:
         """
@@ -61,17 +81,24 @@ class ComponentGradeDataSummary(DataSummary):
             data_frame (dict): A dataframe with the component completion data summary
         """
         course_key = CourseKey.from_string(self.course_id)
-        enrollments = get_user_enrollments(self.course_id).filter(user__is_superuser=False, user__is_staff=False)
+        enrollments = get_user_enrollments(self.course_id)
         course_components = list(get_course_components(course_key))
 
         data_frame = defaultdict(dict)
         for index, enrollment in enumerate(enrollments):
             user_id = enrollment.user.id
             data_frame[self.USER_ID_COLUMN_NAME][index] = user_id
-            for component in course_components:
+            for component, unit_blockid, unit_name in course_components:
                 usage_key = component.usage_key
                 student_module = get_score(user_id, usage_key)
                 grade = student_module.grade if student_module and student_module.grade is not None else 0
-                data_frame[self.GRADE_COLUMN_NAME.format(usage_key.block_id)][index] = grade
+
+                column_name = self.get_component_name(
+                    component.usage_key.block_id,
+                    component.display_name_with_default,
+                    unit_blockid,
+                    unit_name,
+                )
+                data_frame[column_name][index] = grade
 
         return data_frame

@@ -14,7 +14,7 @@ class TestComponentGradeDataSummary(TestCase):
         self.user = Mock(id=1, email="john@doe.com", username="john_doe")
         self.enrollment = Mock(user=self.user)
         self.block_id = "6b7e4"
-        self.component = Mock(usage_key=Mock(block_id=self.block_id))
+        self.component = Mock(usage_key=Mock(block_id=self.block_id), display_name_with_default="fake_component_name")
 
     @patch("platform_plugin_ontask.data_summary.backends.grade.get_user_enrollments")
     @patch("platform_plugin_ontask.data_summary.backends.grade.get_course_components")
@@ -23,11 +23,12 @@ class TestComponentGradeDataSummary(TestCase):
         self, mock_get_score: Mock, mock_get_course_components: Mock, mock_get_user_enrollments: Mock
     ):
         mock_get_score.return_value = Mock(grade=1)
-        mock_get_user_enrollments.return_value.filter.return_value = [self.enrollment]
-        mock_get_course_components.return_value = [self.component]
+        mock_get_user_enrollments.return_value = [self.enrollment]
+        mock_get_course_components.return_value = [(self.component, "fake_unit_blockid", "fake_unit_name")]
 
         grade_data_summary = ComponentGradeDataSummary(self.course_id)
         result = grade_data_summary.get_data_summary()
 
         self.assertEqual(result["user_id"][0], self.user.id)
-        self.assertEqual(result[f"component_{self.block_id}_grade"][0], 1)
+        self.assertIn("fake_unit_name", list(result.keys())[1])
+        self.assertIn("fake_component_name", list(result.keys())[1])

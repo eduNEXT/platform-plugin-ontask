@@ -37,23 +37,11 @@ class UnitCompletionDataSummary(DataSummary):
             "0": 5,
             "1": 6,
         },
-        "email": {
-            "0": "jhon@doe.com",
-            "1": "jane@doe.com",
+        "Section 1> Subsect..1.1> Unit 1.1.2 92909 Completed": {
+            "0": False,
+            "1": True,
         },
-        "username": {
-            "0": "john",
-            "1": "jane",
-        },
-        "course_id": {
-            "0": "course-v1:edunext+ontask+demo",
-            "1": "course-v1:edunext+ontask+demo",
-        },
-        "unit_9c56dbeb30504c8fb799553f080cf15d_name": {
-            "0": "Unit 1.1",
-            "1": "Unit 1.1",
-        },
-        "unit_9c56dbeb30504c8fb799553f080cf15d_completed": {
+        "Section 3> Subsect..3.1> Unit 3.1.1 8c8e7 Completed": {
             "0": False,
             "1": True,
         }
@@ -61,12 +49,35 @@ class UnitCompletionDataSummary(DataSummary):
 
     ```
     """
+    UNIQUE_KEY_LENGTH = 5
+    UNIT_NAME_LENGTH = 16
+    SUBSECTION_NAME_LENGTH = 12
+    SECTION_NAME_LENGTH = 12
 
-    EMAIL_COLUMN_NAME = "email"
-    USERNAME_COLUMN_NAME = "username"
-    COURSE_ID_COLUMN_NAME = "course_id"
-    UNIT_NAME_COLUMN_NAME = "unit_{}_name"
-    COMPLETED_COLUMN_NAME = "unit_{}_completed"
+    def get_unit_name(self, block_id, unit_name, subsection_name, section_name) -> str:
+        """
+        Returns a string with a mix of the original location values.
+
+        Args:
+            block_id (str): The block ID.
+            unit_name (str): The unit name.
+            subsection_name (str): The subsection name.
+            section_name (str): The section name.
+
+        Returns:
+            str: A formatted string with the shortened values.
+        """
+
+        def shorten(value, length):
+            """Shorten the string to the specified length."""
+            return value[:length-5] + '..' + value[-3:] if len(value) > length else value
+
+        short_block_id = block_id[-self.UNIQUE_KEY_LENGTH:]
+        short_unit_name = shorten(unit_name, self.UNIT_NAME_LENGTH)
+        short_subsection_name = shorten(subsection_name, self.SUBSECTION_NAME_LENGTH)
+        short_section_name = shorten(section_name, self.SECTION_NAME_LENGTH)
+
+        return f"{short_section_name}> {short_subsection_name}> {short_unit_name} {short_block_id} Completed"
 
     def get_data_summary(self) -> dict:
         """
@@ -76,20 +87,21 @@ class UnitCompletionDataSummary(DataSummary):
             data_frame (dict): A dataframe with the unit completion data summary
         """
         course_key = CourseKey.from_string(self.course_id)
-        enrollments = get_user_enrollments(self.course_id).filter(user__is_superuser=False, user__is_staff=False)
+        enrollments = get_user_enrollments(self.course_id)
         course_units = list(get_course_units(course_key))
 
         data_frame = defaultdict(dict)
         for index, enrollment in enumerate(enrollments):
             completion_service = CompletionService(enrollment.user, course_key)
             data_frame[self.USER_ID_COLUMN_NAME][index] = enrollment.user.id
-            data_frame[self.EMAIL_COLUMN_NAME][index] = enrollment.user.email
-            data_frame[self.USERNAME_COLUMN_NAME][index] = enrollment.user.username
-            data_frame[self.COURSE_ID_COLUMN_NAME][index] = self.course_id
-            for unit in course_units:
-                block_id = unit.usage_key.block_id
-                data_frame[self.UNIT_NAME_COLUMN_NAME.format(block_id)][index] = unit.display_name
-                data_frame[self.COMPLETED_COLUMN_NAME.format(block_id)][index] = (
+            for unit, subsection_name, section_name in course_units:
+                column_name = self.get_unit_name(
+                    unit.usage_key.block_id,
+                    unit.display_name_with_default,
+                    subsection_name,
+                    section_name,
+                )
+                data_frame[column_name][index] = (
                     completion_service.vertical_is_complete(unit)
                 )
 
