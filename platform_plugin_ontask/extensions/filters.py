@@ -2,7 +2,7 @@
 Open edX Filters needed for OnTask integration.
 """
 
-import pkg_resources
+import importlib.resources
 from django.conf import settings
 from django.template import Context, Template
 from openedx_filters import PipelineStep
@@ -54,5 +54,5 @@ class AddInstructorOnTaskTab(PipelineStep):
 
     def resource_string(self, path: str) -> str:
         """Handy helper for getting resources from our kit."""
-        data = pkg_resources.resource_string("platform_plugin_ontask", path)
-        return data.decode("utf8")
+        data = importlib.resources.files("platform_plugin_ontask").joinpath(path)
+        return data.read_text(encoding="utf8")
